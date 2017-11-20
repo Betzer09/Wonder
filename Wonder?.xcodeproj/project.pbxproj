@@ -13,6 +13,8 @@
 		23E255241FC36BB600D5C23B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23E255221FC36BB600D5C23B /* LaunchScreen.storyboard */; };
 		23E255321FC3740F00D5C23B /* MovieGenres.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E255311FC3740F00D5C23B /* MovieGenres.swift */; };
 		23E255341FC3771F00D5C23B /* Movie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E255331FC3771F00D5C23B /* Movie.swift */; };
+		23E255361FC37C4100D5C23B /* MovieGenresController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E255351FC37C4100D5C23B /* MovieGenresController.swift */; };
+		23E255381FC3848700D5C23B /* GenreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E255371FC3848700D5C23B /* GenreViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,8 @@
 		23E255251FC36BB600D5C23B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		23E255311FC3740F00D5C23B /* MovieGenres.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieGenres.swift; sourceTree = "<group>"; };
 		23E255331FC3771F00D5C23B /* Movie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
+		23E255351FC37C4100D5C23B /* MovieGenresController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieGenresController.swift; sourceTree = "<group>"; };
+		23E255371FC3848700D5C23B /* GenreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +108,7 @@
 		23E2552F1FC36E0000D5C23B /* View  Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				23E255371FC3848700D5C23B /* GenreViewController.swift */,
 			);
 			path = "View  Controllers";
 			sourceTree = "<group>";
@@ -111,6 +116,7 @@
 		23E255301FC36E1300D5C23B /* Model Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				23E255351FC37C4100D5C23B /* MovieGenresController.swift */,
 			);
 			path = "Model Controllers";
 			sourceTree = "<group>";
@@ -188,7 +194,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				23E255321FC3740F00D5C23B /* MovieGenres.swift in Sources */,
+				23E255381FC3848700D5C23B /* GenreViewController.swift in Sources */,
 				23E2551A1FC36BB600D5C23B /* AppDelegate.swift in Sources */,
+				23E255361FC37C4100D5C23B /* MovieGenresController.swift in Sources */,
 				23E255341FC3771F00D5C23B /* Movie.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

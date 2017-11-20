@@ -35,6 +35,6 @@ struct Movie: Decodable {
     }
 }
 
-struct Movies {
-    let results: [Movie]
+struct Movies: Decodable {
+    var results: [Movie]
 }

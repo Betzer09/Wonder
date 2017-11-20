@@ -78,7 +78,7 @@
         <!--Movies / Shows-->
         <scene sceneID="Aed-Gw-Ntr">
             <objects>
-                <viewController id="bbY-su-BOl" sceneMemberID="viewController">
+                <viewController id="bbY-su-BOl" customClass="GenreViewController" customModule="Wonder_" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="cpJ-GY-7gx">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -88,7 +88,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Find Movies"/>
                                 <connections>
-                                    <segue destination="yYc-yq-6hY" kind="show" id="arn-hy-ZQW"/>
+                                    <action selector="buttonPressed:" destination="bbY-su-BOl" eventType="touchUpInside" id="8zX-M2-chU"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zTZ-86-Lrv">
@@ -196,7 +196,4 @@
             <point key="canvasLocation" x="273" y="1395"/>
         </scene>
     </scenes>
-    <inferredMetricsTieBreakers>
-        <segue reference="Vmc-0R-xe0"/>
-    </inferredMetricsTieBreakers>
 </document>

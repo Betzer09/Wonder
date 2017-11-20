@@ -19,6 +19,6 @@ struct Genre: Decodable {
     }
 }
 
-struct Genres {
-    let genries: [Genre]
+struct Genres: Decodable {
+    var genres: [Genre]
 }
