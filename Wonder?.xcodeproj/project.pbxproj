@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		23E2551A1FC36BB600D5C23B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E255191FC36BB600D5C23B /* AppDelegate.swift */; };
-		23E2551C1FC36BB600D5C23B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E2551B1FC36BB600D5C23B /* ViewController.swift */; };
 		23E2551F1FC36BB600D5C23B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23E2551D1FC36BB600D5C23B /* Main.storyboard */; };
 		23E255211FC36BB600D5C23B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 23E255201FC36BB600D5C23B /* Assets.xcassets */; };
 		23E255241FC36BB600D5C23B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23E255221FC36BB600D5C23B /* LaunchScreen.storyboard */; };
@@ -17,7 +16,6 @@
 /* Begin PBXFileReference section */
 		23E255161FC36BB600D5C23B /* Wonder?.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Wonder?.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		23E255191FC36BB600D5C23B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		23E2551B1FC36BB600D5C23B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		23E2551E1FC36BB600D5C23B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		23E255201FC36BB600D5C23B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		23E255231FC36BB600D5C23B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -54,14 +52,61 @@
 		23E255181FC36BB600D5C23B /* Wonder? */ = {
 			isa = PBXGroup;
 			children = (
-				23E255191FC36BB600D5C23B /* AppDelegate.swift */,
-				23E2551B1FC36BB600D5C23B /* ViewController.swift */,
-				23E2551D1FC36BB600D5C23B /* Main.storyboard */,
-				23E255201FC36BB600D5C23B /* Assets.xcassets */,
-				23E255221FC36BB600D5C23B /* LaunchScreen.storyboard */,
-				23E255251FC36BB600D5C23B /* Info.plist */,
+				23E2552D1FC36DF100D5C23B /* Models */,
+				23E255301FC36E1300D5C23B /* Model Controllers */,
+				23E2552F1FC36E0000D5C23B /* View  Controllers */,
+				23E2552E1FC36DF700D5C23B /* Views */,
+				23E2552B1FC36DD400D5C23B /* Storyboards */,
+				23E2552C1FC36DEC00D5C23B /* Resources */,
 			);
 			path = "Wonder?";
+			sourceTree = "<group>";
+		};
+		23E2552B1FC36DD400D5C23B /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				23E2551D1FC36BB600D5C23B /* Main.storyboard */,
+				23E255221FC36BB600D5C23B /* LaunchScreen.storyboard */,
+			);
+			path = Storyboards;
+			sourceTree = "<group>";
+		};
+		23E2552C1FC36DEC00D5C23B /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				23E255191FC36BB600D5C23B /* AppDelegate.swift */,
+				23E255201FC36BB600D5C23B /* Assets.xcassets */,
+				23E255251FC36BB600D5C23B /* Info.plist */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		23E2552D1FC36DF100D5C23B /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		23E2552E1FC36DF700D5C23B /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		23E2552F1FC36E0000D5C23B /* View  Controllers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "View  Controllers";
+			sourceTree = "<group>";
+		};
+		23E255301FC36E1300D5C23B /* Model Controllers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Model Controllers";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -136,7 +181,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				23E2551C1FC36BB600D5C23B /* ViewController.swift in Sources */,
 				23E2551A1FC36BB600D5C23B /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -276,7 +320,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = RE524LJXV2;
-				INFOPLIST_FILE = "Wonder?/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Wonder?/Resources/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Austin.Wonder-";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -291,7 +336,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = RE524LJXV2;
-				INFOPLIST_FILE = "Wonder?/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Wonder?/Resources/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Austin.Wonder-";
 				PRODUCT_NAME = "$(TARGET_NAME)";
