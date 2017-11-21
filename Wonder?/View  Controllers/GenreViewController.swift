@@ -24,6 +24,15 @@ class GenreViewController: UIViewController {
         }
     }
     
+    @IBAction func AnotherButtonPressed(_ sender: Any) {
+        
+        MovieController.shared.fetchRecommnedMoviesWith(id: 808) { (reccomenedMovies) in
+            guard let reccomenedMovies = reccomenedMovies else {return}
+            print(reccomenedMovies.count)
+        }
+    }
+    
+    
 
     /*
     // MARK: - Navigation

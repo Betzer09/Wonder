@@ -96,6 +96,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Find TV Shows"/>
                                 <connections>
+                                    <action selector="AnotherButtonPressed:" destination="bbY-su-BOl" eventType="touchUpInside" id="w35-Jr-hQh"/>
                                     <segue destination="yYc-yq-6hY" kind="show" id="Vmc-0R-xe0"/>
                                 </connections>
                             </button>

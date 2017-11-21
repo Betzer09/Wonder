@@ -17,6 +17,7 @@
 		23E2554C1FC4812C00D5C23B /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E2554B1FC4812C00D5C23B /* CoreDataStack.swift */; };
 		23E2554F1FC4815100D5C23B /* Wonder?.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 23E2554D1FC4815100D5C23B /* Wonder?.xcdatamodeld */; };
 		23E255571FC48AF500D5C23B /* Genre.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E255561FC48AF500D5C23B /* Genre.swift */; };
+		23E255591FC48BD100D5C23B /* MovieController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E255581FC48BD100D5C23B /* MovieController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		23E2554B1FC4812C00D5C23B /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		23E2554E1FC4815100D5C23B /* Wonder?.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Wonder?.xcdatamodel"; sourceTree = "<group>"; };
 		23E255561FC48AF500D5C23B /* Genre.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Genre.swift; sourceTree = "<group>"; };
+		23E255581FC48BD100D5C23B /* MovieController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,6 +125,7 @@
 			isa = PBXGroup;
 			children = (
 				23E255351FC37C4100D5C23B /* MovieGenresController.swift */,
+				23E255581FC48BD100D5C23B /* MovieController.swift */,
 			);
 			path = "Model Controllers";
 			sourceTree = "<group>";
@@ -211,6 +214,7 @@
 				23E2551A1FC36BB600D5C23B /* AppDelegate.swift in Sources */,
 				23E2554C1FC4812C00D5C23B /* CoreDataStack.swift in Sources */,
 				23E2554F1FC4815100D5C23B /* Wonder?.xcdatamodeld in Sources */,
+				23E255591FC48BD100D5C23B /* MovieController.swift in Sources */,
 				23E255361FC37C4100D5C23B /* MovieGenresController.swift in Sources */,
 				23E255341FC3771F00D5C23B /* Movie.swift in Sources */,
 				23E255571FC48AF500D5C23B /* Genre.swift in Sources */,
