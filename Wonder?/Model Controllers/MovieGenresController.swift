@@ -35,14 +35,14 @@ class GenresController {
                 return
             }
             
-            // Do something with the data
-            guard let data = data else { NSLog("There was bad data! \(#file)"); completion([]); return}
-            
-            // Decode the data
-            guard let genre = (try? JSONDecoder().decode(Genres.self, from: data)) else {return}
-            
-            self.genries = genre.genres
-            completion(genre.genres)
+//            // Do something with the data
+//            guard let data = data else { NSLog("There was bad data! \(#file)"); completion([]); return}
+//
+//            // Decode the data
+//            guard let genre = (try? JSONDecoder().decode(Genres.self, from: data)) else {return}
+//
+//            self.genries = genre.genres
+//            completion(genre.genres)
             
         }.resume()
         
