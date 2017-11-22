@@ -16,6 +16,7 @@ class GenresController {
     //https://api.themoviedb.org/3/genre/movie/list?api_key=c366b28fa7f90e98f633846b3704570c&language=en-US
     let baseURL = URL(string: "https://api.themoviedb.org/3/genre/movie/list")
     
+    // MARK: - Fetch Genres
     func fetchGenres(completion: @escaping ([Genre]?) -> Void) {
         
         guard let unwrappedURL = baseURL else { NSLog("Bad URL \(#file)"); return}
@@ -46,6 +47,14 @@ class GenresController {
             
         }.resume()
         
+    }
+    /// Toggle the status of a genre
+    func toggleIsLikedStatusFor(genre: Genre, isLiked: Bool) {
+        var oldGenre = genre
+        oldGenre.isLiked = isLiked
+        guard let index = genries.index(of: genre) else {return}
+        genries.remove(at: index)
+        genries.insert(oldGenre, at: index)
     }
     
 }

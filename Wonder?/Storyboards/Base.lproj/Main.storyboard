@@ -177,6 +177,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cardStack" translatesAutoresizingMaskIntoConstraints="NO" id="OIJ-h3-rLg">
+                                <rect key="frame" x="46.5" y="124" width="281" height="444.5"/>
+                            </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xAu-Xm-eDF" userLabel="card">
                                 <rect key="frame" x="46.5" y="111.5" width="281" height="444.5"/>
                                 <subviews>
@@ -230,16 +233,21 @@
                         <constraints>
                             <constraint firstItem="xAu-Xm-eDF" firstAttribute="centerX" secondItem="sfv-qg-MqP" secondAttribute="centerX" id="AkQ-Di-M5B"/>
                             <constraint firstItem="xAu-Xm-eDF" firstAttribute="height" secondItem="sfv-qg-MqP" secondAttribute="height" multiplier="2/3" id="Ij4-Vd-Qfy"/>
+                            <constraint firstItem="OIJ-h3-rLg" firstAttribute="top" secondItem="Cyv-Sz-dNx" secondAttribute="bottom" constant="22" id="QEJ-YA-BtY"/>
                             <constraint firstItem="xAu-Xm-eDF" firstAttribute="width" secondItem="sfv-qg-MqP" secondAttribute="width" multiplier="3/4" id="WDb-eu-vcK"/>
                             <constraint firstItem="Cyv-Sz-dNx" firstAttribute="centerX" secondItem="sfv-qg-MqP" secondAttribute="centerX" id="Xb2-ZA-oAn"/>
                             <constraint firstItem="Cyv-Sz-dNx" firstAttribute="top" secondItem="JKy-pT-kuO" secondAttribute="top" constant="8" id="Ybn-Fp-Ge6"/>
+                            <constraint firstItem="OIJ-h3-rLg" firstAttribute="width" secondItem="xAu-Xm-eDF" secondAttribute="width" id="bpc-LH-cHQ"/>
                             <constraint firstItem="xAu-Xm-eDF" firstAttribute="centerY" secondItem="sfv-qg-MqP" secondAttribute="centerY" id="hFm-vF-m4n"/>
+                            <constraint firstItem="OIJ-h3-rLg" firstAttribute="centerX" secondItem="sfv-qg-MqP" secondAttribute="centerX" id="tWr-VF-b6D"/>
+                            <constraint firstItem="OIJ-h3-rLg" firstAttribute="height" secondItem="xAu-Xm-eDF" secondAttribute="height" id="txg-lu-MuD"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="JKy-pT-kuO"/>
                     </view>
                     <navigationItem key="navigationItem" title="Swipes" id="7gU-vs-fFJ"/>
                     <connections>
                         <outlet property="cardView" destination="xAu-Xm-eDF" id="hFy-6p-PWA"/>
+                        <outlet property="genreNameLabel" destination="MIk-wv-Gmj" id="3LZ-Af-cRz"/>
                         <outlet property="thumbImageView" destination="W93-VH-oRg" id="X2Z-64-9iE"/>
                     </connections>
                 </viewController>
@@ -302,6 +310,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="cardStack" width="305" height="456"/>
         <image name="thumbsUp" width="172" height="186"/>
     </resources>
 </document>

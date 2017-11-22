@@ -8,16 +8,26 @@
 
 import Foundation
 
-struct Genre: Decodable {
+struct Genre: Decodable, Equatable {
+    
+    static func ==(lhs: Genre, rhs: Genre) -> Bool {
+        return lhs.name == rhs.name && lhs.id == rhs.id
+    }
+    
     let name: String
     let id: Int
+    var isLiked: Bool?
     
     enum CodingKeys: String, CodingKey {
         case name
         case id
+        case isLiked
     }
 }
 
 struct Genres: Decodable {
     var genres: [Genre]
 }
+
+
+
