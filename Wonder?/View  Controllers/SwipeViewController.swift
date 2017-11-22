@@ -17,16 +17,28 @@ class SwipeViewController: UIViewController {
     
     // MARK: - Properties
     var genreCount: Int?
+    var genreCounter = 1
+    var availableGenres: [Genre] = []
+    var likedGenres: [Genre] = []
+    var unlikedGenres: [Genre] = []
     
+    // MARK: - View LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        genreCount = GenresController.shared.genries.count
-//        createCards()
-        genreNameLabel.text = "\(GenresController.shared.genries[0].name)"
+        configureView()
+        
+        // Watches to see if a genre has been updated
+        NotificationCenter.default.addObserver(self, selector: #selector(refetchGenres), name: GenresController.genreWasUpatedNotifaction, object: nil)
+        
     }
     
-    
-    
+    // MARK: - SetUp UI
+    func configureView() {
+        genreCount = GenresController.shared.genries.count
+        availableGenres = GenresController.shared.genries
+        genreNameLabel.text = "\(availableGenres[0].name)"
+    }
+
     // MARK: - Actions
     @IBAction func panCard(_ sender: UIPanGestureRecognizer) {
         guard let card = sender.view else {return }
@@ -83,6 +95,10 @@ class SwipeViewController: UIViewController {
     
     // MARK: - Methods
     
+    @objc func refetchGenres() {
+        availableGenres = GenresController.shared.genries
+    }
+    
     func createCards() {
         
         guard let genreCount = genreCount else {return}
@@ -93,18 +109,21 @@ class SwipeViewController: UIViewController {
         }
     }
     
-    var count = 1
     func resetCard() {
         UIView.animate(withDuration: 0.2, animations: {
             self.cardView.center = self.view.center
             self.thumbImageView.alpha = 0
             self.cardView.alpha = 1
             self.cardView.transform = .identity
-            if self.count >= self.genreCount! { self.count = 0 }
-            self.genreNameLabel.text = "\(GenresController.shared.genries[self.count].name)"
-            self.count += 1
-            
         })
+        
+        if genreCounter >= genreCount! {
+            likedGenres = availableGenres.filter( { $0.isLiked == true  } )
+            unlikedGenres = availableGenres.filter({ $0.isLiked == false })
+        } else {
+            genreNameLabel.text = "\(GenresController.shared.genries[genreCounter].name)"
+            genreCounter += 1
+        }
 
     }
     
