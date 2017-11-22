@@ -18,6 +18,7 @@
 		23E2554F1FC4815100D5C23B /* Wonder?.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 23E2554D1FC4815100D5C23B /* Wonder?.xcdatamodeld */; };
 		23E255571FC48AF500D5C23B /* Genre.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E255561FC48AF500D5C23B /* Genre.swift */; };
 		23E255591FC48BD100D5C23B /* MovieController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E255581FC48BD100D5C23B /* MovieController.swift */; };
+		23E2555B1FC4A95E00D5C23B /* SwipeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E2555A1FC4A95E00D5C23B /* SwipeViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		23E2554E1FC4815100D5C23B /* Wonder?.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Wonder?.xcdatamodel"; sourceTree = "<group>"; };
 		23E255561FC48AF500D5C23B /* Genre.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Genre.swift; sourceTree = "<group>"; };
 		23E255581FC48BD100D5C23B /* MovieController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieController.swift; sourceTree = "<group>"; };
+		23E2555A1FC4A95E00D5C23B /* SwipeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +119,7 @@
 			isa = PBXGroup;
 			children = (
 				23E255371FC3848700D5C23B /* GenreViewController.swift */,
+				23E2555A1FC4A95E00D5C23B /* SwipeViewController.swift */,
 			);
 			path = "View  Controllers";
 			sourceTree = "<group>";
@@ -212,6 +215,7 @@
 			files = (
 				23E255381FC3848700D5C23B /* GenreViewController.swift in Sources */,
 				23E2551A1FC36BB600D5C23B /* AppDelegate.swift in Sources */,
+				23E2555B1FC4A95E00D5C23B /* SwipeViewController.swift in Sources */,
 				23E2554C1FC4812C00D5C23B /* CoreDataStack.swift in Sources */,
 				23E2554F1FC4815100D5C23B /* Wonder?.xcdatamodeld in Sources */,
 				23E255591FC48BD100D5C23B /* MovieController.swift in Sources */,

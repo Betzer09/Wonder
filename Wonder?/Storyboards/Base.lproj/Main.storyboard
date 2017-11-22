@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -22,6 +23,7 @@
                     <connections>
                         <segue destination="xG8-Xm-SOh" kind="relationship" relationship="viewControllers" id="Ekh-Os-REc"/>
                         <segue destination="Wea-9o-MLX" kind="relationship" relationship="viewControllers" id="nw9-4L-8XU"/>
+                        <segue destination="2bz-AW-dly" kind="relationship" relationship="viewControllers" id="ipb-ox-9qA"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="f9s-O0-lqF" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -167,6 +169,89 @@
             </objects>
             <point key="canvasLocation" x="-607" y="1395"/>
         </scene>
+        <!--Swipes-->
+        <scene sceneID="Ymv-uc-w6u">
+            <objects>
+                <viewController id="4q3-dz-7qX" customClass="SwipeViewController" customModule="Wonder_" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="sfv-qg-MqP">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xAu-Xm-eDF" userLabel="card">
+                                <rect key="frame" x="46.5" y="111.5" width="281" height="444.5"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" alpha="0.0" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="thumbsUp" translatesAutoresizingMaskIntoConstraints="NO" id="W93-VH-oRg">
+                                        <rect key="frame" x="55" y="129.5" width="172" height="186"/>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Do You Like: " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Adt-GF-hCk">
+                                        <rect key="frame" x="70.5" y="8" width="140.5" height="22"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Action Movies?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MIk-wv-Gmj">
+                                        <rect key="frame" x="71" y="38" width="140.5" height="22"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" red="0.0" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <gestureRecognizers/>
+                                <constraints>
+                                    <constraint firstItem="MIk-wv-Gmj" firstAttribute="width" secondItem="Adt-GF-hCk" secondAttribute="width" id="1Qh-HK-bYx"/>
+                                    <constraint firstItem="Adt-GF-hCk" firstAttribute="centerX" secondItem="xAu-Xm-eDF" secondAttribute="centerX" id="AX3-km-MCo"/>
+                                    <constraint firstItem="MIk-wv-Gmj" firstAttribute="centerX" secondItem="xAu-Xm-eDF" secondAttribute="centerX" id="Doc-Su-MqA"/>
+                                    <constraint firstItem="Adt-GF-hCk" firstAttribute="width" secondItem="xAu-Xm-eDF" secondAttribute="width" multiplier="1/2" id="Hcx-Tt-TEI"/>
+                                    <constraint firstItem="Adt-GF-hCk" firstAttribute="top" secondItem="xAu-Xm-eDF" secondAttribute="top" constant="8" id="Rg5-Kw-ujU"/>
+                                    <constraint firstItem="MIk-wv-Gmj" firstAttribute="top" secondItem="Adt-GF-hCk" secondAttribute="bottom" constant="8" id="T7S-9x-cfW"/>
+                                    <constraint firstItem="Adt-GF-hCk" firstAttribute="height" secondItem="xAu-Xm-eDF" secondAttribute="height" multiplier="0.05" id="Z4w-eF-FvV"/>
+                                    <constraint firstItem="W93-VH-oRg" firstAttribute="centerY" secondItem="xAu-Xm-eDF" secondAttribute="centerY" id="mEP-G5-mhO"/>
+                                    <constraint firstItem="MIk-wv-Gmj" firstAttribute="height" secondItem="Adt-GF-hCk" secondAttribute="height" id="ox2-8K-eYU"/>
+                                    <constraint firstItem="W93-VH-oRg" firstAttribute="centerX" secondItem="xAu-Xm-eDF" secondAttribute="centerX" id="wuv-z0-ALf"/>
+                                </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="T2x-xG-vfs" appends="YES" id="3Lz-GV-52e"/>
+                                </connections>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cyv-Sz-dNx">
+                                <rect key="frame" x="164" y="72" width="46" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="iK7-vW-ZUn"/>
+                                    <constraint firstAttribute="width" constant="46" id="wBU-wf-p3J"/>
+                                </constraints>
+                                <state key="normal" title="Reset"/>
+                                <connections>
+                                    <action selector="reset:" destination="4q3-dz-7qX" eventType="touchUpInside" id="Ccg-wF-Ffl"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="xAu-Xm-eDF" firstAttribute="centerX" secondItem="sfv-qg-MqP" secondAttribute="centerX" id="AkQ-Di-M5B"/>
+                            <constraint firstItem="xAu-Xm-eDF" firstAttribute="height" secondItem="sfv-qg-MqP" secondAttribute="height" multiplier="2/3" id="Ij4-Vd-Qfy"/>
+                            <constraint firstItem="xAu-Xm-eDF" firstAttribute="width" secondItem="sfv-qg-MqP" secondAttribute="width" multiplier="3/4" id="WDb-eu-vcK"/>
+                            <constraint firstItem="Cyv-Sz-dNx" firstAttribute="centerX" secondItem="sfv-qg-MqP" secondAttribute="centerX" id="Xb2-ZA-oAn"/>
+                            <constraint firstItem="Cyv-Sz-dNx" firstAttribute="top" secondItem="JKy-pT-kuO" secondAttribute="top" constant="8" id="Ybn-Fp-Ge6"/>
+                            <constraint firstItem="xAu-Xm-eDF" firstAttribute="centerY" secondItem="sfv-qg-MqP" secondAttribute="centerY" id="hFm-vF-m4n"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="JKy-pT-kuO"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Swipes" id="7gU-vs-fFJ"/>
+                    <connections>
+                        <outlet property="cardView" destination="xAu-Xm-eDF" id="hFy-6p-PWA"/>
+                        <outlet property="thumbImageView" destination="W93-VH-oRg" id="X2Z-64-9iE"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="aBA-eh-8mp" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="T2x-xG-vfs">
+                    <connections>
+                        <action selector="panCard:" destination="4q3-dz-7qX" id="cGj-s5-dyO"/>
+                    </connections>
+                </panGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="1036" y="495.20239880059972"/>
+        </scene>
         <!--Create Custom Groups-->
         <scene sceneID="UdI-A2-NJ5">
             <objects>
@@ -196,5 +281,27 @@
             </objects>
             <point key="canvasLocation" x="273" y="1395"/>
         </scene>
+        <!--Swipe-->
+        <scene sceneID="Wyr-8Y-DEa">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="2bz-AW-dly" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Swipe" id="EH7-ne-BBh"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="b3Z-81-wiX">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="4q3-dz-7qX" kind="relationship" relationship="rootViewController" id="hw2-aG-mvc"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="81K-cY-czH" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="162" y="495"/>
+        </scene>
     </scenes>
+    <resources>
+        <image name="thumbsUp" width="172" height="186"/>
+    </resources>
 </document>

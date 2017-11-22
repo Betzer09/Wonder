@@ -18,18 +18,12 @@ class GenreViewController: UIViewController {
     // MARK: - Actions
     @IBAction func buttonPressed(_ sender: Any) {
         
-        GenresController.shared.fetchGenres { (genres) in
-            guard let genres = genres else {return}
-            print(genres.count)
-        }
+
     }
     
     @IBAction func AnotherButtonPressed(_ sender: Any) {
         
-        MovieController.shared.fetchRecommnedMoviesWith(id: 808) { (reccomenedMovies) in
-            guard let reccomenedMovies = reccomenedMovies else {return}
-            print(reccomenedMovies.count)
-        }
+
     }
     
     
