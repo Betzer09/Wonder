@@ -10,18 +10,22 @@ import Foundation
 
 class GenresController {
     
+    // MARK: - Properties
     static let shared = GenresController()
-    
     static let genreWasUpatedNotifaction = Notification.Name("genreWasUpdated")
     
-    var genries: [Genre] = [] {
+    let baseURL = URL(string: "https://api.themoviedb.org/3/genre/movie/list")
+    var likedGenres: [Genre] = []
+    var unlikedGenres: [Genre] = []
+    
+    var genres: [Genre] = [] {
         didSet {
             NotificationCenter.default.post(name: GenresController.genreWasUpatedNotifaction, object: nil)
         }
     }
     
-    //https://api.themoviedb.org/3/genre/movie/list?api_key=c366b28fa7f90e98f633846b3704570c&language=en-US
-    let baseURL = URL(string: "https://api.themoviedb.org/3/genre/movie/list")
+    
+    
     
     // MARK: - Fetch Genres
     func fetchGenres(completion: @escaping ([Genre]?) -> Void) {
@@ -49,19 +53,25 @@ class GenresController {
             // Decode the data
             guard let genre = (try? JSONDecoder().decode(Genres.self, from: data)) else {return}
 
-            self.genries = genre.genres
+            self.genres = genre.genres
             completion(genre.genres)
             
         }.resume()
         
     }
+    
     /// Toggle the status of a genre
     func toggleIsLikedStatusFor(genre: Genre, isLiked: Bool) {
         var oldGenre = genre
         oldGenre.isLiked = isLiked
-        guard let index = genries.index(of: genre) else {return}
-        genries.remove(at: index)
-        genries.insert(oldGenre, at: index)
+        guard let index = genres.index(of: genre) else {return}
+        genres.remove(at: index)
+        genres.insert(oldGenre, at: index)
+    }
+    
+    func filterUnlikedAndLikedGenres() {
+        likedGenres = genres.filter( { $0.isLiked == true  } )
+        unlikedGenres = genres.filter({ $0.isLiked == false })
     }
     
 }
