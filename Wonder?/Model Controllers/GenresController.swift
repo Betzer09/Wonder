@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import  UIKit
 
 class GenresController {
     
@@ -29,11 +30,9 @@ class GenresController {
             NotificationCenter.default.post(name: GenresController.tvShowGenreWasUpdated, object: nil)
         }
     }
-    
-    
-    
-    
-    // MARK: - Fetch Genres
+
+    // MARK: - Fetch Functions
+    /// Fetches the Movie Genres from the device
     func fetchMovieGenres(completion: @escaping (([Genre]?) -> Void) = {_ in}) {
         
         let jsonFilePath = Bundle.main.path(forResource: "Genre", ofType: "json")
@@ -52,6 +51,7 @@ class GenresController {
         movieGenres = movieGenresList.genres
     }
     
+    /// Fetches the Tv Show Genres from the device
     func fetchTvShowGenres(completion: @escaping (([Genre]?) -> Void) = {_ in}) {
         let jsonFilePath = Bundle.main.path(forResource: "tvShowGenres", ofType: "json")
         var fileData: Data?
@@ -68,6 +68,24 @@ class GenresController {
         
     }
     
+    func fetchImageForGenre(with id: Int, completion: @escaping (UIImage?) -> Void) {
+        // Fetch movies based on genre id using the movieController
+        MovieController.shared.fetchRecommnedMoviesWith(id: id) { (movies) in
+            // Get the first movie that comes back and grab the poster path
+            guard let path = movies?.first?.posterPath else {print("Error fetching the posterPath of the movie in file: \(#file) and function: \(#function)"); completion(nil) ;return}
+            
+            // Once you have the poster path fetch the image and set it as the image
+            MovieController.shared.fetchImageWith(endpoint: path, completion: { (image) in
+                guard let image = image else {print("Error fetching genre image in file: \(#file) and function: \(#function)"); completion(nil); return}
+                completion(image)
+            })
+        }
+ 
+    }
+    
+
+    
+    // MARK: - Functions
     /// Toggle the status of a genre
     func toggleIsLikedStatusFor(genre: Genre, isLiked: Bool) {
         var oldGenre = genre
@@ -77,7 +95,8 @@ class GenresController {
         movieGenres.insert(oldGenre, at: index)
     }
     
-    func filterUnlikedAndLikedGenres() {
+    /// Setperates the Unliked and Liked Genres
+    func filterUnlikedAndLikedMovieGenres() {
         likedMovieGenres = movieGenres.filter( { $0.isLiked == true  } )
         unlikedMovieGenres = movieGenres.filter({ $0.isLiked == false })
     }

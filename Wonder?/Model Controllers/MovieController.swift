@@ -94,7 +94,7 @@ class MovieController {
     }
     
     func fetchImageWith(endpoint: String, completion: @escaping (UIImage?) -> Void) {
-        let imageURL = URL(string: "http://image.tmdb.org/t/p/w500/")!
+        let imageURL = URL(string: "https://image.tmdb.org/t/p/w500/")!
         let url = imageURL.appendingPathComponent(endpoint)
         
         URLSession.shared.dataTask(with: url) { (data, _, error) in
@@ -119,7 +119,6 @@ class MovieController {
             // completion with an image
             completion(image)
             }.resume()
-        
     }
     
 }

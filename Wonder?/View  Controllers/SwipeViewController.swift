@@ -14,6 +14,7 @@ class SwipeViewController: UIViewController {
     @IBOutlet weak var topCardView: UIView!
     @IBOutlet weak var bottomCardView: UIView!
     @IBOutlet weak var thumbImageView: UIImageView!
+    @IBOutlet weak var topCardImage: UIImageView!
     //    @IBOutlet weak var genreNameLabel: UILabel!
     //    @IBOutlet weak var moviePosterImageView: UIImageView!
     
@@ -42,6 +43,13 @@ class SwipeViewController: UIViewController {
         availableGenres = GenresController.shared.movieGenres
         discoveredMovies = MovieController.shared.discoveredMoviesBasedOnGenres
         //        genreNameLabel.text = "\(availableGenres[0].name)"
+        
+        
+        GenresController.shared.fetchImageForGenre(with: 18, completion: { (image) in
+            guard let image = image else {print("Error with the image in file: \(#file) and function: \(#function)"); return}
+            DispatchQueue.main.async {
+                self.topCardImage.image = image            }
+        })
     }
     
     // MARK: - Actions
@@ -154,7 +162,7 @@ class SwipeViewController: UIViewController {
             self.topCardView.transform = .identity
         })
         if genreCounter >= genreCount! {
-            GenresController.shared.filterUnlikedAndLikedGenres()
+            GenresController.shared.filterUnlikedAndLikedMovieGenres()
         } else {
             //            genreNameLabel.text = "\(GenresController.shared.genres[genreCounter].name)"
             //            genreCounter += 1
