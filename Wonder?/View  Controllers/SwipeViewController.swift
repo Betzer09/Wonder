@@ -37,9 +37,9 @@ class SwipeViewController: UIViewController {
     
     // MARK: - SetUp UI
     func configureView() {
-        genreCount = GenresController.shared.genres.count
+        genreCount = GenresController.shared.genresList.count
         likedGenresCount = GenresController.shared.likedGenres.count
-        availableGenres = GenresController.shared.genres
+        availableGenres = GenresController.shared.genresList
         discoveredMovies = MovieController.shared.discoveredMoviesBasedOnGenres
         //        genreNameLabel.text = "\(availableGenres[0].name)"
     }
@@ -100,6 +100,7 @@ class SwipeViewController: UIViewController {
                     card.alpha = 0
                 }, completion: { (_) in
                     self.setBottomCardToTop(card)
+                    return
                 })
                 
                 
@@ -114,22 +115,25 @@ class SwipeViewController: UIViewController {
                     card.alpha = 0
                 }, completion: { (_) in
                     self.setBottomCardToTop(card)
+                    return
                 })
                 
                 
                 //                if likedGenresCount < 3 {
                 //                GenresController.shared.toggleIsLikedStatusFor(genre: genreToModify, isLiked: true)
                 //                }
+            } else {
+                resetCard()
             }
         }
-        
+
     }
     
     
     // MARK: - Methods
     
     @objc func refetchGenres() {
-        availableGenres = GenresController.shared.genres
+        availableGenres = GenresController.shared.genresList
         likedGenresCount = GenresController.shared.likedGenres.count
     }
     

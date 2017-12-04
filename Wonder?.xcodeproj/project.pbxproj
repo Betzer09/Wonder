@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		23639C971FC5FD2900DFEFAF /* Question.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23639C961FC5FD2900DFEFAF /* Question.swift */; };
 		23639C991FC5FD8F00DFEFAF /* QuestionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23639C981FC5FD8F00DFEFAF /* QuestionController.swift */; };
+		239A14401FD5CF1000D414BB /* Genre.json in Resources */ = {isa = PBXBuildFile; fileRef = 239A143F1FD5CF1000D414BB /* Genre.json */; };
 		23E2551A1FC36BB600D5C23B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E255191FC36BB600D5C23B /* AppDelegate.swift */; };
 		23E2551F1FC36BB600D5C23B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23E2551D1FC36BB600D5C23B /* Main.storyboard */; };
 		23E255211FC36BB600D5C23B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 23E255201FC36BB600D5C23B /* Assets.xcassets */; };
@@ -26,6 +27,7 @@
 /* Begin PBXFileReference section */
 		23639C961FC5FD2900DFEFAF /* Question.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Question.swift; sourceTree = "<group>"; };
 		23639C981FC5FD8F00DFEFAF /* QuestionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionController.swift; sourceTree = "<group>"; };
+		239A143F1FD5CF1000D414BB /* Genre.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Genre.json; sourceTree = "<group>"; };
 		23E255161FC36BB600D5C23B /* Wonder?.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Wonder?.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		23E255191FC36BB600D5C23B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		23E2551E1FC36BB600D5C23B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -72,6 +74,7 @@
 		23E255181FC36BB600D5C23B /* Wonder? */ = {
 			isa = PBXGroup;
 			children = (
+				23F689451FD5CD980058B07E /* json */,
 				23E2552D1FC36DF100D5C23B /* Models */,
 				23E255301FC36E1300D5C23B /* Model Controllers */,
 				23E2552F1FC36E0000D5C23B /* View  Controllers */,
@@ -147,6 +150,14 @@
 			path = "Other Controller";
 			sourceTree = "<group>";
 		};
+		23F689451FD5CD980058B07E /* json */ = {
+			isa = PBXGroup;
+			children = (
+				239A143F1FD5CF1000D414BB /* Genre.json */,
+			);
+			path = json;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -209,6 +220,7 @@
 				23E255241FC36BB600D5C23B /* LaunchScreen.storyboard in Resources */,
 				23E255211FC36BB600D5C23B /* Assets.xcassets in Resources */,
 				23E2551F1FC36BB600D5C23B /* Main.storyboard in Resources */,
+				239A14401FD5CF1000D414BB /* Genre.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -374,7 +386,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Austin.Wonder-";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -390,7 +402,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Austin.Wonder-";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

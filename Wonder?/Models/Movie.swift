@@ -32,10 +32,6 @@ struct Movie: Decodable {
         
     }
     
-//    struct GenreIDS: Decodable {
-//        let id: Int
-//    }
-    
     init(from decoder: Decoder) throws {
         let valueContainer = try decoder.container(keyedBy: CodingKeys.self)
         

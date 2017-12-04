@@ -221,13 +221,13 @@
                                         </connections>
                                     </button>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="movieImage" translatesAutoresizingMaskIntoConstraints="NO" id="fHq-26-lWa">
-                                        <rect key="frame" x="0.0" y="3" width="375" height="175.5"/>
+                                        <rect key="frame" x="0.0" y="10" width="375" height="175.5"/>
                                     </imageView>
                                 </subviews>
                                 <color key="backgroundColor" red="0.16044873000000001" green="0.14492172" blue="0.29429942370000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstItem="hed-HI-KZQ" firstAttribute="centerX" secondItem="kEO-Pd-N3u" secondAttribute="centerX" id="FYm-V0-8up"/>
-                                    <constraint firstItem="hed-HI-KZQ" firstAttribute="top" secondItem="fHq-26-lWa" secondAttribute="bottom" constant="11" id="Pak-kW-VvN"/>
+                                    <constraint firstItem="hed-HI-KZQ" firstAttribute="top" secondItem="fHq-26-lWa" secondAttribute="bottom" constant="4" id="Pak-kW-VvN"/>
                                     <constraint firstItem="fHq-26-lWa" firstAttribute="height" secondItem="kEO-Pd-N3u" secondAttribute="height" multiplier="0.8" id="Wc3-e0-N0f"/>
                                     <constraint firstItem="fHq-26-lWa" firstAttribute="width" secondItem="kEO-Pd-N3u" secondAttribute="width" id="iPD-RW-dp6"/>
                                     <constraint firstItem="fHq-26-lWa" firstAttribute="centerX" secondItem="kEO-Pd-N3u" secondAttribute="centerX" id="yde-05-Zqj"/>
@@ -244,10 +244,10 @@
                                 <rect key="frame" x="0.0" y="284.5" width="375" height="333.5"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tvShowImage" translatesAutoresizingMaskIntoConstraints="NO" id="qCQ-mb-xhd">
-                                        <rect key="frame" x="33.5" y="0.0" width="307" height="266.5"/>
+                                        <rect key="frame" x="33.5" y="15" width="307" height="200"/>
                                     </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mo9-c4-s4a">
-                                        <rect key="frame" x="134.5" y="303" width="106" height="30"/>
+                                        <rect key="frame" x="134.5" y="223" width="106" height="30"/>
                                         <state key="normal" title="Find A Tv Show">
                                             <color key="titleColor" red="0.4281582236" green="0.36345347760000002" blue="0.57051473860000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
@@ -260,12 +260,12 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.16044873000000001" green="0.14492172" blue="0.29429942370000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="Mo9-c4-s4a" secondAttribute="bottom" id="3FB-H6-tgh"/>
                                     <constraint firstItem="qCQ-mb-xhd" firstAttribute="centerX" secondItem="uND-ti-Ruj" secondAttribute="centerX" id="BA3-5t-yiA"/>
                                     <constraint firstItem="qCQ-mb-xhd" firstAttribute="width" secondItem="uND-ti-Ruj" secondAttribute="width" multiplier="0.82" id="ILQ-rv-FWL"/>
-                                    <constraint firstItem="qCQ-mb-xhd" firstAttribute="top" secondItem="uND-ti-Ruj" secondAttribute="top" id="JtA-Nf-FaI"/>
-                                    <constraint firstItem="qCQ-mb-xhd" firstAttribute="height" secondItem="uND-ti-Ruj" secondAttribute="height" multiplier="0.8" id="OpD-Wz-LNR"/>
+                                    <constraint firstItem="qCQ-mb-xhd" firstAttribute="top" secondItem="uND-ti-Ruj" secondAttribute="top" constant="15" id="JtA-Nf-FaI"/>
+                                    <constraint firstItem="qCQ-mb-xhd" firstAttribute="height" secondItem="uND-ti-Ruj" secondAttribute="height" multiplier="0.6" id="OpD-Wz-LNR"/>
                                     <constraint firstItem="Mo9-c4-s4a" firstAttribute="centerX" secondItem="uND-ti-Ruj" secondAttribute="centerX" id="fZS-rg-BCW"/>
+                                    <constraint firstItem="Mo9-c4-s4a" firstAttribute="top" secondItem="qCQ-mb-xhd" secondAttribute="bottom" constant="8" id="qeY-4l-xZP"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -339,8 +339,8 @@
         <image name="Dislike Button" width="16" height="16"/>
         <image name="Like Button" width="16" height="16"/>
         <image name="cardStack" width="305" height="456"/>
-        <image name="movieImage" width="16" height="16"/>
-        <image name="tvShowImage" width="16" height="16"/>
+        <image name="movieImage" width="414" height="276"/>
+        <image name="tvShowImage" width="414" height="276"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="mDQ-LZ-lYp"/>

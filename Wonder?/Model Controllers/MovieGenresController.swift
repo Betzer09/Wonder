@@ -18,7 +18,7 @@ class GenresController {
     var likedGenres: [Genre] = []
     var unlikedGenres: [Genre] = []
     
-    var genres: [Genre] = [] {
+    var genresList: [Genre] = [] {
         didSet {
             NotificationCenter.default.post(name: GenresController.genreWasUpatedNotifaction, object: nil)
         }
@@ -28,35 +28,25 @@ class GenresController {
     
     
     // MARK: - Fetch Genres
-    func fetchGenres(completion: @escaping ([Genre]?) -> Void) {
+    func fetchGenres(completion: @escaping (([Genre]?) -> Void) = {_ in}) {
         
-        guard let unwrappedURL = baseURL else { NSLog("Bad URL \(#file)"); return}
+        let jsonFilePath = Bundle.main.path(forResource: "Genre", ofType: "json")
+        var filedata: Data?
         
-        var urlComponents = URLComponents(url: unwrappedURL, resolvingAgainstBaseURL: true)
-        let paramters = ["api_key": "c366b28fa7f90e98f633846b3704570c"]
-        urlComponents?.queryItems = paramters.flatMap { URLQueryItem(name: $0.key, value: $0.value)}
-        
-        guard let url = urlComponents?.url else { NSLog("Bad URL Components"); return}
+        guard let filePath = jsonFilePath else {return}
+        filedata = try? Data(contentsOf: URL(fileURLWithPath: filePath))
         
         
-        URLSession.shared.dataTask(with: url) { (data, _, error) in
-            
-            if let error = error {
-                NSLog("Error fetching Genres \(error.localizedDescription) in file\(#file)")
-                completion([])
-                return
-            }
-            
-            // Do something with the data
-            guard let data = data else { NSLog("There was bad data! \(#file)"); completion([]); return}
-
-            // Decode the data
-            guard let genre = (try? JSONDecoder().decode(Genres.self, from: data)) else {return}
-
-            self.genres = genre.genres
-            completion(genre.genres)
-            
-        }.resume()
+        guard let data = filedata else {print("Bad data"); return}
+        
+        
+        let decoder = JSONDecoder()
+        guard let genre = (try? decoder.decode(Genres.self, from: data)) else {print("Error decoding genres"); return}
+        
+        genresList = genre.genres
+        
+        
+        
         
     }
     
@@ -64,14 +54,14 @@ class GenresController {
     func toggleIsLikedStatusFor(genre: Genre, isLiked: Bool) {
         var oldGenre = genre
         oldGenre.isLiked = isLiked
-        guard let index = genres.index(of: genre) else {return}
-        genres.remove(at: index)
-        genres.insert(oldGenre, at: index)
+        guard let index = genresList.index(of: genre) else {return}
+        genresList.remove(at: index)
+        genresList.insert(oldGenre, at: index)
     }
     
     func filterUnlikedAndLikedGenres() {
-        likedGenres = genres.filter( { $0.isLiked == true  } )
-        unlikedGenres = genres.filter({ $0.isLiked == false })
+        likedGenres = genresList.filter( { $0.isLiked == true  } )
+        unlikedGenres = genresList.filter({ $0.isLiked == false })
     }
     
 }
