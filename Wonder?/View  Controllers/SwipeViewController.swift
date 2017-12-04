@@ -31,15 +31,15 @@ class SwipeViewController: UIViewController {
         configureView()
         
         // Watches to see if a genre has been updated
-        NotificationCenter.default.addObserver(self, selector: #selector(refetchGenres), name: GenresController.genreWasUpatedNotifaction, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(refetchGenres), name: GenresController.movieGenreWasUpatedNotifaction, object: nil)
         
     }
     
     // MARK: - SetUp UI
     func configureView() {
-        genreCount = GenresController.shared.genresList.count
-        likedGenresCount = GenresController.shared.likedGenres.count
-        availableGenres = GenresController.shared.genresList
+        genreCount = GenresController.shared.movieGenres.count
+        likedGenresCount = GenresController.shared.likedMovieGenres.count
+        availableGenres = GenresController.shared.movieGenres
         discoveredMovies = MovieController.shared.discoveredMoviesBasedOnGenres
         //        genreNameLabel.text = "\(availableGenres[0].name)"
     }
@@ -79,7 +79,7 @@ class SwipeViewController: UIViewController {
             
             if likedGenresCount >= 3 {
                 // Fetch those movies
-                let ids = GenresController.shared.likedGenres.flatMap({ $0.id })
+                let ids = GenresController.shared.likedMovieGenres.flatMap({ $0.id })
                 MovieController.shared.fetchMoviesBasedOnGenresWith(ids: ids, pageCount: 1, completion: { (_) in})
                 
                 //                let movie = discoveredMovies[0]
@@ -133,8 +133,8 @@ class SwipeViewController: UIViewController {
     // MARK: - Methods
     
     @objc func refetchGenres() {
-        availableGenres = GenresController.shared.genresList
-        likedGenresCount = GenresController.shared.likedGenres.count
+        availableGenres = GenresController.shared.movieGenres
+        likedGenresCount = GenresController.shared.likedMovieGenres.count
     }
     
     func setBottomCardToTop(_ card: UIView) {

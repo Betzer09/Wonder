@@ -1,34 +1,34 @@
 //
-//  GenreViewController.swift
+//  WatchTabViewController.swift
 //  Wonder?
 //
-//  Created by Austin Betzer on 11/20/17.
+//  Created by Austin Betzer on 12/4/17.
 //  Copyright © 2017 SPARQ. All rights reserved.
 //
 
 import UIKit
 
-class GenreViewController: UIViewController {
-
+class WatchTabViewController: UIViewController {
+    
+    // MARK: - View LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+
     }
     
     // MARK: - Actions
-    @IBAction func buttonPressed(_ sender: Any) {
-        
 
+    @IBAction func findMovieButtonPressed(_ sender: Any) {
+        GenresController.shared.fetchMovieGenres()
+        
     }
     
-    @IBAction func AnotherButtonPressed(_ sender: Any) {
-        
-
+    @IBAction func FindTvShowButtonPressed(_ sender: Any) {
+        GenresController.shared.fetchTvShowGenres()
     }
     
-    
-
     /*
+     
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation

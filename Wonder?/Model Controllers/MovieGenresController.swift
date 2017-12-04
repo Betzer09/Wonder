@@ -12,15 +12,21 @@ class GenresController {
     
     // MARK: - Properties
     static let shared = GenresController()
-    static let genreWasUpatedNotifaction = Notification.Name("genreWasUpdated")
+    static let movieGenreWasUpatedNotifaction = Notification.Name("movieGenreWasUpdated")
+    static let tvShowGenreWasUpdated = Notification.Name("tvShowGenreWasUpdated")
     
-    let baseURL = URL(string: "https://api.themoviedb.org/3/genre/movie/list")
-    var likedGenres: [Genre] = []
-    var unlikedGenres: [Genre] = []
+    var likedMovieGenres: [Genre] = []
+    var unlikedMovieGenres: [Genre] = []
     
-    var genresList: [Genre] = [] {
+    var movieGenres: [Genre] = [] {
         didSet {
-            NotificationCenter.default.post(name: GenresController.genreWasUpatedNotifaction, object: nil)
+            NotificationCenter.default.post(name: GenresController.movieGenreWasUpatedNotifaction, object: nil)
+        }
+    }
+    
+    var tvShowGenres: [Genre] = [] {
+        didSet {
+            NotificationCenter.default.post(name: GenresController.tvShowGenreWasUpdated, object: nil)
         }
     }
     
@@ -28,7 +34,7 @@ class GenresController {
     
     
     // MARK: - Fetch Genres
-    func fetchGenres(completion: @escaping (([Genre]?) -> Void) = {_ in}) {
+    func fetchMovieGenres(completion: @escaping (([Genre]?) -> Void) = {_ in}) {
         
         let jsonFilePath = Bundle.main.path(forResource: "Genre", ofType: "json")
         var filedata: Data?
@@ -37,16 +43,28 @@ class GenresController {
         filedata = try? Data(contentsOf: URL(fileURLWithPath: filePath))
         
         
-        guard let data = filedata else {print("Bad data"); return}
+        guard let data = filedata else {print("Error with Movie Genre Data in \(#file) and function: \(#function)"); return}
         
         
         let decoder = JSONDecoder()
-        guard let genre = (try? decoder.decode(Genres.self, from: data)) else {print("Error decoding genres"); return}
+        guard let movieGenresList = (try? decoder.decode(Genres.self, from: data)) else {print("Error decoding Movie Genres in function \(#function)"); return}
         
-        genresList = genre.genres
+        movieGenres = movieGenresList.genres
+    }
+    
+    func fetchTvShowGenres(completion: @escaping (([Genre]?) -> Void) = {_ in}) {
+        let jsonFilePath = Bundle.main.path(forResource: "tvShowGenres", ofType: "json")
+        var fileData: Data?
         
+        guard let filePath = jsonFilePath else {return}
+        fileData = try? Data(contentsOf: URL(fileURLWithPath: filePath))
         
+        guard let data = fileData else {print("Error with TV Show Genre Data in \(#file) and function: \(#function)"); return}
         
+        let decoder = JSONDecoder()
+        guard let tvShowGenreList = (try? decoder.decode(Genres.self, from: data)) else {print("Error decoding Tv Show Genres in function \(#function)"); return}
+        
+        tvShowGenres = tvShowGenreList.genres
         
     }
     
@@ -54,14 +72,14 @@ class GenresController {
     func toggleIsLikedStatusFor(genre: Genre, isLiked: Bool) {
         var oldGenre = genre
         oldGenre.isLiked = isLiked
-        guard let index = genresList.index(of: genre) else {return}
-        genresList.remove(at: index)
-        genresList.insert(oldGenre, at: index)
+        guard let index = movieGenres.index(of: genre) else {return}
+        movieGenres.remove(at: index)
+        movieGenres.insert(oldGenre, at: index)
     }
     
     func filterUnlikedAndLikedGenres() {
-        likedGenres = genresList.filter( { $0.isLiked == true  } )
-        unlikedGenres = genresList.filter({ $0.isLiked == false })
+        likedMovieGenres = movieGenres.filter( { $0.isLiked == true  } )
+        unlikedMovieGenres = movieGenres.filter({ $0.isLiked == false })
     }
     
 }
