@@ -11,10 +11,11 @@ import UIKit
 class SwipeViewController: UIViewController {
     
     // MARK: - Outlets
-    @IBOutlet weak var cardView: UIView!
+    @IBOutlet weak var topCardView: UIView!
+    @IBOutlet weak var bottomCardView: UIView!
     @IBOutlet weak var thumbImageView: UIImageView!
-    @IBOutlet weak var genreNameLabel: UILabel!
-    @IBOutlet weak var moviePosterImageView: UIImageView!
+    //    @IBOutlet weak var genreNameLabel: UILabel!
+    //    @IBOutlet weak var moviePosterImageView: UIImageView!
     
     // MARK: - Properties
     var genreCount: Int?
@@ -22,7 +23,7 @@ class SwipeViewController: UIViewController {
     var availableGenres: [Genre] = []
     var likedGenresCount: Int?
     var discoveredMovies: [Movie] = []
-
+    
     
     // MARK: - View LifeCycle
     override func viewDidLoad() {
@@ -40,9 +41,9 @@ class SwipeViewController: UIViewController {
         likedGenresCount = GenresController.shared.likedGenres.count
         availableGenres = GenresController.shared.genres
         discoveredMovies = MovieController.shared.discoveredMoviesBasedOnGenres
-        genreNameLabel.text = "\(availableGenres[0].name)"
+        //        genreNameLabel.text = "\(availableGenres[0].name)"
     }
-
+    
     // MARK: - Actions
     @IBAction func panCard(_ sender: UIPanGestureRecognizer) {
         guard let card = sender.view else {return }
@@ -63,11 +64,12 @@ class SwipeViewController: UIViewController {
         card.center = CGPoint(x: view.center.x + point.x, y: view.center.y + point.y)
         card.transform = CGAffineTransform(rotationAngle: (xFromCenter / view.frame.width) * 0.61).scaledBy(x: scale, y: scale)
         
-        guard let indexOfGenre = GenresController.shared.genres.index(where: { $0.name == genreNameLabel.text }) else {
-            NSLog("Error finding Genre in file: \(#file)")
-            return
-        }
-        let genreToModify = GenresController.shared.genres[indexOfGenre]
+        //        guard let indexOfGenre = GenresController.shared.genres.index(where: { $0.name == genreNameLabel.text }) else {
+        //            NSLog("Error finding Genre in file: \(#file)")
+        //            return
+        //        }
+        //        let genreToModify = GenresController.shared.genres[indexOfGenre]
+        //        let genreToModify = GenresController.shared.genres[0]
         
         if sender.state == .ended {
             // Figure out if they liked three genres
@@ -80,49 +82,49 @@ class SwipeViewController: UIViewController {
                 let ids = GenresController.shared.likedGenres.flatMap({ $0.id })
                 MovieController.shared.fetchMoviesBasedOnGenresWith(ids: ids, pageCount: 1, completion: { (_) in})
                 
-                let movie = discoveredMovies[0]
-                MovieController.shared.fetchImageWith(endpoint: movie.posterPath, completion: { (image) in
-                    DispatchQueue.main.async {
-                        self.moviePosterImageView.image = image
-                    }
-                    self.moviePosterImageView.alpha = 1
-                })
+                //                let movie = discoveredMovies[0]
+                //                MovieController.shared.fetchImageWith(endpoint: movie.posterPath, completion: { (image) in
+                //                    DispatchQueue.main.async {
+                //                        self.moviePosterImageView.image = image
+                //                    }
+                //                    self.moviePosterImageView.alpha = 1
+                //                })
                 
             }
+            
             
             if card.center.x < 75 {
                 // Move off to the left side
                 UIView.animate(withDuration: 0.3, animations: {
                     card.center = CGPoint(x: card.center.x - 200, y: card.center.y + 75)
                     card.alpha = 0
+                }, completion: { (_) in
+                    self.setBottomCardToTop(card)
                 })
                 
-                if likedGenresCount < 3 {
-                GenresController.shared.toggleIsLikedStatusFor(genre: genreToModify, isLiked: false)
-                }
+                
+                //                if likedGenresCount < 3 {
+                //                GenresController.shared.toggleIsLikedStatusFor(genre: genreToModify, isLiked: false)
+                //                }
                 
             } else if card.center.x > (view.frame.width - 75) {
                 // Move off to the right side
                 UIView.animate(withDuration: 0.3, animations: {
                     card.center = CGPoint(x: card.center.x + 200, y: card.center.y + 75)
                     card.alpha = 0
+                }, completion: { (_) in
+                    self.setBottomCardToTop(card)
                 })
                 
-                if likedGenresCount < 3 {
-                GenresController.shared.toggleIsLikedStatusFor(genre: genreToModify, isLiked: true)
-                }
+                
+                //                if likedGenresCount < 3 {
+                //                GenresController.shared.toggleIsLikedStatusFor(genre: genreToModify, isLiked: true)
+                //                }
             }
-            
-            
-
-            resetCard()
         }
         
     }
     
-    @IBAction func reset(_ sender: Any) {
-        resetCard()
-    }
     
     // MARK: - Methods
     
@@ -131,43 +133,30 @@ class SwipeViewController: UIViewController {
         likedGenresCount = GenresController.shared.likedGenres.count
     }
     
+    func setBottomCardToTop(_ card: UIView) {
+        card.center = view.center
+        thumbImageView.alpha = 0
+        card.transform = .identity
+        card.alpha = 1
+        
+    }
+    
     /// This repositions the card back to the center
     func resetCard() {
         UIView.animate(withDuration: 0.2, animations: {
-            self.cardView.center = self.view.center
+            self.topCardView.center = self.view.center
             self.thumbImageView.alpha = 0
-            self.cardView.alpha = 1
-            self.cardView.transform = .identity
+            self.topCardView.alpha = 1
+            self.topCardView.transform = .identity
         })
-        
         if genreCounter >= genreCount! {
             GenresController.shared.filterUnlikedAndLikedGenres()
         } else {
-            genreNameLabel.text = "\(GenresController.shared.genres[genreCounter].name)"
-            genreCounter += 1
+            //            genreNameLabel.text = "\(GenresController.shared.genres[genreCounter].name)"
+            //            genreCounter += 1
         }
-
+        
     }
     
     
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
