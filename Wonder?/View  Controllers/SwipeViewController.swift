@@ -15,12 +15,11 @@ class SwipeViewController: UIViewController {
     @IBOutlet weak var bottomCardView: UIView!
     @IBOutlet weak var thumbImageView: UIImageView!
     @IBOutlet weak var topCardImage: UIImageView!
-    //    @IBOutlet weak var genreNameLabel: UILabel!
-    //    @IBOutlet weak var moviePosterImageView: UIImageView!
+    
     
     // MARK: - Properties
     var genreCount: Int?
-    var genreCounter = 1
+    var indexOfGenre = 0
     var availableGenres: [Genre] = []
     var likedGenresCount: Int?
     var discoveredMovies: [Movie] = []
@@ -42,14 +41,9 @@ class SwipeViewController: UIViewController {
         likedGenresCount = GenresController.shared.likedMovieGenres.count
         availableGenres = GenresController.shared.movieGenres
         discoveredMovies = MovieController.shared.discoveredMoviesBasedOnGenres
-        //        genreNameLabel.text = "\(availableGenres[0].name)"
         
-        
-        GenresController.shared.fetchImageForGenre(with: 18, completion: { (image) in
-            guard let image = image else {print("Error with the image in file: \(#file) and function: \(#function)"); return}
-            DispatchQueue.main.async {
-                self.topCardImage.image = image            }
-        })
+        let genreImageID = GenresController.shared.movieGenres[indexOfGenre].id 
+        fetchTheImageForGenreWith(genreID: genreImageID)
     }
     
     // MARK: - Actions
@@ -65,41 +59,19 @@ class SwipeViewController: UIViewController {
         } else {
             // The card is going left
             thumbImageView.image = #imageLiteral(resourceName: "thumbsDown")
-            
         }
         
         thumbImageView.alpha = abs(xFromCenter) / view.center.x
         card.center = CGPoint(x: view.center.x + point.x, y: view.center.y + point.y)
         card.transform = CGAffineTransform(rotationAngle: (xFromCenter / view.frame.width) * 0.61).scaledBy(x: scale, y: scale)
         
-        //        guard let indexOfGenre = GenresController.shared.genres.index(where: { $0.name == genreNameLabel.text }) else {
-        //            NSLog("Error finding Genre in file: \(#file)")
-        //            return
-        //        }
-        //        let genreToModify = GenresController.shared.genres[indexOfGenre]
-        //        let genreToModify = GenresController.shared.genres[0]
+
+        let genreToModify = GenresController.shared.movieGenres[indexOfGenre]
+        let genreImageID = genreToModify.id
+        guard let likedGenresCount = likedGenresCount else {print("Broken likedGenreCount");return}
         
         if sender.state == .ended {
-            // Figure out if they liked three genres
-            // Once they have Liked three genres fetch those movies
-            // Let them swipe through movies based on their genres
-            guard let likedGenresCount = likedGenresCount else {print("Broken likedGenreCount");return}
-            
-            if likedGenresCount >= 3 {
-                // Fetch those movies
-                let ids = GenresController.shared.likedMovieGenres.flatMap({ $0.id })
-                MovieController.shared.fetchMoviesBasedOnGenresWith(ids: ids, pageCount: 1, completion: { (_) in})
-                
-                //                let movie = discoveredMovies[0]
-                //                MovieController.shared.fetchImageWith(endpoint: movie.posterPath, completion: { (image) in
-                //                    DispatchQueue.main.async {
-                //                        self.moviePosterImageView.image = image
-                //                    }
-                //                    self.moviePosterImageView.alpha = 1
-                //                })
-                
-            }
-            
+//            checkLikedGenreCount(withCount: likedGenresCount)
             
             if card.center.x < 75 {
                 // Move off to the left side
@@ -110,11 +82,10 @@ class SwipeViewController: UIViewController {
                     self.setBottomCardToTop(card)
                     return
                 })
+                checkIfTheGenreNeedsToggled(withCount: likedGenresCount, andGenre: genreToModify, isLiked: false)
+                // We need to fetch everytime the genre gets swicthed
                 
-                
-                //                if likedGenresCount < 3 {
-                //                GenresController.shared.toggleIsLikedStatusFor(genre: genreToModify, isLiked: false)
-                //                }
+                fetchTheImageForGenreWith(genreID: genreImageID)
                 
             } else if card.center.x > (view.frame.width - 75) {
                 // Move off to the right side
@@ -125,20 +96,50 @@ class SwipeViewController: UIViewController {
                     self.setBottomCardToTop(card)
                     return
                 })
+                checkIfTheGenreNeedsToggled(withCount: likedGenresCount, andGenre: genreToModify, isLiked: true)
+                fetchTheImageForGenreWith(genreID: genreImageID)
                 
-                
-                //                if likedGenresCount < 3 {
-                //                GenresController.shared.toggleIsLikedStatusFor(genre: genreToModify, isLiked: true)
-                //                }
             } else {
                 resetCard()
             }
         }
-
+        
     }
     
     
     // MARK: - Methods
+    
+    func fetchTheImageForGenreWith(genreID id: Int) {
+        GenresController.shared.fetchImageForGenre(with: id, completion: { (image) in
+            guard let image = image else {print("Error with the image in file: \(#file) and function: \(#function)"); return}
+            DispatchQueue.main.async {
+                self.topCardImage.image = image            }
+        })
+    }
+    
+    func checkLikedGenreCount(withCount count: Int) {
+        guard let likedGenresCount = likedGenresCount else {print("Broken likedGenreCount");return}
+        
+        if likedGenresCount >= 3 {
+            // Fetch those movies
+            let ids = GenresController.shared.likedMovieGenres.flatMap({ $0.id })
+            MovieController.shared.fetchMoviesBasedOnGenresWith(ids: ids, pageCount: 1, completion: { (_) in})
+            
+            let movie = discoveredMovies[0]
+            MovieController.shared.fetchImageWith(endpoint: movie.posterPath, completion: { (image) in})
+            
+        }
+    }
+    
+    /// Checks to see if the genre needs to be toggled
+    func checkIfTheGenreNeedsToggled(withCount count: Int, andGenre genre: Genre, isLiked: Bool) {
+        if count < 3 {
+            GenresController.shared.toggleIsLikedStatusFor(genre: genre, isLiked: isLiked)
+        }
+        indexOfGenre += 1
+        
+
+    }
     
     @objc func refetchGenres() {
         availableGenres = GenresController.shared.movieGenres
@@ -160,14 +161,7 @@ class SwipeViewController: UIViewController {
             self.thumbImageView.alpha = 0
             self.topCardView.alpha = 1
             self.topCardView.transform = .identity
-        })
-        if genreCounter >= genreCount! {
-            GenresController.shared.filterUnlikedAndLikedMovieGenres()
-        } else {
-            //            genreNameLabel.text = "\(GenresController.shared.genres[genreCounter].name)"
-            //            genreCounter += 1
-        }
-        
+        })        
     }
     
     

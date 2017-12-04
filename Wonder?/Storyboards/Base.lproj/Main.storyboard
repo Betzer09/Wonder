@@ -55,6 +55,9 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5be-Wx-QoH" userLabel="Bottom Card View">
                                 <rect key="frame" x="62.5" y="167" width="250" height="333.5"/>
                                 <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cardStack" translatesAutoresizingMaskIntoConstraints="NO" id="YZ3-n3-Een">
+                                        <rect key="frame" x="62" y="8" width="125" height="167"/>
+                                    </imageView>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="AKl-TA-ZgI">
                                         <rect key="frame" x="83.5" y="111.5" width="83" height="111.5"/>
                                     </imageView>
@@ -62,7 +65,11 @@
                                 <color key="backgroundColor" red="0.78875136375427246" green="0.75085896253585815" blue="0.85423988103866577" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstItem="AKl-TA-ZgI" firstAttribute="centerY" secondItem="5be-Wx-QoH" secondAttribute="centerY" id="C5G-XU-xVa"/>
+                                    <constraint firstItem="YZ3-n3-Een" firstAttribute="width" secondItem="5be-Wx-QoH" secondAttribute="width" multiplier="1/2" id="JkS-uU-qNt"/>
+                                    <constraint firstItem="YZ3-n3-Een" firstAttribute="top" secondItem="5be-Wx-QoH" secondAttribute="top" constant="8" id="Ley-1A-PgU"/>
                                     <constraint firstItem="AKl-TA-ZgI" firstAttribute="centerX" secondItem="5be-Wx-QoH" secondAttribute="centerX" id="LiV-dv-2ov"/>
+                                    <constraint firstItem="YZ3-n3-Een" firstAttribute="centerX" secondItem="5be-Wx-QoH" secondAttribute="centerX" id="bxx-a3-SuD"/>
+                                    <constraint firstItem="YZ3-n3-Een" firstAttribute="height" secondItem="5be-Wx-QoH" secondAttribute="height" multiplier="1/2" id="ebq-jk-I4Y"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HDy-ai-wWh" userLabel="Top Card View">
@@ -345,6 +352,7 @@
     </scenes>
     <resources>
         <image name="backButton" width="102" height="102"/>
+        <image name="cardStack" width="305" height="456"/>
         <image name="dislikeButton" width="102" height="102"/>
         <image name="likebutton" width="102" height="102"/>
         <image name="movieImage" width="414" height="276"/>

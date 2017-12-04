@@ -38,7 +38,7 @@ class MovieController {
             guard let data = data else {NSLog("Error with the data \(#file)"); return}
             
             guard let movies = (try? JSONDecoder().decode(Movies.self, from: data)) else {
-                NSLog("No Recommened Movie \(#file)")
+                NSLog("Error decoding recommend movie in \(#file) and function: \(#function)")
                 return
             }
             
