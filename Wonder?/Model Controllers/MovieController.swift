@@ -39,6 +39,7 @@ class MovieController {
             
             guard let movies = (try? JSONDecoder().decode(Movies.self, from: data)) else {
                 NSLog("Error decoding recommend movie in \(#file) and function: \(#function)")
+                print("\(id)")
                 return
             }
             

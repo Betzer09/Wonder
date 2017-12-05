@@ -72,7 +72,11 @@ class GenresController {
         // Fetch movies based on genre id using the movieController
         MovieController.shared.fetchRecommnedMoviesWith(id: id) { (movies) in
             // Get the first movie that comes back and grab the poster path
-            guard let path = movies?.first?.posterPath else {print("Error fetching the posterPath of the movie in file: \(#file) and function: \(#function)"); completion(nil) ;return}
+            guard let path = movies?.first?.posterPath else {print("Error fetching the posterPath of the movie in file: \(#file) and function: \(#function)")
+                print("\(id)")
+                completion(#imageLiteral(resourceName: "noImageView"))
+                return
+            }
             
             // Once you have the poster path fetch the image and set it as the image
             MovieController.shared.fetchImageWith(endpoint: path, completion: { (image) in

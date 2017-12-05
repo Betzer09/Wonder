@@ -55,10 +55,10 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5be-Wx-QoH" userLabel="Bottom Card View">
                                 <rect key="frame" x="62.5" y="167" width="250" height="333.5"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cardStack" translatesAutoresizingMaskIntoConstraints="NO" id="YZ3-n3-Een">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="YZ3-n3-Een">
                                         <rect key="frame" x="62" y="8" width="125" height="167"/>
                                     </imageView>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="AKl-TA-ZgI">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="AKl-TA-ZgI" userLabel="Bottom Thumb Image View">
                                         <rect key="frame" x="83.5" y="111.5" width="83" height="111.5"/>
                                     </imageView>
                                 </subviews>
@@ -160,6 +160,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Find A Genre" id="5Yp-Zm-zV0"/>
                     <connections>
+                        <outlet property="bottomCardImage" destination="YZ3-n3-Een" id="W04-OI-A49"/>
                         <outlet property="bottomCardView" destination="5be-Wx-QoH" id="p5V-1R-25M"/>
                         <outlet property="thumbImageView" destination="WGI-3p-5RL" id="Jrn-dN-AOP"/>
                         <outlet property="topCardImage" destination="NnE-bo-ltf" id="2im-Go-sKB"/>
@@ -352,7 +353,6 @@
     </scenes>
     <resources>
         <image name="backButton" width="102" height="102"/>
-        <image name="cardStack" width="305" height="456"/>
         <image name="dislikeButton" width="102" height="102"/>
         <image name="likebutton" width="102" height="102"/>
         <image name="movieImage" width="414" height="276"/>
