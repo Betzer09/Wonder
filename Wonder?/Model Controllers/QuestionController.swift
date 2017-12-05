@@ -12,14 +12,10 @@ class QuestionController {
     
     // MARK: - Properties
     static let shared = QuestionController()
-    var questions: [Question] = []
-    
-    // MARK: - Methods
-    var question1 = Question(question: "Are you by yourself?")
-    var question2 = Question(question: "Have you had a good day?")
-    var question3 = Question(question: "Have you been home all day?")
-    var questoin4 = Question(question: "Do you like sports?")
-    
-    
-    
+    var questions: [Question] = [
+    Question(question: "Are you by yourself?"),
+    Question(question: "Have you had a good day?"),
+    Question(question: "Have you been home all day?"),
+    Question(question: "Do you like sports?")
+    ]
 }

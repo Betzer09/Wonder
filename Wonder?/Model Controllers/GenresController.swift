@@ -11,13 +11,25 @@ import  UIKit
 
 class GenresController {
     
-    // MARK: - Properties
     static let shared = GenresController()
+    
+    // MARK: - Notification Names
     static let movieGenreWasUpatedNotifaction = Notification.Name("movieGenreWasUpdated")
     static let tvShowGenreWasUpdated = Notification.Name("tvShowGenreWasUpdated")
+    static let likedMovieGenresArrayWasUpdated = Notification.Name("likedGenresWereUpdated")
+    static let unlikedMovieGenresArrayWasUpdated = Notification.Name("unlikedGenresWereUpdated")
     
-    var likedMovieGenres: [Genre] = []
-    var unlikedMovieGenres: [Genre] = []
+    // MARK: - Properties
+    var likedMovieGenres: [Genre] = [] {
+        didSet {
+            NotificationCenter.default.post(name: GenresController.likedMovieGenresArrayWasUpdated, object: nil)
+        }
+    }
+    var unlikedMovieGenres: [Genre] = [] {
+        didSet {
+            NotificationCenter.default.post(name: GenresController.unlikedMovieGenresArrayWasUpdated, object: nil)
+        }
+    }
     
     var movieGenres: [Genre] = [] {
         didSet {
@@ -87,8 +99,6 @@ class GenresController {
  
     }
     
-
-    
     // MARK: - Functions
     /// Toggle the status of a genre
     func toggleIsLikedStatusFor(genre: Genre, isLiked: Bool) {
@@ -97,15 +107,19 @@ class GenresController {
         guard let index = movieGenres.index(of: genre) else {return}
         movieGenres.remove(at: index)
         movieGenres.insert(oldGenre, at: index)
+        sendGenreToAppropriateArray(genre: oldGenre, isLiked: isLiked)
     }
     
-    /// Setperates the Unliked and Liked Genres
-    func filterUnlikedAndLikedMovieGenres() {
-        likedMovieGenres = movieGenres.filter( { $0.isLiked == true  } )
-        unlikedMovieGenres = movieGenres.filter({ $0.isLiked == false })
+   private func sendGenreToAppropriateArray(genre: Genre, isLiked: Bool) {
+        if isLiked {
+            likedMovieGenres.append(genre)
+        } else {
+            unlikedMovieGenres.append(genre)
+        }
     }
     
 }
+
 
 
 
