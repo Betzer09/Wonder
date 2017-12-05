@@ -21,11 +21,10 @@ class SwipeViewController: UIViewController {
     
     
     // MARK: - Properties
-    var genreCount: Int?
+    var maxMovieGenreCount: Int?
     var indexOfGenre = 0
     var likedGenresCount: Int?
     var discoveredMovies: [Movie] = []
-    
     var bottomCardImageHolder: UIImage?
     
     
@@ -33,6 +32,7 @@ class SwipeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureView()
+        
         
     }
     
@@ -42,6 +42,7 @@ class SwipeViewController: UIViewController {
         // Watches to see if a genre has been updated
         NotificationCenter.default.addObserver(self, selector: #selector(refreshLikeGenres), name: GenresController.likedMovieGenresArrayWasUpdated, object: nil)
         
+        resetView()
     }
     
     @IBAction func dislikeButtonPressed(_ sender: Any) {
@@ -80,7 +81,7 @@ class SwipeViewController: UIViewController {
         if sender.state == .ended {
             // After they have toggled a genre we need to figure out if we need to switch to movies
             //            checkLikedGenreCount(withCount: likedGenresCount)
-            guard let likedGenresCount = likedGenresCount else {print("Broken likedGenreCount");return}
+            guard let likedGenresCount = likedGenresCount, let maxMovieGenreCount = maxMovieGenreCount else {print("Broken likedGenreCount");return}
             
             if card.center.x < 75 {
                 // Move off to the left side
@@ -88,7 +89,11 @@ class SwipeViewController: UIViewController {
                     card.center = CGPoint(x: card.center.x - 200, y: card.center.y + 75)
                     card.alpha = 0
                 }, completion: { (_) in
+                    if self.indexOfGenre + 1 != maxMovieGenreCount {
                     self.completeAnimationForGenreUsing(card: card, likedGenresCount: likedGenresCount, genreToModify: genreToModify, isLiked: false)
+                    } else {
+                    self.resetTopCardForQuestions(card)
+                    }
                 })
             } else if card.center.x > (view.frame.width - 75) {
                 // Move off to the right side
@@ -96,8 +101,11 @@ class SwipeViewController: UIViewController {
                     card.center = CGPoint(x: card.center.x + 200, y: card.center.y + 75)
                     card.alpha = 0
                 }, completion: { (_) in
-                    
+                    if self.indexOfGenre + 1 != maxMovieGenreCount {
                     self.completeAnimationForGenreUsing(card: card, likedGenresCount: likedGenresCount, genreToModify: genreToModify, isLiked: true)
+                    } else {
+                    self.resetTopCardForQuestions(card)
+                    }
                     
                 })
             } else {
@@ -115,17 +123,24 @@ class SwipeViewController: UIViewController {
         self.resetTopCardForGenres(card)
         self.checkIfTheGenreNeedsToggled(withCount: likedGenresCount, andGenre: genreToModify, isLiked: isLiked)
         // When fetching the bottom card we always need to be one ahead of the current index
-        let genreToFetch = GenresController.shared.movieGenres[self.indexOfGenre + 1]
-        let genreImageID = genreToFetch.id
-        
-        // Fetch the the new bottom card
-        self.fetchTheBottomCardImageWith(genreID: genreImageID)
+        guard let maxMovieGenreCount = maxMovieGenreCount else {return}
+        if (indexOfGenre + 1) != (maxMovieGenreCount){
+            // Fetch the the new bottom card
+            let genreToFetch = GenresController.shared.movieGenres[self.indexOfGenre + 1]
+            let genreImageID = genreToFetch.id
+            self.fetchTheBottomCardImageWith(genreID: genreImageID)
+        } else {
+            topCardView = bottomCardView
+            
+        }
+        print(indexOfGenre)
+        print(maxMovieGenreCount)
         
     }
     
     // MARK: - SetUp UI
     func configureView() {
-        genreCount = GenresController.shared.movieGenres.count
+        maxMovieGenreCount = GenresController.shared.movieGenres.count
         likedGenresCount = GenresController.shared.likedMovieGenres.count
         discoveredMovies = MovieController.shared.discoveredMoviesBasedOnGenres
         let genreImageIDForTopCard = GenresController.shared.movieGenres[indexOfGenre].id
@@ -155,20 +170,31 @@ class SwipeViewController: UIViewController {
     }
     
     func fetchTheBottomCardImageWith(genreID id: Int) {
-        GenresController.shared.fetchImageForGenre(with: id, completion: { (image) in
-            guard let image = image else {print("Error with the bottomimage in file: \(#file) and function: \(#function)")
-                print("\(id)")
-                return
-            }
-            DispatchQueue.main.async {
-                // MARK: - Set bottom card attributes here
-                self.bottomCardImage.image = image
-                self.setCustomText(toLabel: self.customBottomCardLabel, text: "Do you like \(GenresController.shared.movieGenres[self.indexOfGenre + 1].name) movies?")
-                
-            }
-        })
+        guard let maxMovieGenreCount = maxMovieGenreCount else {return}
+        if indexOfGenre + 1 != maxMovieGenreCount {
+            
+            GenresController.shared.fetchImageForGenre(with: id, completion: { (image) in
+                guard let image = image else {print("Error with the bottomimage in file: \(#file) and function: \(#function)")
+                    print("\(id)")
+                    return
+                }
+                DispatchQueue.main.async {
+                    // MARK: - Set bottom card attributes here
+                    self.bottomCardImage.image = image
+                    self.setCustomText(toLabel: self.customBottomCardLabel, text: "Do you like \(GenresController.shared.movieGenres[self.indexOfGenre + 1].name) movies?")
+                    
+                }
+            })
+        } else {
+            resetTopCardForQuestions(topCardView)
+        }
     }
     
+    func resetView() {
+        GenresController.shared.likedMovieGenres.removeAll()
+        GenresController.shared.unlikedMovieGenres.removeAll()
+        indexOfGenre = 0
+    }
     
     func checkLikedGenreCount(withCount count: Int) {
         guard let likedGenresCount = likedGenresCount else {print("Broken likedGenreCount"); return}
@@ -198,8 +224,8 @@ class SwipeViewController: UIViewController {
     @objc func refreshLikeGenres(card: UIView?) {
         likedGenresCount = GenresController.shared.likedMovieGenres.count
         
-        guard let count = likedGenresCount else {return}
-        if count > 2 {
+        guard let count = likedGenresCount, let maxMovieGenreCount = maxMovieGenreCount else {return}
+        if count > 2  || indexOfGenre >= maxMovieGenreCount {
             self.resetTopCardForQuestions(topCardView)
         }
         
@@ -237,7 +263,7 @@ class SwipeViewController: UIViewController {
             self.thumbImageView.alpha = 0
             self.topCardView.alpha = 1
             self.topCardView.transform = .identity
-        })        
+        })
     }
     
     
