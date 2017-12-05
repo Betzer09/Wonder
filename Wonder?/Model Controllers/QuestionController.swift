@@ -13,9 +13,8 @@ class QuestionController {
     // MARK: - Properties
     static let shared = QuestionController()
     var questions: [Question] = [
-    Question(question: "Are you by yourself?"),
-    Question(question: "Have you had a good day?"),
-    Question(question: "Have you been home all day?"),
-    Question(question: "Do you like sports?")
+    Question(question: "Are you with someone special? 1"),
+    Question(question: "Are you/everyone exhausted? 2"),
+    Question(question: "Ae you looking to get out of the house? 3"),
     ]
 }

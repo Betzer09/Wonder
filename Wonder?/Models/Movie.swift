@@ -8,11 +8,15 @@
 
 import Foundation
 
-struct Movie: Decodable {
+struct Movie: Decodable, Equatable {
+    
+    static func ==(lhs: Movie, rhs: Movie) -> Bool {
+        return lhs.title == rhs.title && lhs.releaseDate == rhs.releaseDate && lhs.genreIDS == rhs.genreIDS && lhs.overview == rhs.overview && lhs.voteAverage == rhs.voteAverage
+    }
     
     // MARK: - Properties
     let title: String
-    let posterPath: String
+    let posterPath: String?
     let genreIDS: [Int]
     let overview: String
     let voteAverage: Double
@@ -41,7 +45,7 @@ struct Movie: Decodable {
         self.adult = try valueContainer.decode(Bool.self, forKey: .adult)
         self.releaseDate = try valueContainer.decode(String.self, forKey: .releaseDate)
         self.voteAverage = try valueContainer.decode(Double.self, forKey: .voteAverage)
-        self.posterPath = try valueContainer.decode(String.self, forKey: .posterPath)
+        self.posterPath = try valueContainer.decodeIfPresent(String.self, forKey: .posterPath)
         
         let IDS = try valueContainer.decode([Int].self, forKey: .genreIDS)
         self.genreIDS = IDS.flatMap({ $0 })

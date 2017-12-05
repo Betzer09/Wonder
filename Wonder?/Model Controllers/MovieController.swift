@@ -14,8 +14,10 @@ class MovieController {
     static let shared = MovieController()
     var recommendedMovies: [Movie] = []
     var discoveredMoviesBasedOnGenres: [Movie] = []
+
     
     // MARK: - Methods
+    /// Movie DB recommeded Movies
     func fetchRecommnedMoviesWith(id: Int, completion: @escaping ([Movie]?) -> Void) {
         
         let recommendMoviesURL = URL(string: "https://api.themoviedb.org/3/movie/\(id)/recommendations")
@@ -51,6 +53,7 @@ class MovieController {
     }
     
     //https://api.themoviedb.org/3/discover/movie?api_key=c366b28fa7f90e98f633846b3704570c&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=28
+    /// MovieDB Discover
     func fetchMoviesBasedOnGenresWith(ids: [Int], pageCount: Int, completion: @escaping ([Movie]?) -> Void) {
         
         let discoverMoviesBaseURL = URL(string: "https://api.themoviedb.org/3/discover/movie")
@@ -58,19 +61,24 @@ class MovieController {
         guard let unwrappedURL = discoverMoviesBaseURL else {NSLog("Bad Discover URL \(#file)"); return}
         
         var urlComponents = URLComponents(url: unwrappedURL, resolvingAgainstBaseURL: true)
+        var stringOfIDs = ""
+        
+        for id in ids {
+            stringOfIDs.append("\(id)")
+        }
+        
         let parameters = ["api_key": "c366b28fa7f90e98f633846b3704570c",
                           "language": "en-US",
-                          "page": "1",
-                          "sorted_by": "popularity.desc",
+                          "page": "\(pageCount)",
+                          "sort_by": "vote_average.desc",
                           "include_adult": "false",
                           "include_video": "false",
-                          "page": "\(pageCount)",
-                          "with_genres":  "\(ids.flatMap({ $0 }))|"
+                          "with_genres": stringOfIDs
                           ]
         
         urlComponents?.queryItems = parameters.flatMap( {URLQueryItem(name: $0.key, value: $0.value)})
         guard let url = urlComponents?.url else {NSLog("Bad url components \(#function)"); return}
-        
+    
         URLSession.shared.dataTask(with: url) { (data, _, error) in
             
             if let error = error {
@@ -81,16 +89,15 @@ class MovieController {
             
             guard let data = data else {NSLog("Error with the data in function \(#function)"); return}
             
-            guard let movies = (try? JSONDecoder().decode(Movies.self, from: data)) else {
-                NSLog("Error Decoding the movies in function: \(#function)")
-                completion([])
-                return
+            do{
+                let movies = try JSONDecoder().decode(Movies.self, from: data)
+                
+                self.discoveredMoviesBasedOnGenres = movies.results
+                completion(movies.results)
+            } catch let e {
+                print(e)
             }
-            
-            self.discoveredMoviesBasedOnGenres = movies.results
-            completion(movies.results)
-            
-        }
+        }.resume()
         
     }
     

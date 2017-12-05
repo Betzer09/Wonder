@@ -20,6 +20,8 @@ class GenresController {
     static let unlikedMovieGenresArrayWasUpdated = Notification.Name("unlikedGenresWereUpdated")
     
     // MARK: - Properties
+    var genreMoviesThatHaveAlreadyBeenDisplayed: [Movie] = []
+    var movieCounter = 0
     var likedMovieGenres: [Genre] = [] {
         didSet {
             NotificationCenter.default.post(name: GenresController.likedMovieGenresArrayWasUpdated, object: nil)
@@ -42,6 +44,7 @@ class GenresController {
             NotificationCenter.default.post(name: GenresController.tvShowGenreWasUpdated, object: nil)
         }
     }
+    
 
     // MARK: - Fetch Functions
     /// Fetches the Movie Genres from the device
@@ -80,23 +83,38 @@ class GenresController {
         
     }
     
+    /// Fetches a genre image
     func fetchImageForGenre(with id: Int, completion: @escaping (UIImage?) -> Void) {
-        // Fetch movies based on genre id using the movieController
-        MovieController.shared.fetchRecommnedMoviesWith(id: id) { (movies) in
+        // Reset this number everytime this gets called that way we don't end up outside the bounds of the movies array
+        movieCounter = 0
+        
+        MovieController.shared.fetchMoviesBasedOnGenresWith(ids: [id], pageCount: 1) { (movies) in
             // Get the first movie that comes back and grab the poster path
-            guard let path = movies?.first?.posterPath else {print("Error fetching the posterPath of the movie in file: \(#file) and function: \(#function)")
-                print("\(id)")
-                completion(#imageLiteral(resourceName: "noImageView"))
-                return
+            guard let movies = movies else {print("There are no movies to return an image form in file \(#file) and function\(#function)"); return}
+            var movie = movies[self.movieCounter]
+            
+            // Check for duplicate movies
+            if self.genreMoviesThatHaveAlreadyBeenDisplayed.contains(movie) {
+                // Increment the number from the very start that way we can reassign movie
+                self.movieCounter = Int(arc4random_uniform(10))
+                
+                // We want to get a different movie
+                movie = movies[self.movieCounter]
+            } else {
+                // We can use the movie we have
+                self.genreMoviesThatHaveAlreadyBeenDisplayed.append(movie)
             }
             
+            guard let path = movie.posterPath else {print("Error fetching the posterPath of the movie in file: \(#file) and function: \(#function)");  return}
             // Once you have the poster path fetch the image and set it as the image
+            
             MovieController.shared.fetchImageWith(endpoint: path, completion: { (image) in
                 guard let image = image else {print("Error fetching genre image in file: \(#file) and function: \(#function)"); completion(nil); return}
                 completion(image)
             })
+  
         }
- 
+        
     }
     
     // MARK: - Functions
