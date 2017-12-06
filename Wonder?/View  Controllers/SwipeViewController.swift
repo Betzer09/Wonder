@@ -77,15 +77,14 @@ class SwipeViewController: UIViewController {
                     if self.indexOfGenre + 1 != maxMovieGenreCount && self.switchToQuestions == false && likedGenresCount <=  3 {
                         self.completeAnimationForGenreUsing(card: card, likedGenresCount: likedGenresCount, genreToModify: genreToModify, isLiked: false)
                     } else {
-                        // We need to check if they have gone through all of the genres
-                        // If they have gone through all the genres make them pick 3 or they can't start the questiosn
+                        // If they haven't picked three genres that they like make them start over
                         if self.indexOfGenre == maxMovieGenreCount - 1 && likedGenresCount != 3{
                             self.haveGenresReset = true
                             self.indexOfGenre = 0
                             self.completeAnimationForGenreUsing(card: card, likedGenresCount: likedGenresCount, genreToModify: genreToModify, isLiked: false)
                         } else {
                             // When this runs we are starting to ask general question before we start fetch movies
-                            let question = QuestionController.shared.questions[self.questionCounter - 1]
+                            let question = QuestionController.shared.questions[self.questionCounter - 1 ]
                             self.prepareForNextQuestion(question: question, isLiked: false, completion: { (isComplete) in
                                 if isComplete {
                                     // TODO: -  Fetch Movies
@@ -181,7 +180,8 @@ class SwipeViewController: UIViewController {
                 }
             } else {
                 // This sets the very last genre to the top card
-                topCardView = bottomCardView
+                topCardImage.image = bottomCardImage.image
+                customTopCardLabel.text = customBottomCardLabel.text
             }
         }
         else {
@@ -318,10 +318,9 @@ class SwipeViewController: UIViewController {
         }
         topCardImage.image = bottomCardImage.image
         if haveGenresReset {
-        self.setCustomText(toLabel: self.customTopCardLabel, text: "Do you like \(GenresController.shared.movieGenres[self.indexOfGenre].name) movies?")
+            self.setCustomText(toLabel: self.customTopCardLabel, text: "Do you like \(GenresController.shared.movieGenres[self.indexOfGenre].name) movies?")
         } else {
             self.setCustomText(toLabel: self.customTopCardLabel, text: "Do you like \(GenresController.shared.movieGenres[self.indexOfGenre + 1].name) movies?")
-
         }
         resetPostitionOf(card: card)
         
@@ -372,12 +371,10 @@ class SwipeViewController: UIViewController {
     
     /// This repositions the card back to the center
     private func resetPostitionOf(card: UIView) {
-        UIView.animate(withDuration: 0.001) {
             card.center = self.view.center
             self.thumbImageView.alpha = 0
             card.alpha = 1
             card.transform = .identity
-        }
     }
     
     private func resetPostionOfCardWithAnimation(_ card: UIView) {
