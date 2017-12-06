@@ -13,8 +13,23 @@ class QuestionController {
     // MARK: - Properties
     static let shared = QuestionController()
     var questions: [Question] = [
-    Question(question: "Are you with someone special? 1"),
-    Question(question: "Are you/everyone exhausted? 2"),
-    Question(question: "Ae you looking to get out of the house? 3"),
+    Question(question: "Are you with someone special?"),
+    Question(question: "Are you/everyone exhausted?"),
+    Question(question: "Ae you looking to get out of the house?"),
     ]
+    
+    
+    /// Takes in a question and will toggle it to either yes or no
+    func toggleStatusForQuestion(question: Question, isLiked: Bool) {
+        question.answer = isLiked
+    }
+    
+    /// This will return whether or not the user wants to go out.
+    func doesTheUserWantToGoOut() -> Bool {
+        if questions[2].answer == true {
+            return true
+        }
+        return false
+    }
+    
 }

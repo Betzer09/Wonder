@@ -70,7 +70,7 @@ class MovieController {
         let parameters = ["api_key": "c366b28fa7f90e98f633846b3704570c",
                           "language": "en-US",
                           "page": "\(pageCount)",
-                          "sort_by": "vote_average.desc",
+                          "sort_by": "popularity.desc",
                           "include_adult": "false",
                           "include_video": "false",
                           "with_genres": stringOfIDs

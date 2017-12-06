@@ -8,7 +8,12 @@
 
 import Foundation
 
-class Question {
+class Question: Equatable {
+    
+    static func ==(lhs: Question, rhs: Question) -> Bool {
+        return lhs.text == rhs.text
+    }
+    
     let text: String
     var answer: Bool?
     

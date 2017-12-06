@@ -81,37 +81,53 @@ class SwipeViewController: UIViewController {
                     card.center = CGPoint(x: card.center.x - 200, y: card.center.y + 75)
                     card.alpha = 0
                 }, completion: { (_) in
-
-                    
-                    if self.indexOfGenre + 1 != maxMovieGenreCount && self.switchToQuestions == false  && likedGenresCount <= 3 {
+                    // This checks if it needs to switch to questions
+                    if self.indexOfGenre + 1 != maxMovieGenreCount && self.switchToQuestions == false && likedGenresCount <=  3 {
                         self.completeAnimationForGenreUsing(card: card, likedGenresCount: likedGenresCount, genreToModify: genreToModify, isLiked: false)
                     } else {
-                        if self.switchToQuestions == false {
-                            self.configureBottomCardAsQuestion(self.bottomCardView)
-                        }
-                        self.configureBottomCardAsQuestion(self.bottomCardView)
-                    }
-                })
+                        let question = QuestionController.shared.questions[self.questionCounter - 1]
+                        self.prepareForNextQuestion(question: question, isLiked: false, completion: { (isComplete) in
+                            if isComplete {
+                                // TODO: -  Fetch Movies
+                                self.setCustomText(toLabel: self.customBottomCardLabel, text: "Coming SOOOOOOON")
+                            }
+                        })
+                    }                })
             } else if card.center.x > (view.frame.width - 75) {
                 // Move off to the right side
                 UIView.animate(withDuration: 0.3, animations: {
                     card.center = CGPoint(x: card.center.x + 200, y: card.center.y + 75)
                     card.alpha = 0
                 }, completion: { (_) in
-                    
+                    // This checks if it needs to switch to questions
                     if self.indexOfGenre + 1 != maxMovieGenreCount && self.switchToQuestions == false && likedGenresCount <=  3 {
                         self.completeAnimationForGenreUsing(card: card, likedGenresCount: likedGenresCount, genreToModify: genreToModify, isLiked: true)
                     } else {
-                        if self.switchToQuestions == false {
-                            self.configureBottomCardAsQuestion(self.bottomCardView)
-                        }
-                        self.configureBottomCardAsQuestion(self.bottomCardView)
+                        let question = QuestionController.shared.questions[self.questionCounter - 1]
+                        self.prepareForNextQuestion(question: question, isLiked: true, completion: { (isComplete) in
+                            if isComplete {
+                                // TODO: -  Fetch Movies
+                                self.setCustomText(toLabel: self.customBottomCardLabel, text: "Coming SOOOOOOON")
+                            }
+                        })
                     }
                     
                 })
             } else {
                 resetPostionOfCardWithAnimation(card)
             }
+        }
+        
+    }
+    
+    func prepareForNextQuestion(question: Question, isLiked: Bool, completion: (_ isComplete: Bool) -> Void ) {
+        if questionCounter == 3 {
+            self.configureBottomCardAsQuestion(self.bottomCardView)
+            completion(true)
+        } else {
+            QuestionController.shared.toggleStatusForQuestion(question: question, isLiked: isLiked)
+            self.configureBottomCardAsQuestion(self.bottomCardView)
+            completion(false)
         }
         
     }
@@ -218,19 +234,19 @@ class SwipeViewController: UIViewController {
         indexOfGenre = 0
     }
     
-//    func checkLikedGenreCount(withCount count: Int) {
-//        guard let likedGenresCount = likedGenresCount else {print("Broken likedGenreCount"); return}
-//
-//        if likedGenresCount > 3 {
-//            // Fetch those movies
-//            let ids = GenresController.shared.likedMovieGenres.flatMap({ $0.id })
-//            MovieController.shared.fetchMoviesBasedOnGenresWith(ids: ids, pageCount: 1, completion: { (_) in})
-//
-//            let movie = discoveredMovies[0]
-//            MovieController.shared.fetchImageWith(endpoint: movie.posterPath, completion: { (image) in})
-//
-//        }
-//    }
+    //    func checkLikedGenreCount(withCount count: Int) {
+    //        guard let likedGenresCount = likedGenresCount else {print("Broken likedGenreCount"); return}
+    //
+    //        if likedGenresCount > 3 {
+    //            // Fetch those movies
+    //            let ids = GenresController.shared.likedMovieGenres.flatMap({ $0.id })
+    //            MovieController.shared.fetchMoviesBasedOnGenresWith(ids: ids, pageCount: 1, completion: { (_) in})
+    //
+    //            let movie = discoveredMovies[0]
+    //            MovieController.shared.fetchImageWith(endpoint: movie.posterPath, completion: { (image) in})
+    //
+    //        }
+    //    }
     
     /// Checks to see if the genre needs to be toggled
     func checkIfTheGenreNeedsToggled(withCount count: Int, andGenre genre: Genre, isLiked: Bool) {
@@ -278,10 +294,14 @@ class SwipeViewController: UIViewController {
             setCustomText(toLabel: customTopCardLabel, text: "\(QuestionController.shared.questions[questionCounter].text)")
         } else {
             // This will run after the bottom question card has initally been set that way it doesn't bounce
+            if questionCounter <= 2 {
             self.topCardImage.image = #imageLiteral(resourceName: "noImageView")
             setCustomText(toLabel: customTopCardLabel, text: QuestionController.shared.questions[questionCounter].text)
             questionCounter += 1
             resetPostitionOf(card: card)
+            } else {
+                print("Didn't increase counter")
+            }
         }
     }
     
@@ -297,22 +317,25 @@ class SwipeViewController: UIViewController {
             DispatchQueue.main.async {
                 self.bottomCardImage.image = #imageLiteral(resourceName: "noImageView")
             }
-            if !(questionCounter >= 3) {
-            setCustomText(toLabel: customBottomCardLabel, text: QuestionController.shared.questions[questionCounter + 1].text)
-            configureTopCardAsQuestion(topCardView)
+            // This is to check to see if this is the last question that needs to be displayed
+            if questionCounter >= 2 {
+                setCustomText(toLabel: customBottomCardLabel, text: QuestionController.shared.questions[questionCounter - 1].text)
+                configureTopCardAsQuestion(topCardView)
             } else {
-                // TODO: - It is time to fetch some movies!!!!
-                print("Foo")
+                setCustomText(toLabel: customBottomCardLabel, text: QuestionController.shared.questions[questionCounter + 1].text)
+                configureTopCardAsQuestion(topCardView)
+                
+                // TODO: - Fetch Movies from here 
             }
         }
     }
     
     /// This repositions the card back to the center
     private func resetPostitionOf(card: UIView) {
-            card.center = self.view.center
-            self.thumbImageView.alpha = 0
-            card.alpha = 1
-            card.transform = .identity
+        card.center = self.view.center
+        self.thumbImageView.alpha = 0
+        card.alpha = 1
+        card.transform = .identity
     }
     
     private func resetPostionOfCardWithAnimation(_ card: UIView) {
