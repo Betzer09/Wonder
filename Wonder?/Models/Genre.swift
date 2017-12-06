@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 struct Genre: Decodable, Equatable {
     
@@ -16,11 +17,13 @@ struct Genre: Decodable, Equatable {
     
     let name: String
     let id: Int
+    var genreImage: Data?
     var isLiked: Bool?
     
     enum CodingKeys: String, CodingKey {
         case name
         case id
+        case genreImage
         case isLiked
     }
 }

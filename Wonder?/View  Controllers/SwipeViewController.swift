@@ -18,6 +18,7 @@ class SwipeViewController: UIViewController {
     @IBOutlet weak var bottomCardImage: UIImageView!
     @IBOutlet weak var customTopCardLabel: UILabel!
     @IBOutlet weak var customBottomCardLabel: UILabel!
+    @IBOutlet var panGestureRecognizer: UIPanGestureRecognizer!
     
     
     // MARK: - Properties
@@ -49,9 +50,26 @@ class SwipeViewController: UIViewController {
         resetView()
     }
     
+//    func programmaticallyTriggerPanGestureRecognizer() {
+//        panGestureRecognizer.setTranslation(CGPoint(x: 200, y: 0), in: view)
+//        panCard(panGestureRecognizer)
+//    }
+
 
     
     // MARK: - Actions
+    @IBAction func likeButtonPressed(_ sender: Any) {
+        animateTopCardWhenLikeButtonIsPressed()
+    }
+    
+    @IBAction func backButtonPressed(_ sender: Any) {
+        
+    }
+    
+    @IBAction func dislikeButtonPressed(_ sender: Any) {
+        animateTopCardWhenDislikeButtonIsPressed()
+    }
+    
     @IBAction func panCard(_ sender: UIPanGestureRecognizer) {
         guard let card = sender.view else {return }
         let point = sender.translation(in: view)
@@ -64,7 +82,6 @@ class SwipeViewController: UIViewController {
         
         if sender.state == .ended {
             // After they have toggled a genre we need to figure out if we need to switch to movies
-            //            checkLikedGenreCount(withCount: likedGenresCount)
             guard let likedGenresCount = likedGenresCount, let maxMovieGenreCount = maxMovieGenreCount else {print("Broken likedGenreCount");return}
             
             if card.center.x < 75 {
@@ -120,7 +137,8 @@ class SwipeViewController: UIViewController {
         }
         
     }
-    
+
+    // MARK: - Methods
     func prepareForNextQuestion(question: Question, isLiked: Bool, completion: (_ isComplete: Bool) -> Void ) {
         if questionCounter == 3 {
             self.configureBottomCardAsQuestion(self.bottomCardView)
@@ -133,22 +151,6 @@ class SwipeViewController: UIViewController {
         
     }
     
-    
-    @IBAction func dislikeButtonPressed(_ sender: Any) {
-        
-    }
-    
-    
-    @IBAction func likeButtonPressed(_ sender: Any) {
-        
-    }
-    
-    @IBAction func backButtonPressed(_ sender: Any) {
-        
-    }
-    
-    
-    // MARK: - Methods
     func completeAnimationForGenreUsing(card: UIView, likedGenresCount: Int ,genreToModify: Genre, isLiked: Bool) {
         self.resetTopCardForGenres(card)
         self.checkIfTheGenreNeedsToggled(withCount: likedGenresCount, andGenre: genreToModify, isLiked: isLiked)
@@ -203,6 +205,77 @@ class SwipeViewController: UIViewController {
         card.transform = CGAffineTransform(rotationAngle: (xFromCenter / view.frame.width) * 0.61).scaledBy(x: scale, y: scale)
     }
     
+    // MARK: - Card Button Animations
+    var  hasLikeButtonAnimationCompleted = true
+    /// Animates the top card to slide to the right
+    func animateTopCardWhenLikeButtonIsPressed() {
+        guard let card = self.topCardView else {return}
+        if hasLikeButtonAnimationCompleted {
+            self.hasLikeButtonAnimationCompleted = false
+            UIView.animate(withDuration: 1 , animations: {
+                card.center = CGPoint(x: card.center.x + 200, y: card.center.y + 75)
+                card.alpha = 0
+                card.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
+            }) { (_) in
+                // This checks if it needs to switch to questions
+                self.hasLikeButtonAnimationCompleted = true
+                guard let likedGenresCount = self.likedGenresCount else {return}
+                let genreToModify = GenresController.shared.movieGenres[self.indexOfGenre]
+                if self.indexOfGenre + 1 != self.maxMovieGenreCount && self.switchToQuestions == false && likedGenresCount <=  3 {
+                    self.completeAnimationForGenreUsing(card: card, likedGenresCount: likedGenresCount, genreToModify: genreToModify, isLiked: true)
+                } else {
+                    let question = QuestionController.shared.questions[self.questionCounter - 1]
+                    self.prepareForNextQuestion(question: question, isLiked: true, completion: { (isComplete) in
+                        if isComplete {
+                            // TODO: -  Fetch Movies
+                            self.setCustomText(toLabel: self.customBottomCardLabel, text: "Coming SOOOOOOON")
+                        }
+                    })
+                }
+            }
+        }
+    }
+    
+    var disLikeButtonAnimationCompleted = true
+    /// Animates the top card to slide to the left
+    func animateTopCardWhenDislikeButtonIsPressed() {
+        guard let card = self.topCardView else {return}
+        if disLikeButtonAnimationCompleted {
+            self.disLikeButtonAnimationCompleted = false
+            UIView.animate(withDuration: 1 , animations: {
+                card.center = CGPoint(x: card.center.x - 200, y: card.center.y + 75)
+                card.alpha = 0
+                card.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
+            }) { (_) in
+                // This checks if it needs to switch to questions
+                guard let likedGenresCount = self.likedGenresCount, let maxMovieGenreCount = self.maxMovieGenreCount else {print("Broken likedGenreCount");return}
+                let genreToModify = GenresController.shared.movieGenres[self.indexOfGenre]
+                // This going to check if we need to start asking qustions or if we need to continue displaying genre types
+                if self.indexOfGenre + 1 != maxMovieGenreCount && self.switchToQuestions == false && likedGenresCount <=  3 {
+                    self.completeAnimationForGenreUsing(card: card, likedGenresCount: likedGenresCount, genreToModify: genreToModify, isLiked: false)
+                } else {
+                    // If they haven't picked three genres that they like make them start over
+                    if self.indexOfGenre == maxMovieGenreCount - 1 && likedGenresCount != 3{
+                        self.haveGenresReset = true
+                        self.indexOfGenre = 0
+                        self.completeAnimationForGenreUsing(card: card, likedGenresCount: likedGenresCount, genreToModify: genreToModify, isLiked: false)
+                    } else {
+                        // When this runs we are starting to ask general question before we start fetch movies
+                        let question = QuestionController.shared.questions[self.questionCounter - 1 ]
+                        self.prepareForNextQuestion(question: question, isLiked: false, completion: { (isComplete) in
+                            if isComplete {
+                                // TODO: -  Fetch Movies
+                                self.setCustomText(toLabel: self.customBottomCardLabel, text: "Coming SOOOOOOON")
+                            }
+                        })
+                    }
+                }
+                self.disLikeButtonAnimationCompleted = true
+            }
+        }
+    }
+    
+    
     // MARK: - SetUp UI
     func configureView() {
         // Reset this value evertime the view is loaded so the expirances is the same
@@ -240,23 +313,17 @@ class SwipeViewController: UIViewController {
     }
     
     func fetchTheBottomCardImageWith(genreID id: Int) {
-        guard let maxMovieGenreCount = maxMovieGenreCount else {return}
-        if indexOfGenre + 1 != maxMovieGenreCount {
-            
             GenresController.shared.fetchImageForGenre(with: id, completion: { (image) in
                 guard let image = image else {print("Error with the bottomimage in file: \(#file) and function: \(#function)")
                     print("\(id)")
                     return
                 }
                 DispatchQueue.main.async {
-                    // MARK: - Set bottom card attributes here
                     self.bottomCardImage.image = image
                 }
                 self.setCustomText(toLabel: self.customBottomCardLabel, text: "Do you like \(GenresController.shared.movieGenres[self.indexOfGenre + 1].name) movies?")
             })
-        } else {
-            configureTopCardAsQuestion(topCardView)
-        }
+
     }
     
     func resetView() {
@@ -347,7 +414,6 @@ class SwipeViewController: UIViewController {
     private func configureBottomCardAsQuestion(_ card: UIView) {
         
         if questionCounter + 1 < QuestionController.shared.questions.count && switchToQuestions == false {
-            // TODO: -  We need to set the new bottom card
             DispatchQueue.main.async {
                 self.bottomCardImage.image = #imageLiteral(resourceName: "noImageView")
             }

@@ -191,6 +191,7 @@
                         <outlet property="bottomCardView" destination="5be-Wx-QoH" id="p5V-1R-25M"/>
                         <outlet property="customBottomCardLabel" destination="80b-eO-17P" id="NOT-vS-RBv"/>
                         <outlet property="customTopCardLabel" destination="oIa-33-gOq" id="R7a-JU-iGu"/>
+                        <outlet property="panGestureRecognizer" destination="TSC-aq-kOi" id="Ntm-CJ-BKx"/>
                         <outlet property="thumbImageView" destination="WGI-3p-5RL" id="Jrn-dN-AOP"/>
                         <outlet property="topCardImage" destination="NnE-bo-ltf" id="2im-Go-sKB"/>
                         <outlet property="topCardView" destination="HDy-ai-wWh" id="Ckb-3K-VR3"/>
