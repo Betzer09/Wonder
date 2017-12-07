@@ -74,7 +74,7 @@ class GenresController {
         for genre in genres {
             
             
-            Timer.scheduledTimer(withTimeInterval: 1, repeats: false, block: { (_) in
+            Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { (_) in
                 
                 MovieController.shared.fetchMoviesBasedOnGenresWith(ids: [genre.id], pageCount: 1, completion: { (movies) in
                     // Get the first movie that comes and check if we already have that movie
@@ -87,7 +87,7 @@ class GenresController {
                         movie = movies[newMovieIndex]
                     }
                     
-                    guard let path = movie.posterPath else {print("There is no image"); return}
+                    guard let path = movie.posterPath else {print("There is no image for \(movie.title) in file\(#file) and \(#function)"); return}
                     MovieController.shared.fetchImageWith(endpoint: path, completion: { (image) in
                         guard let image = image, let dataOfImage = UIImagePNGRepresentation(image) else {print("Error saving the data of the image in file \(#file) and function \(#function)"); return}
                         self.updateGenreWithImage(data: dataOfImage, genre: genre)
