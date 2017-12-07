@@ -287,9 +287,7 @@ class SwipeViewController: UIViewController {
     }
     
     func fetchTheTopCardImageWith(genre: Genre) {
-
-        
-        guard let data = genre.genreImageData else {print("Error there is no image data for genre \(genre.name) in file \(#file) and function \(#function)"); return}
+        guard let data = genre.genreImageData else {print("Error there is no image data for genre \"\(genre.name)\" in file \(#file) and function \(#function)"); return}
             DispatchQueue.main.async {
                 self.topCardImage.image = UIImage(data: data)
             }
@@ -297,7 +295,7 @@ class SwipeViewController: UIViewController {
     }
     
     func fetchTheBottomCardImageWith(genre: Genre) {
-        guard let data = genre.genreImageData else {print("Error there is no image data for genre \(genre.name) in file \(#file) and function \(#function)"); return}
+        guard let data = genre.genreImageData else {print("Error there is no image data for genre \"\(genre.name)\" in file \(#file) and function \(#function)"); return}
                 DispatchQueue.main.async {
                     self.bottomCardImage.image = UIImage(data: data)
                 }
