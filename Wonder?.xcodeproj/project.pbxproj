@@ -12,6 +12,9 @@
 		239A14401FD5CF1000D414BB /* Genre.json in Resources */ = {isa = PBXBuildFile; fileRef = 239A143F1FD5CF1000D414BB /* Genre.json */; };
 		239A14421FD5DB7000D414BB /* WatchTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239A14411FD5DB7000D414BB /* WatchTabViewController.swift */; };
 		239A14441FD5DCD200D414BB /* tvShowGenres.json in Resources */ = {isa = PBXBuildFile; fileRef = 239A14431FD5DCD200D414BB /* tvShowGenres.json */; };
+		23CF62EB1FD99EA2002B6062 /* TheaterMovie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CF62EA1FD99EA2002B6062 /* TheaterMovie.swift */; };
+		23CF62ED1FD9BC85002B6062 /* TheatreMovies.json in Resources */ = {isa = PBXBuildFile; fileRef = 23CF62EC1FD9BC85002B6062 /* TheatreMovies.json */; };
+		23CF62EF1FD9BC94002B6062 /* TheatreController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CF62EE1FD9BC94002B6062 /* TheatreController.swift */; };
 		23E2551A1FC36BB600D5C23B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E255191FC36BB600D5C23B /* AppDelegate.swift */; };
 		23E2551F1FC36BB600D5C23B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23E2551D1FC36BB600D5C23B /* Main.storyboard */; };
 		23E255211FC36BB600D5C23B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 23E255201FC36BB600D5C23B /* Assets.xcassets */; };
@@ -31,6 +34,9 @@
 		239A143F1FD5CF1000D414BB /* Genre.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Genre.json; sourceTree = "<group>"; };
 		239A14411FD5DB7000D414BB /* WatchTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchTabViewController.swift; sourceTree = "<group>"; };
 		239A14431FD5DCD200D414BB /* tvShowGenres.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = tvShowGenres.json; sourceTree = "<group>"; };
+		23CF62EA1FD99EA2002B6062 /* TheaterMovie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TheaterMovie.swift; sourceTree = "<group>"; };
+		23CF62EC1FD9BC85002B6062 /* TheatreMovies.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TheatreMovies.json; sourceTree = "<group>"; };
+		23CF62EE1FD9BC94002B6062 /* TheatreController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TheatreController.swift; sourceTree = "<group>"; };
 		23E255161FC36BB600D5C23B /* Wonder?.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Wonder?.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		23E255191FC36BB600D5C23B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		23E2551E1FC36BB600D5C23B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -114,6 +120,7 @@
 				23E2554D1FC4815100D5C23B /* Wonder?.xcdatamodeld */,
 				23E255561FC48AF500D5C23B /* Genre.swift */,
 				23639C961FC5FD2900DFEFAF /* Question.swift */,
+				23CF62EA1FD99EA2002B6062 /* TheaterMovie.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -140,6 +147,7 @@
 				23E255351FC37C4100D5C23B /* GenresController.swift */,
 				23E255581FC48BD100D5C23B /* MovieController.swift */,
 				23639C981FC5FD8F00DFEFAF /* QuestionController.swift */,
+				23CF62EE1FD9BC94002B6062 /* TheatreController.swift */,
 			);
 			path = "Model Controllers";
 			sourceTree = "<group>";
@@ -155,6 +163,7 @@
 		23F689451FD5CD980058B07E /* json */ = {
 			isa = PBXGroup;
 			children = (
+				23CF62EC1FD9BC85002B6062 /* TheatreMovies.json */,
 				239A14431FD5DCD200D414BB /* tvShowGenres.json */,
 				239A143F1FD5CF1000D414BB /* Genre.json */,
 			);
@@ -220,6 +229,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				23CF62ED1FD9BC85002B6062 /* TheatreMovies.json in Resources */,
 				23E255241FC36BB600D5C23B /* LaunchScreen.storyboard in Resources */,
 				239A14441FD5DCD200D414BB /* tvShowGenres.json in Resources */,
 				23E255211FC36BB600D5C23B /* Assets.xcassets in Resources */,
@@ -241,10 +251,12 @@
 				23639C971FC5FD2900DFEFAF /* Question.swift in Sources */,
 				23E2554C1FC4812C00D5C23B /* CoreDataStack.swift in Sources */,
 				23E2554F1FC4815100D5C23B /* Wonder?.xcdatamodeld in Sources */,
+				23CF62EB1FD99EA2002B6062 /* TheaterMovie.swift in Sources */,
 				23E255591FC48BD100D5C23B /* MovieController.swift in Sources */,
 				23E255361FC37C4100D5C23B /* GenresController.swift in Sources */,
 				239A14421FD5DB7000D414BB /* WatchTabViewController.swift in Sources */,
 				23E255341FC3771F00D5C23B /* Movie.swift in Sources */,
+				23CF62EF1FD9BC94002B6062 /* TheatreController.swift in Sources */,
 				23E255571FC48AF500D5C23B /* Genre.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

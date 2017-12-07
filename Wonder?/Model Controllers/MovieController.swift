@@ -100,8 +100,6 @@ class MovieController {
     
         
     }
-
-    
     func fetchImageWith(endpoint: String, completion: @escaping (UIImage?) -> Void) {
         let imageURL = URL(string: "https://image.tmdb.org/t/p/w500/")!
         let url = imageURL.appendingPathComponent(endpoint)
@@ -129,6 +127,31 @@ class MovieController {
             completion(image)
             }.resume()
     }
+    
+    func returnRecommendMovies() {
+        
+        let answer = QuestionController.shared.doesTheUserWantToGoOut()
+        let likedGenreIDs = GenresController.shared.likedMovieGenres.map({ $0.id })
+        
+        // Fetch movies in theaters
+        if answer {
+            // Fetch theaterMovies that are in theaters if this fails just fetch movies that are in theaters using the movieDB
+            // Fetch movies that are currently in theaters using the movieDB
+            // Combine both of those array and get what's similar
+            // Filter out all the movies that don't match their liked genres
+            // Take the "liked Movies" and grab their ID
+            // Use the array of IDS and Start from the top and fetch reccomed movies based on those id
+            // If they don't like a movie that's reccomend filter out all simlar movies
+        } else {
+            // Fetch the top rated and popular Movies
+            // Filter out all the movies that don't match their liked genres
+            // Take the "liked Movies" and grab their ID
+            // Use the array of IDS and Start from the top and fetch reccomed movies based on those id
+            // If they don't like a movie that's reccomend filter out all simlar movies
+        }
+        
+    }
+    
     
 }
 

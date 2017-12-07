@@ -32,16 +32,14 @@ class SwipeViewController: UIViewController {
     var haveGenresReset = false
     var disLikeButtonAnimationCompleted = true
     var  hasLikeButtonAnimationCompleted = true
-
+    
     
     
     
     // MARK: - View LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureView()
-        
-        
+        self.configureView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -132,7 +130,7 @@ class SwipeViewController: UIViewController {
         }
         
     }
-
+    
     // MARK: - Methods
     func prepareForNextQuestion(question: Question, isLiked: Bool, completion: (_ isComplete: Bool) -> Void ) {
         if questionCounter == 3 {
@@ -159,7 +157,7 @@ class SwipeViewController: UIViewController {
             if (indexOfGenre + 1) != (maxMovieGenreCount){
                 // Fetch the the new bottom card
                 if haveGenresReset {
-                      genreToFetch = GenresController.shared.movieGenres[self.indexOfGenre]
+                    genreToFetch = GenresController.shared.movieGenres[self.indexOfGenre]
                     haveGenresReset = false
                     // Fetch the top and bottom images
                     self.fetchTheTopCardImageWith(genre: genreToFetch)
@@ -288,18 +286,18 @@ class SwipeViewController: UIViewController {
     
     func fetchTheTopCardImageWith(genre: Genre) {
         guard let data = genre.genreImageData else {print("Error there is no image data for genre \"\(genre.name)\" in file \(#file) and function \(#function)"); return}
-            DispatchQueue.main.async {
-                self.topCardImage.image = UIImage(data: data)
-            }
-            self.setCustomText(toLabel: self.customTopCardLabel, text: "Do you like \(GenresController.shared.movieGenres[self.indexOfGenre].name) movies?")
+        DispatchQueue.main.async {
+            self.topCardImage.image = UIImage(data: data)
+        }
+        self.setCustomText(toLabel: self.customTopCardLabel, text: "Do you like \(GenresController.shared.movieGenres[self.indexOfGenre].name) movies?")
     }
     
     func fetchTheBottomCardImageWith(genre: Genre) {
         guard let data = genre.genreImageData else {print("Error there is no image data for genre \"\(genre.name)\" in file \(#file) and function \(#function)"); return}
-                DispatchQueue.main.async {
-                    self.bottomCardImage.image = UIImage(data: data)
-                }
-                self.setCustomText(toLabel: self.customBottomCardLabel, text: "Do you like \(GenresController.shared.movieGenres[self.indexOfGenre + 1].name) movies?")
+        DispatchQueue.main.async {
+            self.bottomCardImage.image = UIImage(data: data)
+        }
+        self.setCustomText(toLabel: self.customBottomCardLabel, text: "Do you like \(GenresController.shared.movieGenres[self.indexOfGenre + 1].name) movies?")
     }
     
     func resetView() {
@@ -359,10 +357,10 @@ class SwipeViewController: UIViewController {
         } else {
             // This will run after the bottom question card has initally been set that way it doesn't bounce
             if questionCounter <= 2 {
-            self.topCardImage.image = #imageLiteral(resourceName: "noImageView")
-            setCustomText(toLabel: customTopCardLabel, text: QuestionController.shared.questions[questionCounter].text)
-            questionCounter += 1
-            resetPostitionOf(card: card)
+                self.topCardImage.image = #imageLiteral(resourceName: "noImageView")
+                setCustomText(toLabel: customTopCardLabel, text: QuestionController.shared.questions[questionCounter].text)
+                questionCounter += 1
+                resetPostitionOf(card: card)
             } else {
                 print("Didn't increase counter")
             }
@@ -393,10 +391,10 @@ class SwipeViewController: UIViewController {
     
     /// This repositions the card back to the center
     private func resetPostitionOf(card: UIView) {
-            card.center = self.view.center
-            self.thumbImageView.alpha = 0
-            card.alpha = 1
-            card.transform = .identity
+        card.center = self.view.center
+        self.thumbImageView.alpha = 0
+        card.alpha = 1
+        card.transform = .identity
     }
     
     private func resetPostionOfCardWithAnimation(_ card: UIView) {

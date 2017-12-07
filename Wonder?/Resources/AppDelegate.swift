@@ -19,6 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         GenresController.shared.fetchMovieGenres()
         GenresController.shared.fetchTvShowGenres()
         
+        TheatreController.shared.fetchTheaterMovies()
+        
         let listOfGenres = GenresController.shared.movieGenres
         GenresController.shared.fetchImageForGenre(genres: listOfGenres)
         
