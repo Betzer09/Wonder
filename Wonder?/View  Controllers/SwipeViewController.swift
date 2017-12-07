@@ -49,14 +49,6 @@ class SwipeViewController: UIViewController {
         
         resetView()
     }
-    
-//    func programmaticallyTriggerPanGestureRecognizer() {
-//        panGestureRecognizer.setTranslation(CGPoint(x: 200, y: 0), in: view)
-//        panCard(panGestureRecognizer)
-//    }
-
-
-    
     // MARK: - Actions
     @IBAction func likeButtonPressed(_ sender: Any) {
         animateTopCardWhenLikeButtonIsPressed()
@@ -157,28 +149,23 @@ class SwipeViewController: UIViewController {
         
         guard let maxMovieGenreCount = maxMovieGenreCount else {return}
         
-        var genreToFetch: Genre?
-        var genreImageID: Int
+        var genreToFetch: Genre
+//        var genreImageID: Int
         
         // This decides if we need to switch to questions or not
         if switchToQuestions == false {
             if (indexOfGenre + 1) != (maxMovieGenreCount){
                 // Fetch the the new bottom card
                 if haveGenresReset {
-                    genreToFetch = GenresController.shared.movieGenres[self.indexOfGenre]
-                    guard let id = genreToFetch?.id else {return}
-                    genreImageID = id
+                      genreToFetch = GenresController.shared.movieGenres[self.indexOfGenre]
                     haveGenresReset = false
                     // Fetch the top and bottom images
-                    self.fetchTheTopCardImageWith(genreID: id)
+                    self.fetchTheTopCardImageWith(genre: genreToFetch)
                     genreToFetch = GenresController.shared.movieGenres[self.indexOfGenre + 1]
-                    guard let secondID = genreToFetch?.id else {return}
-                    self.fetchTheBottomCardImageWith(genreID: secondID)
+                    self.fetchTheBottomCardImageWith(genre: genreToFetch)
                 } else {
                     genreToFetch = GenresController.shared.movieGenres[self.indexOfGenre + 1]
-                    guard let id = genreToFetch?.id else {return}
-                    genreImageID = id
-                    self.fetchTheBottomCardImageWith(genreID: genreImageID)
+                    self.fetchTheBottomCardImageWith(genre: genreToFetch)
                 }
             } else {
                 // This sets the very last genre to the top card
@@ -284,10 +271,10 @@ class SwipeViewController: UIViewController {
         maxMovieGenreCount = GenresController.shared.movieGenres.count
         likedGenresCount = GenresController.shared.likedMovieGenres.count
         discoveredMovies = MovieController.shared.discoveredMoviesBasedOnGenres
-        let genreImageIDForTopCard = GenresController.shared.movieGenres[indexOfGenre].id
-        let genreImageIDForBottomCard = GenresController.shared.movieGenres[indexOfGenre + 1].id
-        fetchTheTopCardImageWith(genreID: genreImageIDForTopCard)
-        fetchTheBottomCardImageWith(genreID: genreImageIDForBottomCard)
+        let genreImageIDForTopCard = GenresController.shared.movieGenres[indexOfGenre]
+        let genreImageIDForBottomCard = GenresController.shared.movieGenres[indexOfGenre + 1]
+        fetchTheTopCardImageWith(genre: genreImageIDForTopCard)
+        fetchTheBottomCardImageWith(genre: genreImageIDForBottomCard)
         self.setCustomText(toLabel: self.customTopCardLabel, text: "Do you like \(GenresController.shared.movieGenres[self.indexOfGenre].name) movies?")
         
     }
@@ -298,32 +285,22 @@ class SwipeViewController: UIViewController {
         }
     }
     
-    func fetchTheTopCardImageWith(genreID id: Int) {
-        GenresController.shared.fetchImageForGenre(with: id, completion: { (image) in
-            guard let image = image else {print("Error with the top image in file: \(#file) and function: \(#function)")
-                print("\(id)")
-                return
-                
-            }
+    func fetchTheTopCardImageWith(genre: Genre) {
+
+        
+        guard let data = genre.genreImageData else {print("Error there is no image data in file \(#file) and function \(#function)"); return}
             DispatchQueue.main.async {
-                self.topCardImage.image = image
+                self.topCardImage.image = UIImage(data: data)
             }
             self.setCustomText(toLabel: self.customTopCardLabel, text: "Do you like \(GenresController.shared.movieGenres[self.indexOfGenre].name) movies?")
-        })
     }
     
-    func fetchTheBottomCardImageWith(genreID id: Int) {
-            GenresController.shared.fetchImageForGenre(with: id, completion: { (image) in
-                guard let image = image else {print("Error with the bottomimage in file: \(#file) and function: \(#function)")
-                    print("\(id)")
-                    return
-                }
+    func fetchTheBottomCardImageWith(genre: Genre) {
+        guard let data = genre.genreImageData else {print("Error there is no image data in file \(#file) and function \(#function)"); return}
                 DispatchQueue.main.async {
-                    self.bottomCardImage.image = image
+                    self.bottomCardImage.image = UIImage(data: data)
                 }
                 self.setCustomText(toLabel: self.customBottomCardLabel, text: "Do you like \(GenresController.shared.movieGenres[self.indexOfGenre + 1].name) movies?")
-            })
-
     }
     
     func resetView() {

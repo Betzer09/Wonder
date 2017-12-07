@@ -14,14 +14,13 @@ class MovieController {
     static let shared = MovieController()
     var recommendedMovies: [Movie] = []
     var discoveredMoviesBasedOnGenres: [Movie] = []
-
+    var timer = Timer()
     
     // MARK: - Methods
     /// Movie DB recommeded Movies
     func fetchRecommnedMoviesWith(id: Int, completion: @escaping ([Movie]?) -> Void) {
         
         let recommendMoviesURL = URL(string: "https://api.themoviedb.org/3/movie/\(id)/recommendations")
-        // This just adds the id may not be the most conventienal way to do it
         guard let unwrappedURL = recommendMoviesURL else {NSLog("Bad URL: \(#file)"); return }
         
         var urlComponents = URLComponents(url: unwrappedURL, resolvingAgainstBaseURL: true)
@@ -98,8 +97,10 @@ class MovieController {
                 print(e)
             }
         }.resume()
+    
         
     }
+
     
     func fetchImageWith(endpoint: String, completion: @escaping (UIImage?) -> Void) {
         let imageURL = URL(string: "https://image.tmdb.org/t/p/w500/")!

@@ -44,7 +44,7 @@ class GenresController {
         }
     }
     
-
+    
     // MARK: - Fetch Functions
     /// Fetches the Movie Genres from the device
     func fetchMovieGenres(completion: @escaping (([Genre]?) -> Void) = {_ in}) {
@@ -63,6 +63,52 @@ class GenresController {
         guard let movieGenresList = (try? decoder.decode(Genres.self, from: data)) else {print("Error decoding Movie Genres in function \(#function)"); return}
         
         movieGenres = movieGenresList.genres
+    }
+    
+    func fetchImageForGenre(genres: [Genre]) {
+        
+        // We need to get a movies to fetch genres from
+        // We need assign an images to every genrie that gets initalized when the app loads
+        
+        // For each genre in genres we need to fetch that id and assign it to that genre
+        for genre in genres {
+            
+            
+            Timer.scheduledTimer(withTimeInterval: 1, repeats: false, block: { (_) in
+                
+                MovieController.shared.fetchMoviesBasedOnGenresWith(ids: [genre.id], pageCount: 1, completion: { (movies) in
+                    // Get the first movie that comes and check if we already have that movie
+                    guard let movies = movies else {return}
+                    let movieIndex = Int(arc4random_uniform(15))
+                    var movie = movies[movieIndex]
+                    
+                    while self.genreMoviesThatHaveAlreadyBeenDisplayed.contains(movie) {
+                        let newMovieIndex = Int(arc4random_uniform(15))
+                        movie = movies[newMovieIndex]
+                    }
+                    
+                    guard let path = movie.posterPath else {print("There is no image"); return}
+                    MovieController.shared.fetchImageWith(endpoint: path, completion: { (image) in
+                        guard let image = image, let dataOfImage = UIImagePNGRepresentation(image) else {print("Error saving the data of the image in file \(#file) and function \(#function)"); return}
+                        self.updateGenreWithImage(data: dataOfImage, genre: genre)
+                    })
+                    
+                    self.genreMoviesThatHaveAlreadyBeenDisplayed.append(movie)
+                })
+            })
+        }
+        
+    }
+    
+    func updateGenreWithImage(data: Data, genre: Genre) {
+        var oldGenre = genre
+        oldGenre.genreImageData = data
+        
+        // Find the index
+        guard let index = movieGenres.index(of: genre) else {print("There is no genre that matches the old genre in function: \(#function)"); return}
+        movieGenres.remove(at: index)
+        
+        movieGenres.insert(oldGenre, at: index)
     }
     
     /// Fetches the Tv Show Genres from the device
@@ -110,7 +156,7 @@ class GenresController {
                 guard let image = image else {print("Error fetching genre image in file: \(#file) and function: \(#function)"); completion(nil); return}
                 completion(image)
             })
-  
+            
         }
         
     }
@@ -126,7 +172,7 @@ class GenresController {
         sendGenreToAppropriateArray(genre: oldGenre, isLiked: isLiked)
     }
     
-   private func sendGenreToAppropriateArray(genre: Genre, isLiked: Bool) {
+    private func sendGenreToAppropriateArray(genre: Genre, isLiked: Bool) {
         if isLiked {
             likedMovieGenres.append(genre)
         } else {

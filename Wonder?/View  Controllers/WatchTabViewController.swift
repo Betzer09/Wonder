@@ -19,12 +19,10 @@ class WatchTabViewController: UIViewController {
     // MARK: - Actions
 
     @IBAction func findMovieButtonPressed(_ sender: Any) {
-        GenresController.shared.fetchMovieGenres()
         
     }
     
     @IBAction func FindTvShowButtonPressed(_ sender: Any) {
-        GenresController.shared.fetchTvShowGenres()
     }
     
     /*
