@@ -124,7 +124,9 @@ class SwipeViewController: UIViewController {
                             if isComplete {
                                 // TODO: -  Fetch Movies
                                 let test = MovieController.shared.returnRecommendMovies()
-                                
+                                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                                let controller = storyboard.instantiateViewController(withIdentifier: "movieResultsStoryboard")
+                                self.present(controller, animated: true, completion: nil)
                                 self.setCustomText(toLabel: self.customBottomCardLabel, text: "Coming SOOOOOOON")
                             }
                         })

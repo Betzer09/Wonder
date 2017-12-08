@@ -15,6 +15,7 @@
 		23CF62EB1FD99EA2002B6062 /* TheaterMovie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CF62EA1FD99EA2002B6062 /* TheaterMovie.swift */; };
 		23CF62ED1FD9BC85002B6062 /* TheatreMovies.json in Resources */ = {isa = PBXBuildFile; fileRef = 23CF62EC1FD9BC85002B6062 /* TheatreMovies.json */; };
 		23CF62EF1FD9BC94002B6062 /* TheatreController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CF62EE1FD9BC94002B6062 /* TheatreController.swift */; };
+		23DB019E1FDA334B006E71DC /* MovieTheaterResultsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DB019D1FDA334B006E71DC /* MovieTheaterResultsTableViewController.swift */; };
 		23E2551A1FC36BB600D5C23B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E255191FC36BB600D5C23B /* AppDelegate.swift */; };
 		23E2551F1FC36BB600D5C23B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23E2551D1FC36BB600D5C23B /* Main.storyboard */; };
 		23E255211FC36BB600D5C23B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 23E255201FC36BB600D5C23B /* Assets.xcassets */; };
@@ -37,6 +38,7 @@
 		23CF62EA1FD99EA2002B6062 /* TheaterMovie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TheaterMovie.swift; sourceTree = "<group>"; };
 		23CF62EC1FD9BC85002B6062 /* TheatreMovies.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TheatreMovies.json; sourceTree = "<group>"; };
 		23CF62EE1FD9BC94002B6062 /* TheatreController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TheatreController.swift; sourceTree = "<group>"; };
+		23DB019D1FDA334B006E71DC /* MovieTheaterResultsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieTheaterResultsTableViewController.swift; sourceTree = "<group>"; };
 		23E255161FC36BB600D5C23B /* Wonder?.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Wonder?.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		23E255191FC36BB600D5C23B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		23E2551E1FC36BB600D5C23B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -137,6 +139,7 @@
 			children = (
 				23E2555A1FC4A95E00D5C23B /* SwipeViewController.swift */,
 				239A14411FD5DB7000D414BB /* WatchTabViewController.swift */,
+				23DB019D1FDA334B006E71DC /* MovieTheaterResultsTableViewController.swift */,
 			);
 			path = "View  Controllers";
 			sourceTree = "<group>";
@@ -252,6 +255,7 @@
 				23E2554C1FC4812C00D5C23B /* CoreDataStack.swift in Sources */,
 				23E2554F1FC4815100D5C23B /* Wonder?.xcdatamodeld in Sources */,
 				23CF62EB1FD99EA2002B6062 /* TheaterMovie.swift in Sources */,
+				23DB019E1FDA334B006E71DC /* MovieTheaterResultsTableViewController.swift in Sources */,
 				23E255591FC48BD100D5C23B /* MovieController.swift in Sources */,
 				23E255361FC37C4100D5C23B /* GenresController.swift in Sources */,
 				239A14421FD5DB7000D414BB /* WatchTabViewController.swift in Sources */,
