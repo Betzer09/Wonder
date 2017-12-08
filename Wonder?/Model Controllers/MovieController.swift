@@ -16,10 +16,10 @@ class MovieController {
     var discoveredMoviesBasedOnGenres: [Movie] = []
     var nowPlayingMovies: [Movie] = []
     var moviesThatAreSimilar: [Movie] = []
-    var recommendedMovieTheaterMoviesToDisplayToTheUser: [TheatreMovies.TheaterMovie] = []
+    var recommendedMovieTheaterMoviesToDisplayToTheUser: [TheatreMovies.TheaterMovie]? = []
     var timer = Timer()
     
-    // MARK: - Methods
+    // MARK: - Fetch Functions
     /// Movie DB recommeded Movies
     func fetchRecommendedMovieWith(id: Int, completion: @escaping (Movie?) -> Void) {
         
@@ -135,7 +135,7 @@ class MovieController {
     }
     
     //https://api.themoviedb.org/3/movie/562/similar?api_key=c366b28fa7f90e98f633846b3704570c&language=en-US&page=1
-    func fetchMoviesThatAreSimilarWith(movie id: Int, completion: @escaping ([Movie]?) -> Void) {
+   private func fetchMoviesThatAreSimilarWith(movie id: Int, completion: @escaping ([Movie]?) -> Void) {
         let baseURL = URL(string: "https://api.themoviedb.org/3/movie/")!.appendingPathComponent("\(id)")
         
         var urlComponents = URLComponents(url: baseURL, resolvingAgainstBaseURL: true)
@@ -166,14 +166,14 @@ class MovieController {
             }
             
             
-        }
+        }.resume()
         
         
     }
     
     //https://api.themoviedb.org/3/movie/now_playing?api_key=c366b28fa7f90e98f633846b3704570c&language=en-US&page=3
     /// This returns movies that are currently playing according to the movieDB
-    func fetchMoviesThatAreNowPlaying(page: Int, completion: @escaping ([Movie]?) -> Void) {
+    private func fetchMoviesThatAreNowPlaying(page: Int, completion: @escaping ([Movie]?) -> Void) {
         let baseURL = URL(string: "https://api.themoviedb.org/3/movie/now_playing")
         
         guard let unwrappedURL = baseURL else {NSLog("Bad \"Now Playing\" URL \(#file) and function \(#function)"); return}
@@ -207,15 +207,16 @@ class MovieController {
                 print("Error initalzing Now Playing movies in function \(#file) and function: \(#function) becuase of error: \(error.localizedDescription)")
             }
             
-        }
+        }.resume()
         
         
     }
     
     
-    func returnRecommendMovies() {
+    func returnRecommendMovies() -> [TheatreMovies.TheaterMovie] {
+        // If the answer is true they want to go the the movie theaters
         let answer = QuestionController.shared.doesTheUserWantToGoOut()
-        
+        var value: [TheatreMovies.TheaterMovie] = []
         // Fetch movies in theaters
         if answer {
             // Fetch theaterMovies that are in theaters if this fails just fetch movies that are in theaters using the movieDB
@@ -246,8 +247,9 @@ class MovieController {
                         // Filter out all the movies that don't match their liked genres
                         let moviesThatMatchTheLikedGenres = self.findSimilarMovies(moviesThatAreSimilar: moviesThatAreSimilar)
                         self.recommendedMovieTheaterMoviesToDisplayToTheUser = self.turnMoviesIntoATheaterMoviesWith(movies: moviesThatMatchTheLikedGenres)
-                        
+                        value = self.turnMoviesIntoATheaterMoviesWith(movies: moviesThatMatchTheLikedGenres)
                     })
+
                     
                 }
                 
@@ -260,6 +262,7 @@ class MovieController {
             // If they don't like a movie that's reccomend filter out all simlar movies
         }
         
+        return value
     }
     
     // MARK: - Functions
@@ -284,7 +287,7 @@ class MovieController {
         
     }
     
-    func findSimilarMovies(moviesThatAreSimilar: [Movie]) -> [Movie] {
+   private func findSimilarMovies(moviesThatAreSimilar: [Movie]) -> [Movie] {
         let likedGenreIDs = GenresController.shared.likedMovieGenres.map({ $0.id }).sorted()
         var similarIDS = 0
         var moviesToReturn: [Movie] = []
@@ -311,7 +314,7 @@ class MovieController {
     }
     
     /// This finds movies that are similar and returns and array of movies
-    func findMoviesThatAreSimilarWith(_ similarMovies: [String], movies: [Movie]) -> [Movie] {
+   private func findMoviesThatAreSimilarWith(_ similarMovies: [String], movies: [Movie]) -> [Movie] {
         var moviesThatAreSimilar: [Movie] = []
         for movieName in similarMovies {
             
@@ -327,7 +330,7 @@ class MovieController {
     }
     
     /// This checks for similar titles and returns an array of string titles
-    func checkForSimilarTitlesWith(theaterMovieNames: [String], moviesDBNames: [String]) -> [String] {
+   private func checkForSimilarTitlesWith(theaterMovieNames: [String], moviesDBNames: [String]) -> [String] {
         
         var similarMovies: [String] = []
         

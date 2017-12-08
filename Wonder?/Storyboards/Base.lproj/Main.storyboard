@@ -195,6 +195,7 @@
                         <outlet property="thumbImageView" destination="WGI-3p-5RL" id="Jrn-dN-AOP"/>
                         <outlet property="topCardImage" destination="NnE-bo-ltf" id="2im-Go-sKB"/>
                         <outlet property="topCardView" destination="HDy-ai-wWh" id="Ckb-3K-VR3"/>
+                        <outlet property="userInfoLabel" destination="ubw-91-xaH" id="vpW-Gm-Js0"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="08S-pG-us9" userLabel="First Responder" sceneMemberID="firstResponder"/>

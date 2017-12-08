@@ -19,6 +19,8 @@ class SwipeViewController: UIViewController {
     @IBOutlet weak var customTopCardLabel: UILabel!
     @IBOutlet weak var customBottomCardLabel: UILabel!
     @IBOutlet var panGestureRecognizer: UIPanGestureRecognizer!
+    @IBOutlet weak var userInfoLabel: UILabel!
+    
     
     
     // MARK: - Properties
@@ -98,7 +100,10 @@ class SwipeViewController: UIViewController {
                             self.prepareForNextQuestion(question: question, isLiked: false, completion: { (isComplete) in
                                 if isComplete {
                                     // TODO: -  Fetch Movies
+                                    let test = MovieController.shared.returnRecommendMovies()
+                                    
                                     self.setCustomText(toLabel: self.customBottomCardLabel, text: "Coming SOOOOOOON")
+                                    
                                 }
                             })
                         }
@@ -118,6 +123,8 @@ class SwipeViewController: UIViewController {
                         self.prepareForNextQuestion(question: question, isLiked: true, completion: { (isComplete) in
                             if isComplete {
                                 // TODO: -  Fetch Movies
+                                let test = MovieController.shared.returnRecommendMovies()
+                                
                                 self.setCustomText(toLabel: self.customBottomCardLabel, text: "Coming SOOOOOOON")
                             }
                         })
@@ -133,11 +140,11 @@ class SwipeViewController: UIViewController {
     
     // MARK: - Methods
     func prepareForNextQuestion(question: Question, isLiked: Bool, completion: (_ isComplete: Bool) -> Void ) {
+        QuestionController.shared.toggleStatusForQuestion(question: question, isLiked: isLiked)
         if questionCounter == 3 {
             self.configureBottomCardAsQuestion(self.bottomCardView)
             completion(true)
         } else {
-            QuestionController.shared.toggleStatusForQuestion(question: question, isLiked: isLiked)
             self.configureBottomCardAsQuestion(self.bottomCardView)
             completion(false)
         }
