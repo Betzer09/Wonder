@@ -1,6 +1,5 @@
 {
-    "genres": [
-               {
+    "genres": [{
                "id": 28,
                "name": "Action"
                },
@@ -55,7 +54,7 @@
                {
                "id": 37,
                "name": "Western"
-               }
+               },
                {
                "id": 10402,
                "name": "Music"
@@ -75,6 +74,6 @@
                {
                "id": 10770,
                "name": "TV Movie"
-               },
+               }
                ]
 }

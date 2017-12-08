@@ -60,9 +60,12 @@ class GenresController {
         
         
         let decoder = JSONDecoder()
-        guard let movieGenresList = (try? decoder.decode(Genres.self, from: data)) else {print("Error decoding Movie Genres in function \(#function)"); return}
-        
-        movieGenres = movieGenresList.genres
+        do {
+            let movieGenresList = try decoder.decode(Genres.self, from: data)
+            movieGenres = movieGenresList.genres
+        } catch {
+            NSLog("Error decoding Movie Genres in function \(#function): \(error)")
+        }
     }
     
     func fetchImageForGenre(genres: [Genre]) {

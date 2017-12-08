@@ -73,25 +73,3 @@ struct TheatreMovies: Decodable {
     }
     
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
