@@ -100,8 +100,7 @@ class SwipeViewController: UIViewController {
                             self.prepareForNextQuestion(question: question, isLiked: false, completion: { (isComplete) in
                                 if isComplete {
                                     // TODO: -  Fetch Movies
-                                    let test = MovieController.shared.returnRecommendMovies()
-                                    
+                                    self.presentTheaterMovieResultsViewController()
                                     self.setCustomText(toLabel: self.customBottomCardLabel, text: "Coming SOOOOOOON")
                                     
                                 }
@@ -123,10 +122,7 @@ class SwipeViewController: UIViewController {
                         self.prepareForNextQuestion(question: question, isLiked: true, completion: { (isComplete) in
                             if isComplete {
                                 // TODO: -  Fetch Movies
-                                let test = MovieController.shared.returnRecommendMovies()
-                                let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                                let controller = storyboard.instantiateViewController(withIdentifier: "movieResultsStoryboard")
-                                self.present(controller, animated: true, completion: nil)
+                                self.presentTheaterMovieResultsViewController()
                                 self.setCustomText(toLabel: self.customBottomCardLabel, text: "Coming SOOOOOOON")
                             }
                         })
@@ -141,7 +137,12 @@ class SwipeViewController: UIViewController {
     }
     
     // MARK: - Methods
-    func prepareForNextQuestion(question: Question, isLiked: Bool, completion: (_ isComplete: Bool) -> Void ) {
+    private func presentTheaterMovieResultsViewController() {
+        let test = MovieController.shared.returnRecommendMovies()
+        self.performSegue(withIdentifier: "toResultsTVC", sender: self)
+    }
+    
+   private func prepareForNextQuestion(question: Question, isLiked: Bool, completion: (_ isComplete: Bool) -> Void ) {
         QuestionController.shared.toggleStatusForQuestion(question: question, isLiked: isLiked)
         if questionCounter == 3 {
             self.configureBottomCardAsQuestion(self.bottomCardView)
@@ -153,7 +154,7 @@ class SwipeViewController: UIViewController {
         
     }
     
-    func completeAnimationForGenreUsing(card: UIView, likedGenresCount: Int ,genreToModify: Genre, isLiked: Bool) {
+    private func completeAnimationForGenreUsing(card: UIView, likedGenresCount: Int ,genreToModify: Genre, isLiked: Bool) {
         self.resetTopCardForGenres(card)
         self.checkIfTheGenreNeedsToggled(withCount: likedGenresCount, andGenre: genreToModify, isLiked: isLiked)
         
@@ -189,7 +190,7 @@ class SwipeViewController: UIViewController {
     
     
     // MARK: - Card Button Animations
-    func panCardAnimation(card: UIView, point: CGPoint, xFromCenter: CGFloat, scale: CGFloat) {
+   private func panCardAnimation(card: UIView, point: CGPoint, xFromCenter: CGFloat, scale: CGFloat) {
         if xFromCenter > 0 {
             // The card is going right
             thumbImageView.image = #imageLiteral(resourceName: "thumbsUp")
@@ -204,7 +205,7 @@ class SwipeViewController: UIViewController {
     }
     
     /// Animates the top card to slide to the right
-    func animateTopCardWhenLikeButtonIsPressed() {
+  private  func animateTopCardWhenLikeButtonIsPressed() {
         guard let card = self.topCardView else {return}
         if hasLikeButtonAnimationCompleted {
             self.hasLikeButtonAnimationCompleted = false
@@ -224,6 +225,7 @@ class SwipeViewController: UIViewController {
                     self.prepareForNextQuestion(question: question, isLiked: true, completion: { (isComplete) in
                         if isComplete {
                             // TODO: -  Fetch Movies
+                            self.presentTheaterMovieResultsViewController()
                             self.setCustomText(toLabel: self.customBottomCardLabel, text: "Coming SOOOOOOON")
                         }
                     })
@@ -233,7 +235,7 @@ class SwipeViewController: UIViewController {
     }
     
     /// Animates the top card to slide to the left
-    func animateTopCardWhenDislikeButtonIsPressed() {
+    private func animateTopCardWhenDislikeButtonIsPressed() {
         guard let card = self.topCardView else {return}
         if disLikeButtonAnimationCompleted {
             self.disLikeButtonAnimationCompleted = false
@@ -260,6 +262,7 @@ class SwipeViewController: UIViewController {
                         self.prepareForNextQuestion(question: question, isLiked: false, completion: { (isComplete) in
                             if isComplete {
                                 // TODO: -  Fetch Movies
+                                self.presentTheaterMovieResultsViewController()
                                 self.setCustomText(toLabel: self.customBottomCardLabel, text: "Coming SOOOOOOON")
                             }
                         })
@@ -272,7 +275,7 @@ class SwipeViewController: UIViewController {
     
     
     // MARK: - SetUp UI
-    func configureView() {
+    private func configureView() {
         // Reset this value evertime the view is loaded so the expirances is the same
         GenresController.shared.genreMoviesThatHaveAlreadyBeenDisplayed.removeAll()
         
@@ -293,7 +296,7 @@ class SwipeViewController: UIViewController {
         }
     }
     
-    func fetchTheTopCardImageWith(genre: Genre) {
+   private func fetchTheTopCardImageWith(genre: Genre) {
         guard let data = genre.genreImageData else {print("Error there is no image data for genre \"\(genre.name)\" in file \(#file) and function \(#function)"); return}
         DispatchQueue.main.async {
             self.topCardImage.image = UIImage(data: data)
@@ -301,22 +304,25 @@ class SwipeViewController: UIViewController {
         self.setCustomText(toLabel: self.customTopCardLabel, text: "Do you like \(GenresController.shared.movieGenres[self.indexOfGenre].name) movies?")
     }
     
-    func fetchTheBottomCardImageWith(genre: Genre) {
+    private func fetchTheBottomCardImageWith(genre: Genre) {
         guard let data = genre.genreImageData else {print("Error there is no image data for genre \"\(genre.name)\" in file \(#file) and function \(#function)"); return}
+        
         DispatchQueue.main.async {
             self.bottomCardImage.image = UIImage(data: data)
         }
         self.setCustomText(toLabel: self.customBottomCardLabel, text: "Do you like \(GenresController.shared.movieGenres[self.indexOfGenre + 1].name) movies?")
     }
     
-    func resetView() {
+    private func resetView() {
         GenresController.shared.likedMovieGenres.removeAll()
         GenresController.shared.unlikedMovieGenres.removeAll()
         indexOfGenre = 0
+        questionCounter = 0
+        switchToQuestions = false
     }
     
     /// Checks to see if the genre needs to be toggled
-    func checkIfTheGenreNeedsToggled(withCount count: Int, andGenre genre: Genre, isLiked: Bool) {
+   private func checkIfTheGenreNeedsToggled(withCount count: Int, andGenre genre: Genre, isLiked: Bool) {
         // This will toggle the genre as long as they haven't already liked three.
         if count < 3 {
             GenresController.shared.toggleIsLikedStatusFor(genre: genre, isLiked: isLiked)
@@ -341,8 +347,7 @@ class SwipeViewController: UIViewController {
         }
         print("There are \(likedGenresCount!) Liked Genres")
     }
-    
-    
+
     private func resetTopCardForGenres(_ card: UIView?) {
         guard let card = card else {
             self.setCustomText(toLabel: self.customTopCardLabel, text: "Do you like \(GenresController.shared.movieGenres[self.indexOfGenre + 1].name) movies?")
@@ -413,5 +418,11 @@ class SwipeViewController: UIViewController {
             card.alpha = 1
             card.transform = .identity
         }
+    }
+    
+
+    // MARK: - Navigation 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+
     }
 }

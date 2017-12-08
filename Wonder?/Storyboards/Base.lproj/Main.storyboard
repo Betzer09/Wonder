@@ -44,7 +44,7 @@
             </objects>
             <point key="canvasLocation" x="-133" y="899"/>
         </scene>
-        <!--Find A Genre-->
+        <!--What Suits You-->
         <scene sceneID="sjc-QK-to5">
             <objects>
                 <viewController storyboardIdentifier="swipeViewController" id="h4d-h6-anm" customClass="SwipeViewController" customModule="Wonder_" customModuleProvider="target" sceneMemberID="viewController">
@@ -185,7 +185,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Tob-1Y-XXQ"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Find A Genre" id="5Yp-Zm-zV0"/>
+                    <navigationItem key="navigationItem" title="What Suits You" id="5Yp-Zm-zV0"/>
                     <connections>
                         <outlet property="bottomCardImage" destination="YZ3-n3-Een" id="W04-OI-A49"/>
                         <outlet property="bottomCardView" destination="5be-Wx-QoH" id="p5V-1R-25M"/>
@@ -196,6 +196,7 @@
                         <outlet property="topCardImage" destination="NnE-bo-ltf" id="2im-Go-sKB"/>
                         <outlet property="topCardView" destination="HDy-ai-wWh" id="Ckb-3K-VR3"/>
                         <outlet property="userInfoLabel" destination="ubw-91-xaH" id="vpW-Gm-Js0"/>
+                        <segue destination="0Fm-eY-H4Y" kind="show" identifier="toResultsTVC" id="4PJ-m1-7Ia"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="08S-pG-us9" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -215,34 +216,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <view key="tableHeaderView" contentMode="scaleToFill" id="cl1-am-Pf0">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <subviews>
-                                <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dHW-VD-6eU">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                                    <items>
-                                        <navigationItem title="Results!" id="mjG-fh-a9P">
-                                            <barButtonItem key="leftBarButtonItem" title="Back" id="xVP-Th-PIs">
-                                                <connections>
-                                                    <action selector="backButtonPressed:" destination="0Fm-eY-H4Y" id="tc4-jp-XfD"/>
-                                                </connections>
-                                            </barButtonItem>
-                                        </navigationItem>
-                                    </items>
-                                </navigationBar>
-                            </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <constraints>
-                                <constraint firstItem="dHW-VD-6eU" firstAttribute="leading" secondItem="cl1-am-Pf0" secondAttribute="leading" id="7Kv-Bx-9jl"/>
-                                <constraint firstAttribute="trailing" secondItem="dHW-VD-6eU" secondAttribute="trailing" id="p23-ht-12z"/>
-                                <constraint firstAttribute="bottom" secondItem="dHW-VD-6eU" secondAttribute="bottom" id="rSM-9l-ah7"/>
-                                <constraint firstItem="dHW-VD-6eU" firstAttribute="top" secondItem="cl1-am-Pf0" secondAttribute="top" id="tEY-8X-Ozv"/>
-                            </constraints>
-                        </view>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="movieTheaterResultsCell" id="rkq-qj-oWJ">
-                                <rect key="frame" x="0.0" y="72" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="28" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="rkq-qj-oWJ" id="4Wv-0t-Uyo">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
@@ -255,10 +231,14 @@
                             <outlet property="delegate" destination="0Fm-eY-H4Y" id="632-jc-iiq"/>
                         </connections>
                     </tableView>
+                    <connections>
+                        <segue destination="jmF-Gp-BSW" kind="unwind" identifier="toMovieTBVC" unwindAction="unwindSegue:" id="3vY-bu-x9s"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Cwf-qu-etq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="jmF-Gp-BSW" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1688" y="-1055"/>
+            <point key="canvasLocation" x="1824" y="-1055"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="uSA-b6-RKC">
@@ -301,7 +281,7 @@
         <!--What are you looking for?-->
         <scene sceneID="02p-Az-75i">
             <objects>
-                <viewController id="Zqf-zt-0Kb" customClass="WatchTabViewController" customModule="Wonder_" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="watchTabVC" id="Zqf-zt-0Kb" customClass="WatchTabViewController" customModule="Wonder_" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="tEm-Tw-ZQA">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

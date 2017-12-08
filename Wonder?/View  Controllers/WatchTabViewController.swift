@@ -25,6 +25,10 @@ class WatchTabViewController: UIViewController {
     @IBAction func FindTvShowButtonPressed(_ sender: Any) {
     }
     
+    @IBAction func unwindSegue(_ segue: UIStoryboardSegue) {
+        
+    }
+    
     /*
      
     // MARK: - Navigation

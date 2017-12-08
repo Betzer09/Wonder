@@ -14,17 +14,22 @@ class MovieTheaterResultsTableViewController: UITableViewController {
     
     
     // MARK: - View LifeCycles
-    
-    
-    // MARK: - Actions
-    @IBAction func backButtonPressed(_ sender: UIBarButtonItem) {
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
-//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-//        let controller = storyboard.instantiateViewController(withIdentifier: "swipeViewController")
-//        self.present(controller, animated: true, completion: nil)
+//        navigationItem.leftBarButtonItem?.action = #selector(presentMovieVC)
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Try Again", style: .done, target: self, action: #selector(presentMovieVC))
         
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+    
+    // MARK: - Actions
+    @objc func presentMovieVC() {
+        self.performSegue(withIdentifier: "toMovieTBVC", sender: self)
+    }
     
     // MARK: - Table view data source
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -43,13 +48,11 @@ class MovieTheaterResultsTableViewController: UITableViewController {
         if editingStyle == .delete {
             
             tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            
         }
     }
     
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
+
     }
 }
