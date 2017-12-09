@@ -24,7 +24,9 @@ struct Movie: Decodable, Equatable {
     let releaseDate: String
     let video: Bool
     let id: Int
-    let isLiked: Bool? = nil
+    var isLiked: Bool? = nil
+    var imageData: Data? = nil
+    var isSimilarTo: String? = ""
     
     enum CodingKeys: String, CodingKey {
         case title
@@ -36,7 +38,6 @@ struct Movie: Decodable, Equatable {
         case releaseDate = "release_date"
         case voteAverage = "vote_average"
         case posterPath = "poster_path"
-        case isLiked
 
     }
 }
@@ -44,4 +45,3 @@ struct Movie: Decodable, Equatable {
 struct Movies: Decodable {
     var results: [Movie]
 }
-

@@ -46,6 +46,7 @@ class GenresController {
     
     
     // MARK: - Fetch Functions
+    
     /// Fetches the Movie Genres from the device
     func fetchMovieGenres(completion: @escaping (([Genre]?) -> Void) = {_ in}) {
         
@@ -184,11 +185,3 @@ class GenresController {
     }
     
 }
-
-
-
-
-
-
-
-

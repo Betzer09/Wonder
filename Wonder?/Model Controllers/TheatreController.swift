@@ -82,23 +82,3 @@ class TheatreController {
     }
     
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

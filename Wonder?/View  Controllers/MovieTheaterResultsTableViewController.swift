@@ -16,8 +16,6 @@ class MovieTheaterResultsTableViewController: UITableViewController {
     // MARK: - View LifeCycles
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-//        navigationItem.leftBarButtonItem?.action = #selector(presentMovieVC)
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Try Again", style: .done, target: self, action: #selector(presentMovieVC))
         
     }
@@ -33,12 +31,18 @@ class MovieTheaterResultsTableViewController: UITableViewController {
     
     // MARK: - Table view data source
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        guard let count = MovieController.shared.recommendedTheaterMoviesToDisplayToTheUser?.count else {return 1}
+        return count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "movieTheaterResultsCell", for: indexPath)
         
+        guard let theaterMovies = MovieController.shared.recommendedTheaterMoviesToDisplayToTheUser else {return UITableViewCell()}
+        
+        let movie = theaterMovies[indexPath.row]
+        cell.textLabel?.text = movie.title
+        cell.detailTextLabel?.text = movie.releaseDate
         
         return cell
     }
