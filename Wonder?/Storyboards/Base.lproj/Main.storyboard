@@ -44,7 +44,7 @@
             </objects>
             <point key="canvasLocation" x="1114" y="-147"/>
         </scene>
-        <!--What Suits You-->
+        <!--Lets Find A Movie-->
         <scene sceneID="sjc-QK-to5">
             <objects>
                 <viewController storyboardIdentifier="swipeViewController" id="h4d-h6-anm" customClass="SwipeViewController" customModule="Wonder_" customModuleProvider="target" sceneMemberID="viewController">
@@ -56,7 +56,7 @@
                                 <rect key="frame" x="53.5" y="142" width="213" height="284"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="noImageView" translatesAutoresizingMaskIntoConstraints="NO" id="YZ3-n3-Een">
-                                        <rect key="frame" x="35" y="8" width="142" height="189.5"/>
+                                        <rect key="frame" x="26" y="35.5" width="160" height="213"/>
                                     </imageView>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="AKl-TA-ZgI" userLabel="Bottom Thumb Image View">
                                         <rect key="frame" x="71" y="95" width="71" height="95"/>
@@ -73,19 +73,19 @@
                                     <constraint firstAttribute="bottom" secondItem="80b-eO-17P" secondAttribute="bottom" constant="16" id="393-VT-2Vx"/>
                                     <constraint firstItem="AKl-TA-ZgI" firstAttribute="centerY" secondItem="5be-Wx-QoH" secondAttribute="centerY" id="C5G-XU-xVa"/>
                                     <constraint firstItem="80b-eO-17P" firstAttribute="centerX" secondItem="5be-Wx-QoH" secondAttribute="centerX" id="GyV-TP-bLJ"/>
-                                    <constraint firstItem="YZ3-n3-Een" firstAttribute="width" secondItem="5be-Wx-QoH" secondAttribute="width" multiplier="2/3" id="JkS-uU-qNt"/>
-                                    <constraint firstItem="YZ3-n3-Een" firstAttribute="top" secondItem="5be-Wx-QoH" secondAttribute="top" constant="8" id="Ley-1A-PgU"/>
+                                    <constraint firstItem="YZ3-n3-Een" firstAttribute="width" secondItem="5be-Wx-QoH" secondAttribute="width" multiplier="3/4" id="JkS-uU-qNt"/>
                                     <constraint firstItem="AKl-TA-ZgI" firstAttribute="centerX" secondItem="5be-Wx-QoH" secondAttribute="centerX" id="LiV-dv-2ov"/>
                                     <constraint firstItem="YZ3-n3-Een" firstAttribute="centerX" secondItem="5be-Wx-QoH" secondAttribute="centerX" id="bxx-a3-SuD"/>
                                     <constraint firstItem="80b-eO-17P" firstAttribute="width" secondItem="5be-Wx-QoH" secondAttribute="width" id="cKk-YE-kki"/>
-                                    <constraint firstItem="YZ3-n3-Een" firstAttribute="height" secondItem="5be-Wx-QoH" secondAttribute="height" multiplier="2/3" id="ebq-jk-I4Y"/>
+                                    <constraint firstItem="YZ3-n3-Een" firstAttribute="height" secondItem="5be-Wx-QoH" secondAttribute="height" multiplier="3/4" id="ebq-jk-I4Y"/>
+                                    <constraint firstItem="YZ3-n3-Een" firstAttribute="centerY" secondItem="5be-Wx-QoH" secondAttribute="centerY" id="tPa-Pe-gO3"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HDy-ai-wWh" userLabel="Top Card View">
                                 <rect key="frame" x="53.5" y="142" width="213" height="284"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="noImageView" translatesAutoresizingMaskIntoConstraints="NO" id="NnE-bo-ltf">
-                                        <rect key="frame" x="36" y="8" width="142" height="189.5"/>
+                                        <rect key="frame" x="27" y="35.5" width="160" height="213"/>
                                     </imageView>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="WGI-3p-5RL">
                                         <rect key="frame" x="71" y="94.5" width="71" height="95"/>
@@ -101,16 +101,16 @@
                                 <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstItem="oIa-33-gOq" firstAttribute="centerX" secondItem="HDy-ai-wWh" secondAttribute="centerX" id="1UH-JN-lID"/>
+                                    <constraint firstItem="NnE-bo-ltf" firstAttribute="centerY" secondItem="HDy-ai-wWh" secondAttribute="centerY" id="2hR-8r-LjL"/>
                                     <constraint firstItem="WGI-3p-5RL" firstAttribute="centerX" secondItem="HDy-ai-wWh" secondAttribute="centerX" id="CqU-eQ-AfO"/>
                                     <constraint firstItem="WGI-3p-5RL" firstAttribute="height" secondItem="HDy-ai-wWh" secondAttribute="height" multiplier="1/3" id="Css-IP-si5"/>
                                     <constraint firstItem="WGI-3p-5RL" firstAttribute="centerY" secondItem="HDy-ai-wWh" secondAttribute="centerY" id="TAA-hh-OLS"/>
-                                    <constraint firstItem="NnE-bo-ltf" firstAttribute="width" secondItem="HDy-ai-wWh" secondAttribute="width" multiplier="2/3" id="bYY-vL-Bp4"/>
+                                    <constraint firstItem="NnE-bo-ltf" firstAttribute="width" secondItem="HDy-ai-wWh" secondAttribute="width" multiplier="3/4" id="bYY-vL-Bp4"/>
                                     <constraint firstItem="WGI-3p-5RL" firstAttribute="width" secondItem="HDy-ai-wWh" secondAttribute="width" multiplier="1/3" id="c50-dQ-VSX"/>
                                     <constraint firstItem="oIa-33-gOq" firstAttribute="width" secondItem="HDy-ai-wWh" secondAttribute="width" id="fBS-XK-Bat"/>
-                                    <constraint firstItem="NnE-bo-ltf" firstAttribute="height" secondItem="HDy-ai-wWh" secondAttribute="height" multiplier="2/3" id="g5B-Ah-bkI"/>
+                                    <constraint firstItem="NnE-bo-ltf" firstAttribute="height" secondItem="HDy-ai-wWh" secondAttribute="height" multiplier="3/4" id="g5B-Ah-bkI"/>
                                     <constraint firstItem="NnE-bo-ltf" firstAttribute="centerX" secondItem="HDy-ai-wWh" secondAttribute="centerX" id="gQl-Lr-HtU"/>
                                     <constraint firstAttribute="bottom" secondItem="oIa-33-gOq" secondAttribute="bottom" constant="16" id="nD3-iZ-eZH"/>
-                                    <constraint firstItem="NnE-bo-ltf" firstAttribute="top" secondItem="HDy-ai-wWh" secondAttribute="top" constant="8" id="oXY-BR-Pmy"/>
                                 </constraints>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="TSC-aq-kOi" appends="YES" id="cEh-YA-kce"/>
@@ -192,7 +192,9 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Tob-1Y-XXQ"/>
                     </view>
-                    <navigationItem key="navigationItem" title="What Suits You" id="5Yp-Zm-zV0"/>
+                    <navigationItem key="navigationItem" title="Lets Find A Movie" id="5Yp-Zm-zV0">
+                        <barButtonItem key="backBarButtonItem" title="Movies" id="7Q0-O1-7EY"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="bottomCardImage" destination="YZ3-n3-Een" id="W04-OI-A49"/>
                         <outlet property="bottomCardView" destination="5be-Wx-QoH" id="p5V-1R-25M"/>
@@ -307,9 +309,9 @@
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mo9-c4-s4a">
                                 <rect key="frame" x="0.0" y="210" width="320" height="142"/>
-                                <color key="backgroundColor" red="0.1963317215" green="0.1987611792" blue="0.1417067847" alpha="0.81073943660000003" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="24"/>
-                                <state key="normal" title="Create Your Own">
+                                <color key="backgroundColor" red="0.074027113620000001" green="0.09018871933" blue="0.094423674050000003" alpha="0.70202464789999997" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="24"/>
+                                <state key="normal" title="Create Your Own Categorys">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
@@ -319,8 +321,8 @@
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hed-HI-KZQ">
                                 <rect key="frame" x="0.0" y="68" width="320" height="142"/>
-                                <color key="backgroundColor" red="0.19633172150708184" green="0.19876117919689118" blue="0.14170678473276149" alpha="0.81073943661971826" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="24"/>
+                                <color key="backgroundColor" red="0.074027113620000001" green="0.09018871933" blue="0.094423674050000003" alpha="0.70202464789999997" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="24"/>
                                 <state key="normal" title="Find A Movie">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>

@@ -9,10 +9,6 @@
 import UIKit
 
 class SwipeViewController: UIViewController {
-    
-    // MARK: - Notifcations
-    let questionCounterObserver = Notification.Name("questionCounterObserver")
-    
     // MARK: - Outlets
     @IBOutlet var panGestureRecognizer: UIPanGestureRecognizer!
     @IBOutlet weak var topCardView: UIView!
@@ -24,7 +20,8 @@ class SwipeViewController: UIViewController {
     @IBOutlet weak var customBottomCardLabel: UILabel!
     @IBOutlet weak var userInfoLabel: UILabel!
     
-    
+    // MARK: - Notifcations
+    let questionCounterObserver = Notification.Name("questionCounterObserver")
     
     // MARK: - Counter Properties
     var questionCounter = 0 {
@@ -32,6 +29,7 @@ class SwipeViewController: UIViewController {
             NotificationCenter.default.post(name: questionCounterObserver, object: nil)
         }
     }
+    
     var indexOfGenre = 0
     var similerMoviesCounter = 0
     
@@ -40,8 +38,9 @@ class SwipeViewController: UIViewController {
     
     // MARK: - Array Properties
     var discoveredMovies: [Movie] = []
+    /// This is an array full of similar movies that we will display to the user.
     var similarMoviesToWhatWeWillRecommend: [Movie] = []
-//    var bottomCardImageHolder: UIImage?
+
     
     // MARK: - Boolean Properties
     var switchToQuestions = false
@@ -63,15 +62,13 @@ class SwipeViewController: UIViewController {
         
         // Watches to see if a genre has been updated
         NotificationCenter.default.addObserver(self, selector: #selector(refreshLikeGenres), name: GenresController.likedMovieGenresArrayWasUpdated, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(refreshSimilarMovies), name: MovieController.similarRecommendedMoviesWereUpdated, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshSimilarMovies), name: MovieController.similarMoviesToDisplayToTheUserWasUpdated, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(presentSimilerMoviesToTheUser), name: questionCounterObserver, object: nil)
         resetView()
     }
 
     
     // MARK: - Actions
-    
-    
     @IBAction func panCard(_ sender: UIPanGestureRecognizer) {
         guard let card = sender.view else {return }
         let point = sender.translation(in: view)
@@ -108,7 +105,6 @@ class SwipeViewController: UIViewController {
                                 if isComplete {
                                     // TODO: -  Fetch Movies
                                     // Fetch similar movies to the genres they like
-                                    MovieController.shared.returnRecommendMovies()
                                     
                                     // Start showing them similar movies  
                                 }
@@ -130,7 +126,7 @@ class SwipeViewController: UIViewController {
                         self.prepareForNextQuestion(question: question, isLiked: true, completion: { (isComplete) in
                             if isComplete {
                                 // TODO: -  Fetch Movies
-                                MovieController.shared.returnRecommendMovies()
+                                // Start showing them similar movies
                             }
                         })
                     }
@@ -245,6 +241,24 @@ class SwipeViewController: UIViewController {
         // Reset this value evertime the view is loaded so the expirances is the same
         GenresController.shared.genreMoviesThatHaveAlreadyBeenDisplayed.removeAll()
         
+        self.topCardView.layer.cornerRadius = 20.0
+        self.bottomCardView.layer.cornerRadius = 20.0
+        
+        self.topCardImage.layer.shadowColor = UIColor.black.cgColor
+        self.topCardImage.layer.shadowOpacity = 1
+        self.topCardImage.layer.shadowOffset = CGSize.zero
+        self.topCardImage.layer.shadowRadius = 15
+        self.topCardImage.layer.shadowPath = UIBezierPath(rect: topCardImage.bounds).cgPath
+        self.topCardImage.layer.shouldRasterize = true
+        
+        self.bottomCardImage.layer.shadowColor = UIColor.black.cgColor
+        self.bottomCardImage.layer.shadowOpacity = 1
+        self.bottomCardImage.layer.shadowOffset = CGSize.zero
+        self.bottomCardImage.layer.shadowRadius = 15
+        self.bottomCardImage.layer.shadowPath = UIBezierPath(rect: bottomCardImage.bounds).cgPath
+        self.bottomCardImage.layer.shouldRasterize = true
+        
+        
         maxMovieGenreCount = GenresController.shared.movieGenres.count
         likedGenresCount = GenresController.shared.likedMovieGenres.count
         discoveredMovies = MovieController.shared.discoveredMoviesBasedOnGenres
@@ -267,8 +281,6 @@ class SwipeViewController: UIViewController {
     // MARK: - Notifications Functions
     
     @objc func presentSimilerMoviesToTheUser() {
-//        MovieController.shared.filterOutSimilarMoviesBasedOnSimilarMovieStatus()
-//        self.similarMoviesToWhatWeWillRecommend = MovieController.shared.similarRecommendedMovies
         NSLog("\(questionCounter)")
         if questionCounter > 3 {
             guard let card = topCardView else {return}
@@ -277,8 +289,7 @@ class SwipeViewController: UIViewController {
     }
 
     @objc func refreshSimilarMovies() {
-        MovieController.shared.filterOutSimilarMoviesBasedOnSimilarMovieStatus()
-        self.similarMoviesToWhatWeWillRecommend = MovieController.shared.similarRecommendedMovies
+        self.similarMoviesToWhatWeWillRecommend = MovieController.shared.similarMoviesToDisplayToTheUser
         
         if similarMoviesToWhatWeWillRecommend.count <= 3 {
             self.presentTheaterMovieResultsViewController()
@@ -304,9 +315,10 @@ class SwipeViewController: UIViewController {
         self.performSegue(withIdentifier: "toResultsTVC", sender: self)
     }
     
-    private func prepareForNextQuestion(question: Question, isLiked: Bool, completion: (_ isComplete: Bool) -> Void ) {
+    private func prepareForNextQuestion(question: Question, isLiked: Bool, completion: @escaping (_ isComplete: Bool) -> Void ) {
         QuestionController.shared.toggleStatusForQuestion(question: question, isLiked: isLiked)
         if questionCounter == 3 {
+            // We have answered all of the questions it is now time to fetch movies 
             self.configureBottomCardAsQuestion(self.bottomCardView)
             completion(true)
         } else {
@@ -373,12 +385,19 @@ class SwipeViewController: UIViewController {
     
     private func resetTopCardWitSimilarMovies(_ card: UIView) {
         
-        let similarMovie = similarMoviesToWhatWeWillRecommend[similerMoviesCounter]
+        MovieController.shared.fetchRecommendedMovies(completion: { (isComplete) in
+            if isComplete {
+                self.similarMoviesToWhatWeWillRecommend = MovieController.shared.similarRecommendedMovies
+                let similarMovie = self.similarMoviesToWhatWeWillRecommend[self.similerMoviesCounter]
+                
+                
+                guard let imageDate = similarMovie.imageData else {NSLog("Error there is not image data for \(similarMovie.title) in function \(#function)"); return}
+                self.topCardImage.image = UIImage(data: imageDate)
+                
+                self.setCustomText(toLabel: self.customTopCardLabel, text: "Would you watch \(similarMovie.title)")
+            }
+        })
         
-        guard let imageDate = similarMovie.imageData else {NSLog("Error there is not image data for \(similarMovie.title) in function \(#function)"); return}
-        topCardImage.image = UIImage(data: imageDate)
-        
-        setCustomText(toLabel: customTopCardLabel, text: "Would you watch \(similarMovie.title)")
     }
     
     private func resetTopCardForGenres(_ card: UIView?) {

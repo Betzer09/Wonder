@@ -22,6 +22,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let listOfGenres = GenresController.shared.movieGenres
         GenresController.shared.fetchImageForGenre(genres: listOfGenres)
         
+        UINavigationBar.appearance().barTintColor = UIColor(red: 48 / 255.0, green: 50 / 255.0, blue: 52 / 255.0, alpha: 1)
+        UINavigationBar.appearance().titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor(red: 173 / 255.0, green: 174 / 255.0, blue: 175 / 255.0, alpha: 1) ]
+        UIApplication.shared.statusBarStyle = .lightContent
+        
+        
         return true
     }
 
