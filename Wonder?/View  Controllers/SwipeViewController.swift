@@ -287,14 +287,18 @@ class SwipeViewController: UIViewController {
             resetTopCardWitSimilarMovies(card)
         }
     }
+    
+    var hasSegued = false
 
     @objc func refreshSimilarMovies() {
-        self.similarMoviesToWhatWeWillRecommend = MovieController.shared.similarMoviesToDisplayToTheUser
-        
-        if similarMoviesToWhatWeWillRecommend.count <= 3 {
-            self.presentTheaterMovieResultsViewController()
-        }
-        print("Similar Movies Have changes")
+//        self.similarMoviesToWhatWeWillRecommend = MovieController.shared.similarMoviesToDisplayToTheUser
+//
+//        if similarMoviesToWhatWeWillRecommend.count <= 3 {
+//            guard !hasSegued else { return }
+//            hasSegued = true
+//            self.presentTheaterMovieResultsViewController()
+//        }
+//        print("Similar Movies Have changes")
     }
     
     @objc func refreshLikeGenres(card: UIView?) {
@@ -312,7 +316,9 @@ class SwipeViewController: UIViewController {
     
     // MARK: - Methods
     private func presentTheaterMovieResultsViewController() {
-        self.performSegue(withIdentifier: "toResultsTVC", sender: self)
+        DispatchQueue.main.async {
+            self.performSegue(withIdentifier: "toResultsTVC", sender: self)
+        }
     }
     
     private func prepareForNextQuestion(question: Question, isLiked: Bool, completion: @escaping (_ isComplete: Bool) -> Void ) {

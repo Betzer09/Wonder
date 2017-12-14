@@ -145,7 +145,7 @@ class MovieController {
     }
     
     //https://api.themoviedb.org/3/movie/562/similar?api_key=c366b28fa7f90e98f633846b3704570c&language=en-US&page=1
-    private func fetchMoviesThatAreSimilarWith(movie id: Int, completion: @escaping ([Movie]?) -> Void) {
+    private func fetchMoviesThatAreSimilarWith(movie id: Int, completion: @escaping ([Movie]) -> Void) {
         
         let customURL = "https://api.themoviedb.org/3/movie/\(id)/similar"
         guard let baseURL = URL(string: customURL) else {NSLog("Bad \"Similar Movie\" URL in function: \(#function)"); return} 
@@ -171,11 +171,14 @@ class MovieController {
             
             do {
                 let movies = try JSONDecoder().decode(Movies.self, from: data)
-                guard let movie = movies.results.first else {return}
-                self.similarRecommendedMovies.append(movie)
+                NSLog(" \(movies.results.count) and the url was \(url)")
+                guard let movie = movies.results.first else {
+                    return
+                }
+                self.similarMoviesToDisplayToTheUser.append(movie)
                 completion(movies.results)
             } catch let error {
-                print("Error initalzing \"Similar\" movies in function \(#file) and function: \(#function) becuase of error: \(error.localizedDescription)")
+                NSLog("Error initalzing \"Similar\" movie with URL \(url) in function \(#file) and function: \(#function) becuase of error: \(error.localizedDescription)")
             }
             
             
@@ -229,6 +232,7 @@ class MovieController {
     func fetchRecommendedMovies(completion: @escaping (_ isComplete: Bool) -> Void) {
         // If the answer is true they want to go the the movie theaters
         let answer = QuestionController.shared.doesTheUserWantToGoOut()
+        print(answer)
         // Fetch movies in theaters
         if answer {
             // Fetch theaterMovies that are in theaters if this fails just fetch movies that are in theaters using the movieDB
@@ -257,10 +261,10 @@ class MovieController {
                         // Now go back and initalize the similar movies
                         let initalziedMoviesThatAreSmilar = self.initalizeTheMoviesThatAreSimilarWith(similarMovieTitles, movies: movies)
                         // Filter out all the movies that don't match their liked genres
-                        var moviesThatMatchTheirLikedGenres = self.filterOutMoviesThatDontMatchTheirLikedGenresWith(moviesThatAreSimilar: initalziedMoviesThatAreSmilar)
+                        let moviesThatMatchTheirLikedGenres = self.filterOutMoviesThatDontMatchTheirLikedGenresWith(moviesThatAreSimilar: initalziedMoviesThatAreSmilar)
                         
                         // This just goes through and updates the current movies with their updated properties
-                        moviesThatMatchTheirLikedGenres = self.fetchMoviesThatAreSimilarWith(moviesThatMatchTheirLikedGenres: moviesThatMatchTheirLikedGenres, completion: { (isComplete) in
+                        self.fetchMoviesThatAreSimilarWith(moviesThatMatchTheirLikedGenres: moviesThatMatchTheirLikedGenres, completion: { (isComplete) in
                             if isComplete {
                                 completion(true)
                             }
@@ -281,46 +285,84 @@ class MovieController {
         }
     }
     
+    var groupCount = 0 {
+        didSet {
+            print("Group count: \(groupCount)")
+        }
+    }
+    
     // MARK: - Functions
     
     /// Fetches Movies that are similar using the movie ID and returns an array of Movies as well as assigns the similar movie to it's corrisponding recommended movie
-    func fetchMoviesThatAreSimilarWith(moviesThatMatchTheirLikedGenres: [Movie], completion: @escaping (_ isComplete: Bool) -> Void) -> [Movie]{
+    func fetchMoviesThatAreSimilarWith(moviesThatMatchTheirLikedGenres: [Movie], completion: @escaping (_ isComplete: Bool) -> Void) {
         
         var moviesThatMatch = moviesThatMatchTheirLikedGenres
-        let downloadGroup = DispatchGroup()
+        let fetchSimilarMoviesGroup = DispatchGroup()
         
         for movie in moviesThatMatchTheirLikedGenres {
-            downloadGroup.enter()
+            fetchSimilarMoviesGroup.enter()
+            groupCount += 1
+            print("Group entered")
             DispatchQueue.main.async {
                 Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { (_) in
                     self.fetchMoviesThatAreSimilarWith(movie: movie.id, completion: { (movies) in
                         // Get the image data of each card too
-                        guard let endpoint = movies?.first?.posterPath else {print("Error there is no posterPath for the similar movie in function \(#function)");return}
-                        self.fetchImageWith(endpoint: endpoint, completion: { (image) in
-                            guard let image = image, let data = UIImagePNGRepresentation(image) else {NSLog("No image. Location: \(#function)");return}
-                            let newMovie = self.updateImageDataFor(movie: movie, with: data)
-                            guard let movieIndex = moviesThatMatchTheirLikedGenres.index(of: movie) else {print("Error updating \"Similar Movie Property\" in function \(#function)")
+                        
+                        print(movies.count)
+                        if movies.count == 0 {
+                            guard let indexOfMovie = moviesThatMatch.index(of: movie) else {
+                                fetchSimilarMoviesGroup.leave()
+                                self.groupCount -= 1
                                 return
                             }
-                            moviesThatMatch.remove(at: movieIndex)
-                            moviesThatMatch.insert(newMovie, at: movieIndex)
-                        })
-                        
-                        // Get the first movie that comes back and assign it as the Movies similar movie
-                        guard let title = movies?.first?.title else {return}
-                        let newMovie = self.updateIsSimilarToPropertyFor(movie: movie, title: title)
-                        guard let movieIndex = moviesThatMatchTheirLikedGenres.index(of: movie) else {print("Error updating \"Similar Movie Property\" in function \(#function)")
+                            moviesThatMatch.remove(at: indexOfMovie)
+                            fetchSimilarMoviesGroup.leave()
+                            self.groupCount -= 1
                             return
+                        } else {
+                            
+                            guard let endpoint = movies.first?.posterPath else {
+                                print("Error there is no posterPath for the similar movie in function \(#function)")
+                                fetchSimilarMoviesGroup.leave()
+                                self.groupCount -= 1
+                                return
+                            }
+                            
+                            self.fetchImageWith(endpoint: endpoint, completion: { (image) in
+                                guard let image = image, let data = UIImagePNGRepresentation(image), let title = movies.first?.title else {
+                                    NSLog("No image. Location: \(#function)")
+                                    fetchSimilarMoviesGroup.leave()
+                                    self.groupCount -= 1
+                                    return
+                                }
+    
+                                if moviesThatMatch.contains(movie) {
+                                    let newMovie = self.updateImageDataAndTitleFor(movie: movie, with: data, title: title)
+                                    guard let movieIndex = moviesThatMatch.index(of: movie) else {
+                                        print("Error updating \"Similar Movie Property\" in function \(#function)")
+                                        fetchSimilarMoviesGroup.leave()
+                                        self.groupCount -= 1
+                                        return
+                                    }
+                                    moviesThatMatch.remove(at: movieIndex)
+                                    moviesThatMatch.insert(newMovie, at: movieIndex)
+                                    fetchSimilarMoviesGroup.leave()
+                                    self.groupCount -= 1
+                                } else {
+                                    fetchSimilarMoviesGroup.leave()
+                                    self.groupCount -= 1
+                                }
+                            })
                         }
-                        moviesThatMatch.remove(at: movieIndex)
-                        moviesThatMatch.insert(newMovie, at: movieIndex)
-                        downloadGroup.leave()
                     })
-                    completion(true)
                 })
             }
         }
-        return moviesThatMatch
+        
+        fetchSimilarMoviesGroup.notify(queue: DispatchQueue.main) {
+            self.similarRecommendedMovies = moviesThatMatch
+            completion(true)
+        }
     }
     
     /// Filters out recommended movies that the user won't like based on similar movies they don't like. This will be used at the very end before we display them to the user
@@ -342,15 +384,9 @@ class MovieController {
         self.recommendedTheaterMoviesToDisplayToTheUser = theaterMovies
     }
     
-    func updateImageDataFor(movie: Movie, with data: Data) -> Movie{
+    func updateImageDataAndTitleFor(movie: Movie, with data: Data, title: String) -> Movie{
         var oldMovie = movie
         oldMovie.imageData = data
-        
-        return oldMovie
-    }
-    
-    func updateIsSimilarToPropertyFor(movie: Movie,  title: String) -> Movie {
-        var oldMovie = movie
         oldMovie.isSimilarTo = title
         
         return oldMovie
