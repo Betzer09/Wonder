@@ -46,9 +46,8 @@ class SwipeViewController: UIViewController {
     var haveGenresReset = false
     var disLikeButtonAnimationCompleted = true
     var hasLikeButtonAnimationCompleted = true
-    
-    
-    
+    var hasSegued = false
+
     
     // MARK: - View LifeCycle
     override func viewDidLoad() {
@@ -61,11 +60,19 @@ class SwipeViewController: UIViewController {
         
         // Watches to see if a genre has been updated
         NotificationCenter.default.addObserver(self, selector: #selector(refreshLikeGenres), name: GenresController.likedMovieGenresArrayWasUpdated, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(refreshSimilarMovies), name: MovieController.similarMoviesToDisplayToTheUserWasUpdated, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(refreshSimilarMovies), name: MovieController.similarMoviesToDisplayToTheUserWasUpdated, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(presentSimilarMovies), name: questionCounterObserver, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(displayFinalResults), name: MovieController.recommendedTheaterMoviesToDisplayToTheUserWasUpdated, object: nil)
         resetView()
     }
-
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        NotificationCenter.default.removeObserver(self, name: GenresController.likedMovieGenresArrayWasUpdated, object: nil)
+        NotificationCenter.default.removeObserver(self, name: questionCounterObserver, object: nil)
+        NotificationCenter.default.removeObserver(self, name: MovieController.recommendedTheaterMoviesToDisplayToTheUserWasUpdated, object: nil)
+    }
     
     // MARK: - Actions
     @IBAction func panCard(_ sender: UIPanGestureRecognizer) {
@@ -100,8 +107,12 @@ class SwipeViewController: UIViewController {
                         } else {
                             // This checks if we need to switch to similar movies
                             if self.questionCounter > 3 {
+                                let movie = MovieController.shared.similarMoviesToDisplayToTheUser[self.similerMoviesCounter]
+                                guard let updatedMovie = MovieController.shared.toggleSimilarMoviesStatisFor(movie: movie, with: false) else {return}
+                                MovieController.shared.filterOutSimilarMovieWith(movie: updatedMovie)
                                 self.similerMoviesCounter += 1
-                                print("foo")
+                                self.resetTopCardWithSimilarMovies(self.topCardView)
+                                print("Foo")
                             } else {
                                 let question = QuestionController.shared.questions[self.questionCounter - 1 ]
                                 self.prepareForNextQuestion(question: question, isLiked: false, completion: { (isComplete) in
@@ -125,8 +136,12 @@ class SwipeViewController: UIViewController {
                     } else {
                         // This checks if we need to switch to similar movies
                         if self.questionCounter > 3 {
+                            let movie = MovieController.shared.similarMoviesToDisplayToTheUser[self.similerMoviesCounter]
+                            guard let updatedMovie = MovieController.shared.toggleSimilarMoviesStatisFor(movie: movie, with: true) else {return}
+                            MovieController.shared.filterOutSimilarMovieWith(movie: updatedMovie)
                             self.similerMoviesCounter += 1
-                            print("Foo")
+                            self.resetTopCardWithSimilarMovies(self.topCardView)
+                            // Now we need to filter the array and check the count that way we can present the results
                         } else {
                             let question = QuestionController.shared.questions[self.questionCounter - 1]
                             self.prepareForNextQuestion(question: question, isLiked: true, completion: { (isComplete) in
@@ -279,20 +294,31 @@ class SwipeViewController: UIViewController {
     private func resetView() {
         GenresController.shared.likedMovieGenres.removeAll()
         GenresController.shared.unlikedMovieGenres.removeAll()
+        similerMoviesCounter = 0
         indexOfGenre = 0
         questionCounter = 0
         switchToQuestions = false
+        hasSegued = false
     }
     
     // MARK: - Notifications Functions
     
     @objc func presentSimilarMovies() {
         if questionCounter > 3 {
-            self.resetTopCardWitSimilarMovies(topCardView)
+            self.resetTopCardWithSimilarMoviesForTheFirstTime(topCardView)
         }
     }
     
-    var hasSegued = false
+    @objc func displayFinalResults() {
+        guard let count = MovieController.shared.recommendedTheaterMoviesToDisplayToTheUser?.count else {return}
+        if count <= 3 || similerMoviesCounter >= count - 1{
+            guard !hasSegued else {return}
+            hasSegued = true
+            self.presentTheaterMovieResultsViewController()
+        }
+        
+    }
+    
     @objc func refreshSimilarMovies() {
 //        self.similarMoviesToWhatWeWillRecommend = MovieController.shared.similarMoviesToDisplayToTheUser
 //
@@ -392,7 +418,7 @@ class SwipeViewController: UIViewController {
     
     // MARK: - Card Postion Functions
     
-    private func resetTopCardWitSimilarMovies(_ card: UIView) {
+    private func resetTopCardWithSimilarMoviesForTheFirstTime(_ card: UIView) {
         
         MovieController.shared.fetchRecommendedMovies(completion: { (isComplete) in
             if isComplete {
@@ -419,6 +445,30 @@ class SwipeViewController: UIViewController {
             }
         })
         
+    }
+    
+    private func resetTopCardWithSimilarMovies(_ card: UIView) {
+        
+        if hasSegued {return}
+        let topCardSimilarMovie = self.similarMoviesToWhatWeWillRecommend[self.similerMoviesCounter]
+        
+        
+        guard let topImageData = topCardSimilarMovie.imageData else {NSLog("Error there is not image data for \(topCardSimilarMovie.title) in function \(#function)"); return}
+        self.topCardImage.image = UIImage(data: topImageData)
+        
+        self.setCustomText(toLabel: self.customTopCardLabel, text: "Did you like watching \"\(topCardSimilarMovie.title)\"?")
+        
+        // Makes sure we aren't out fo rang
+        var bottomCardSimilarMovie: Movie
+        if self.similarMoviesToWhatWeWillRecommend.count - 1 > self.similerMoviesCounter{
+            bottomCardSimilarMovie = self.similarMoviesToWhatWeWillRecommend[self.similerMoviesCounter + 1]
+        } else {
+            bottomCardSimilarMovie = self.similarMoviesToWhatWeWillRecommend[self.similerMoviesCounter]
+        }
+        guard let bottomImageData = bottomCardSimilarMovie.imageData else {NSLog("Error there is not image data for \(bottomCardSimilarMovie.title) in function \(#function)"); return}
+        self.bottomCardImage.image = UIImage(data: bottomImageData)
+        self.setCustomText(toLabel: self.customBottomCardLabel, text: "Did you like watching \"\(bottomCardSimilarMovie.title)\"?")
+        self.resetPostitionOf(card: card)
     }
     
     private func resetTopCardForGenres(_ card: UIView?) {

@@ -11,13 +11,18 @@ import UIKit
 class MovieController {
     // MARK: - Notifcations
     static let similarMoviesToDisplayToTheUserWasUpdated = Notification.Name("similarMoviesToDisplayToTheUserWasUpdated")
+    static let recommendedTheaterMoviesToDisplayToTheUserWasUpdated = Notification.Name("recommendedTheaterMoviesToDisplayToTheUserWasUpdated")
     
     // MARK: - Properties
     static let shared = MovieController()
     var recommendedMovies: [Movie] = []
     var discoveredMoviesBasedOnGenres: [Movie] = []
     var nowPlayingMovies: [Movie] = []
-    var recommendedTheaterMoviesToDisplayToTheUser: [TheatreMovies.TheaterMovie]? = []
+    var recommendedTheaterMoviesToDisplayToTheUser: [TheatreMovies.TheaterMovie]? = [] {
+        didSet {
+            NotificationCenter.default.post(name: MovieController.recommendedTheaterMoviesToDisplayToTheUserWasUpdated, object: nil)
+        }
+    }
     
     /// An array full of similar movies that were fetched from the MovieDB. This will be modified at the end and be displayed to the user in the end as the final result.
     var similarRecommendedMovies: [Movie] = []
@@ -117,7 +122,7 @@ class MovieController {
     
     
     func fetchImageWith(endpoint: String, completion: @escaping (UIImage?) -> Void) {
-        let imageURL = URL(string: "https://image.tmdb.org/t/p/w500/")!
+        let imageURL = URL(string: "https://image.tmdb.org/t/p/w342/")!
         let url = imageURL.appendingPathComponent(endpoint)
         
         URLSession.shared.dataTask(with: url) { (data, _, error) in
@@ -389,22 +394,20 @@ class MovieController {
     }
     
     /// Filters out recommended movies that the user won't like based on similar movies they don't like. This will be used at the very end before we display them to the user
-    func filterOutSimilarMoviesBasedOnSimilarMovieStatus() {
+    func filterOutSimilarMovieWith(movie: Movie) {
+        guard let isLiked = movie.isLiked else {return}
         
-        var similarMovies = similarRecommendedMovies
+        var similarMovies = self.similarRecommendedMovies
         
-        // if the movie is unliked remove it
-        for movie in similarMovies {
-            guard let isliked = movie.isLiked else {NSLog("Error \(#function)"); return}
-            if !isliked {
-                // We need to take out the corrisponding recommended movie
-                guard let indexOfSimilerMovie = similarMovies.index(of: movie) else {NSLog("Error there is no similar movie that matches in function \(#function)"); return}
-                similarMovies.remove(at: indexOfSimilerMovie)
-            }
+        if !isLiked {
+            guard let index = similarMovies.index(where: { $0.isSimilarTo == movie.title }) else {return}
+            similarMovies.remove(at: index)
         }
         
+        self.similarRecommendedMovies = similarMovies
         let theaterMovies = turnMoviesIntoATheaterMoviesWith(movies: similarMovies)
         self.recommendedTheaterMoviesToDisplayToTheUser = theaterMovies
+        
     }
     
     func updateImageDataAndTitleFor(movie: Movie, with data: Data, title: String?) -> Movie {
@@ -415,14 +418,16 @@ class MovieController {
         return oldMovie
     }
     
-    func toggleSimilarMoviesStatisFor(movie: Movie, with isliked: Bool) {
+    func toggleSimilarMoviesStatisFor(movie: Movie, with isliked: Bool) -> Movie? {
         var oldMovie = movie
         oldMovie.isLiked = isliked
         
-        guard let indexOfMovie = similarRecommendedMovies.index(of: movie) else {NSLog("Error there is no movie that matches \(movie.title) in function: \(#function)") ;return}
-        similarRecommendedMovies.remove(at: indexOfMovie)
+        guard let indexOfMovie = similarMoviesToDisplayToTheUser.index(of: movie) else {NSLog("Error there is no movie that matches \(movie.title) in function: \(#function)") ;return nil}
+        similarMoviesToDisplayToTheUser.remove(at: indexOfMovie)
         
-        similarRecommendedMovies.insert(oldMovie, at: indexOfMovie)
+        similarMoviesToDisplayToTheUser.insert(oldMovie, at: indexOfMovie)
+        
+        return oldMovie
     }
     
     /// This gets all of the MovieDB and converts thems to TheaterMovies 
@@ -458,11 +463,12 @@ class MovieController {
         for id in likedGenreIDs {
             
             for movie in moviesThatAreSimilar {
+                let genreCount = movie.genreIDS.count
                 
                 if movie.genreIDS.contains(id) {
                     similarIDS += 1
                     // Append that movie
-                    if similarIDS >= 3 {
+                    if Double(similarIDS / genreCount) >= 0.6 {
                         moviesToReturn.append(movie)
                         continue
                     }
