@@ -56,7 +56,7 @@
                                 <rect key="frame" x="53.5" y="142" width="213" height="284"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="noImageView" translatesAutoresizingMaskIntoConstraints="NO" id="YZ3-n3-Een">
-                                        <rect key="frame" x="26" y="35.5" width="160" height="213"/>
+                                        <rect key="frame" x="26" y="26" width="160" height="213"/>
                                     </imageView>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="AKl-TA-ZgI" userLabel="Bottom Thumb Image View">
                                         <rect key="frame" x="71" y="95" width="71" height="95"/>
@@ -75,17 +75,17 @@
                                     <constraint firstItem="80b-eO-17P" firstAttribute="centerX" secondItem="5be-Wx-QoH" secondAttribute="centerX" id="GyV-TP-bLJ"/>
                                     <constraint firstItem="YZ3-n3-Een" firstAttribute="width" secondItem="5be-Wx-QoH" secondAttribute="width" multiplier="3/4" id="JkS-uU-qNt"/>
                                     <constraint firstItem="AKl-TA-ZgI" firstAttribute="centerX" secondItem="5be-Wx-QoH" secondAttribute="centerX" id="LiV-dv-2ov"/>
+                                    <constraint firstItem="80b-eO-17P" firstAttribute="top" secondItem="YZ3-n3-Een" secondAttribute="bottom" constant="8" id="WwA-Nq-Q6N"/>
                                     <constraint firstItem="YZ3-n3-Een" firstAttribute="centerX" secondItem="5be-Wx-QoH" secondAttribute="centerX" id="bxx-a3-SuD"/>
                                     <constraint firstItem="80b-eO-17P" firstAttribute="width" secondItem="5be-Wx-QoH" secondAttribute="width" id="cKk-YE-kki"/>
                                     <constraint firstItem="YZ3-n3-Een" firstAttribute="height" secondItem="5be-Wx-QoH" secondAttribute="height" multiplier="3/4" id="ebq-jk-I4Y"/>
-                                    <constraint firstItem="YZ3-n3-Een" firstAttribute="centerY" secondItem="5be-Wx-QoH" secondAttribute="centerY" id="tPa-Pe-gO3"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HDy-ai-wWh" userLabel="Top Card View">
                                 <rect key="frame" x="53.5" y="142" width="213" height="284"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="noImageView" translatesAutoresizingMaskIntoConstraints="NO" id="NnE-bo-ltf">
-                                        <rect key="frame" x="27" y="35.5" width="160" height="213"/>
+                                        <rect key="frame" x="27" y="26" width="160" height="213"/>
                                     </imageView>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="WGI-3p-5RL">
                                         <rect key="frame" x="71" y="94.5" width="71" height="95"/>
@@ -101,10 +101,10 @@
                                 <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstItem="oIa-33-gOq" firstAttribute="centerX" secondItem="HDy-ai-wWh" secondAttribute="centerX" id="1UH-JN-lID"/>
-                                    <constraint firstItem="NnE-bo-ltf" firstAttribute="centerY" secondItem="HDy-ai-wWh" secondAttribute="centerY" id="2hR-8r-LjL"/>
                                     <constraint firstItem="WGI-3p-5RL" firstAttribute="centerX" secondItem="HDy-ai-wWh" secondAttribute="centerX" id="CqU-eQ-AfO"/>
                                     <constraint firstItem="WGI-3p-5RL" firstAttribute="height" secondItem="HDy-ai-wWh" secondAttribute="height" multiplier="1/3" id="Css-IP-si5"/>
                                     <constraint firstItem="WGI-3p-5RL" firstAttribute="centerY" secondItem="HDy-ai-wWh" secondAttribute="centerY" id="TAA-hh-OLS"/>
+                                    <constraint firstItem="oIa-33-gOq" firstAttribute="top" secondItem="NnE-bo-ltf" secondAttribute="bottom" constant="8" id="X4X-34-6mz"/>
                                     <constraint firstItem="NnE-bo-ltf" firstAttribute="width" secondItem="HDy-ai-wWh" secondAttribute="width" multiplier="3/4" id="bYY-vL-Bp4"/>
                                     <constraint firstItem="WGI-3p-5RL" firstAttribute="width" secondItem="HDy-ai-wWh" secondAttribute="width" multiplier="1/3" id="c50-dQ-VSX"/>
                                     <constraint firstItem="oIa-33-gOq" firstAttribute="width" secondItem="HDy-ai-wWh" secondAttribute="width" id="fBS-XK-Bat"/>

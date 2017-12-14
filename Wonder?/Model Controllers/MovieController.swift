@@ -172,10 +172,23 @@ class MovieController {
             do {
                 let movies = try JSONDecoder().decode(Movies.self, from: data)
                 NSLog(" \(movies.results.count) and the url was \(url)")
-                guard let movie = movies.results.first else {
+                guard let movie = movies.results.first, let path = movie.posterPath else {
                     completion([]);
                     return
                 }
+                
+                self.fetchImageWith(endpoint: path, completion: { (image) in
+                    guard let image = image, let data = UIImagePNGRepresentation(image) else {NSLog("Error convert \"\(movie.title)'s\" image data in function \(#function)"); return}
+                    let updatedMovie = self.updateImageDataAndTitleFor(movie: movie, with: data, title: nil)
+                    
+                    if self.similarMoviesToDisplayToTheUser.contains(movie) {
+                        guard let index = self.similarMoviesToDisplayToTheUser.index(of: movie) else {return}
+                        self.similarMoviesToDisplayToTheUser.remove(at: index)
+                        
+                        self.similarMoviesToDisplayToTheUser.insert(updatedMovie, at: index)
+                    }
+                })
+                
                 self.similarMoviesToDisplayToTheUser.append(movie)
                 completion(movies.results)
             } catch let error {
@@ -394,7 +407,7 @@ class MovieController {
         self.recommendedTheaterMoviesToDisplayToTheUser = theaterMovies
     }
     
-    func updateImageDataAndTitleFor(movie: Movie, with data: Data, title: String) -> Movie{
+    func updateImageDataAndTitleFor(movie: Movie, with data: Data, title: String?) -> Movie {
         var oldMovie = movie
         oldMovie.imageData = data
         oldMovie.isSimilarTo = title

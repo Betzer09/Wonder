@@ -104,9 +104,11 @@ class SwipeViewController: UIViewController {
                             self.prepareForNextQuestion(question: question, isLiked: false, completion: { (isComplete) in
                                 if isComplete {
                                     // TODO: -  Fetch Movies
-                                    // Fetch similar movies to the genres they like
                                     
-                                    // Start showing them similar movies  
+//                                    // We need to toggle the status of similar movies
+//                                    let movie = self.similarMoviesToWhatWeWillRecommend[self.similerMoviesCounter]
+//                                    MovieController.shared.toggleSimilarMoviesStatisFor(movie: movie, with: false)
+//                                    self.similerMoviesCounter += 1
                                 }
                             })
                         }
@@ -126,7 +128,10 @@ class SwipeViewController: UIViewController {
                         self.prepareForNextQuestion(question: question, isLiked: true, completion: { (isComplete) in
                             if isComplete {
                                 // TODO: -  Fetch Movies
-                                // Start showing them similar movies
+//                                // We need to toggle the status of similar movies
+//                                let movie = self.similarMoviesToWhatWeWillRecommend[self.similerMoviesCounter]
+//                                MovieController.shared.toggleSimilarMoviesStatisFor(movie: movie, with: true)
+//                                self.similerMoviesCounter += 1
                             }
                         })
                     }
@@ -394,13 +399,25 @@ class SwipeViewController: UIViewController {
         MovieController.shared.fetchRecommendedMovies(completion: { (isComplete) in
             if isComplete {
                 self.similarMoviesToWhatWeWillRecommend = MovieController.shared.similarMoviesToDisplayToTheUser
-                let similarMovie = self.similarMoviesToWhatWeWillRecommend[self.similerMoviesCounter]
+                let topCardSimilarMovie = self.similarMoviesToWhatWeWillRecommend[self.similerMoviesCounter]
                 
                 
-                guard let imageDate = similarMovie.imageData else {NSLog("Error there is not image data for \(similarMovie.title) in function \(#function)"); return}
-                self.topCardImage.image = UIImage(data: imageDate)
+                guard let topImageData = topCardSimilarMovie.imageData else {NSLog("Error there is not image data for \(topCardSimilarMovie.title) in function \(#function)"); return}
+                self.topCardImage.image = UIImage(data: topImageData)
                 
-                self.setCustomText(toLabel: self.customTopCardLabel, text: "Would you watch \(similarMovie.title)")
+                self.setCustomText(toLabel: self.customTopCardLabel, text: "Did you like watching \"\(topCardSimilarMovie.title)\"?")
+                
+                // Makes sure we aren't out fo rang
+                var bottomCardSimilarMovie: Movie
+                if self.similerMoviesCounter <= self.similarMoviesToWhatWeWillRecommend.count - 1 {
+                     bottomCardSimilarMovie = self.similarMoviesToWhatWeWillRecommend[self.similerMoviesCounter + 1]
+                } else {
+                     bottomCardSimilarMovie = self.similarMoviesToWhatWeWillRecommend[self.similerMoviesCounter]
+                }
+                guard let bottomImageData = bottomCardSimilarMovie.imageData else {NSLog("Error there is not image data for \(bottomCardSimilarMovie.title) in function \(#function)"); return}
+                self.bottomCardImage.image = UIImage(data: bottomImageData)
+                self.setCustomText(toLabel: self.customBottomCardLabel, text: "Did you like watching \"\(bottomCardSimilarMovie.title)\"?")
+                self.resetPostitionOf(card: card)
             }
         })
         
