@@ -148,7 +148,7 @@ class MovieController {
     private func fetchMoviesThatAreSimilarWith(movie id: Int, completion: @escaping ([Movie]) -> Void) {
         
         let customURL = "https://api.themoviedb.org/3/movie/\(id)/similar"
-        guard let baseURL = URL(string: customURL) else {NSLog("Bad \"Similar Movie\" URL in function: \(#function)"); return} 
+        guard let baseURL = URL(string: customURL) else { completion([]); NSLog("Bad \"Similar Movie\" URL in function: \(#function)"); return}
         
         var urlComponents = URLComponents(url: baseURL, resolvingAgainstBaseURL: true)
         
@@ -156,7 +156,7 @@ class MovieController {
         
         urlComponents?.queryItems = parameters.flatMap( { URLQueryItem(name: $0.key , value: $0.value)})
         
-        guard let url = urlComponents?.url else {NSLog("Bad url components in function: \(#function)"); return}
+        guard let url = urlComponents?.url else { completion([]); NSLog("Bad url components in function: \(#function)"); return}
         
         URLSession.shared.dataTask(with: url) { (data, _, error) in
             
@@ -166,25 +166,25 @@ class MovieController {
                 return
             }
             
-            guard let data = data else {print("Error with \"Similar Movie\"  MovieDB data in file \(#file) and function:\(#function) "); return}
+            guard let data = data else { completion([]); print("Error with \"Similar Movie\"  MovieDB data in file \(#file) and function:\(#function) "); return}
             
             
             do {
                 let movies = try JSONDecoder().decode(Movies.self, from: data)
                 NSLog(" \(movies.results.count) and the url was \(url)")
                 guard let movie = movies.results.first else {
+                    completion([]);
                     return
                 }
                 self.similarMoviesToDisplayToTheUser.append(movie)
                 completion(movies.results)
             } catch let error {
                 NSLog("Error initalzing \"Similar\" movie with URL \(url) in function \(#file) and function: \(#function) becuase of error: \(error.localizedDescription)")
+                completion([]);
             }
             
-            
             }.resume()
-        
-        
+    
     }
     
     //https://api.themoviedb.org/3/movie/now_playing?api_key=c366b28fa7f90e98f633846b3704570c&language=en-US&page=3
@@ -192,7 +192,10 @@ class MovieController {
     private func fetchMoviesThatAreNowPlaying(page: Int, completion: @escaping ([Movie]?) -> Void) {
         let baseURL = URL(string: "https://api.themoviedb.org/3/movie/now_playing")
         
-        guard let unwrappedURL = baseURL else {NSLog("Bad \"Now Playing\" URL \(#file) and function \(#function)"); return}
+        guard let unwrappedURL = baseURL else {NSLog("Bad \"Now Playing\" URL \(#file) and function \(#function)");
+            completion([])
+            return
+        }
         
         var urlComponents = URLComponents(url: unwrappedURL, resolvingAgainstBaseURL: true)
         
@@ -202,7 +205,11 @@ class MovieController {
         
         urlComponents?.queryItems = parameters.flatMap( { URLQueryItem(name: $0.key , value: $0.value)})
         
-        guard let url = urlComponents?.url else {NSLog("Bad url components in function: \(#function)"); return}
+        guard let url = urlComponents?.url else {NSLog("Bad url components in function: \(#function)")
+            completion([])
+            return
+            
+        }
         
         URLSession.shared.dataTask(with: url) { (data, _, error) in
             
@@ -212,7 +219,10 @@ class MovieController {
                 return
             }
             
-            guard let data = data else {print("Error with Now Playing MovieDB data in file \(#file) and function:\(#function) "); return}
+            guard let data = data else {print("Error with Now Playing MovieDB data in file \(#file) and function:\(#function) ")
+                completion([])
+                return
+            }
             
             
             do {
@@ -221,6 +231,7 @@ class MovieController {
                 completion(movies.results)
             } catch let error {
                 print("Error initalzing Now Playing movies in function \(#file) and function: \(#function) becuase of error: \(error.localizedDescription)")
+                completion([])
             }
             
             }.resume()
@@ -272,7 +283,6 @@ class MovieController {
                         
                     })
                     
-                    
                 }
                 
             })
@@ -301,13 +311,13 @@ class MovieController {
         
         for movie in moviesThatMatchTheirLikedGenres {
             fetchSimilarMoviesGroup.enter()
-            groupCount += 1
+            self.groupCount += 1
             print("Group entered")
             DispatchQueue.main.async {
                 Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { (_) in
                     self.fetchMoviesThatAreSimilarWith(movie: movie.id, completion: { (movies) in
-                        // Get the image data of each card too
                         
+                        // Get the image data of each card too
                         print(movies.count)
                         if movies.count == 0 {
                             guard let indexOfMovie = moviesThatMatch.index(of: movie) else {
@@ -335,7 +345,7 @@ class MovieController {
                                     self.groupCount -= 1
                                     return
                                 }
-    
+                                
                                 if moviesThatMatch.contains(movie) {
                                     let newMovie = self.updateImageDataAndTitleFor(movie: movie, with: data, title: title)
                                     guard let movieIndex = moviesThatMatch.index(of: movie) else {

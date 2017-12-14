@@ -393,7 +393,7 @@ class SwipeViewController: UIViewController {
         
         MovieController.shared.fetchRecommendedMovies(completion: { (isComplete) in
             if isComplete {
-                self.similarMoviesToWhatWeWillRecommend = MovieController.shared.similarRecommendedMovies
+                self.similarMoviesToWhatWeWillRecommend = MovieController.shared.similarMoviesToDisplayToTheUser
                 let similarMovie = self.similarMoviesToWhatWeWillRecommend[self.similerMoviesCounter]
                 
                 
