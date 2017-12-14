@@ -29,7 +29,6 @@ class SwipeViewController: UIViewController {
             NotificationCenter.default.post(name: questionCounterObserver, object: nil)
         }
     }
-    
     var indexOfGenre = 0
     var similerMoviesCounter = 0
     
@@ -63,7 +62,7 @@ class SwipeViewController: UIViewController {
         // Watches to see if a genre has been updated
         NotificationCenter.default.addObserver(self, selector: #selector(refreshLikeGenres), name: GenresController.likedMovieGenresArrayWasUpdated, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(refreshSimilarMovies), name: MovieController.similarMoviesToDisplayToTheUserWasUpdated, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(presentSimilerMoviesToTheUser), name: questionCounterObserver, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(presentSimilarMovies), name: questionCounterObserver, object: nil)
         resetView()
     }
 
@@ -99,18 +98,18 @@ class SwipeViewController: UIViewController {
                             self.indexOfGenre = 0
                             self.completeAnimationForGenreUsing(card: card, likedGenresCount: likedGenresCount, genreToModify: genreToModify, isLiked: false)
                         } else {
-                            // When this runs we are starting to ask general question before we start fetch movies
-                            let question = QuestionController.shared.questions[self.questionCounter - 1 ]
-                            self.prepareForNextQuestion(question: question, isLiked: false, completion: { (isComplete) in
-                                if isComplete {
-                                    // TODO: -  Fetch Movies
-                                    
-//                                    // We need to toggle the status of similar movies
-//                                    let movie = self.similarMoviesToWhatWeWillRecommend[self.similerMoviesCounter]
-//                                    MovieController.shared.toggleSimilarMoviesStatisFor(movie: movie, with: false)
-//                                    self.similerMoviesCounter += 1
-                                }
-                            })
+                            // This checks if we need to switch to similar movies
+                            if self.questionCounter > 3 {
+                                self.similerMoviesCounter += 1
+                                print("foo")
+                            } else {
+                                let question = QuestionController.shared.questions[self.questionCounter - 1 ]
+                                self.prepareForNextQuestion(question: question, isLiked: false, completion: { (isComplete) in
+                                    if isComplete {
+                                        
+                                    }
+                                })
+                            }
                         }
                     }
                 })
@@ -124,16 +123,18 @@ class SwipeViewController: UIViewController {
                     if self.indexOfGenre + 1 != maxMovieGenreCount && self.switchToQuestions == false && likedGenresCount <=  3 {
                         self.completeAnimationForGenreUsing(card: card, likedGenresCount: likedGenresCount, genreToModify: genreToModify, isLiked: true)
                     } else {
-                        let question = QuestionController.shared.questions[self.questionCounter - 1]
-                        self.prepareForNextQuestion(question: question, isLiked: true, completion: { (isComplete) in
-                            if isComplete {
-                                // TODO: -  Fetch Movies
-//                                // We need to toggle the status of similar movies
-//                                let movie = self.similarMoviesToWhatWeWillRecommend[self.similerMoviesCounter]
-//                                MovieController.shared.toggleSimilarMoviesStatisFor(movie: movie, with: true)
-//                                self.similerMoviesCounter += 1
-                            }
-                        })
+                        // This checks if we need to switch to similar movies
+                        if self.questionCounter > 3 {
+                            self.similerMoviesCounter += 1
+                            print("Foo")
+                        } else {
+                            let question = QuestionController.shared.questions[self.questionCounter - 1]
+                            self.prepareForNextQuestion(question: question, isLiked: true, completion: { (isComplete) in
+                                if isComplete {
+                                    
+                                }
+                            })
+                        }
                     }
                     
                 })
@@ -285,16 +286,13 @@ class SwipeViewController: UIViewController {
     
     // MARK: - Notifications Functions
     
-    @objc func presentSimilerMoviesToTheUser() {
-        NSLog("\(questionCounter)")
+    @objc func presentSimilarMovies() {
         if questionCounter > 3 {
-            guard let card = topCardView else {return}
-            resetTopCardWitSimilarMovies(card)
+            self.resetTopCardWitSimilarMovies(topCardView)
         }
     }
     
     var hasSegued = false
-
     @objc func refreshSimilarMovies() {
 //        self.similarMoviesToWhatWeWillRecommend = MovieController.shared.similarMoviesToDisplayToTheUser
 //

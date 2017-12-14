@@ -152,7 +152,7 @@
                                     <constraint firstItem="99x-Mm-Jhf" firstAttribute="height" secondItem="TLZ-pP-QWG" secondAttribute="height" id="yXc-bp-KRB"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k40-Ie-n2N">
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k40-Ie-n2N">
                                 <rect key="frame" x="141" y="492.5" width="38" height="38"/>
                                 <state key="normal" backgroundImage="backButton"/>
                                 <connections>
