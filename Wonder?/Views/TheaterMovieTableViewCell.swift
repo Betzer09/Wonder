@@ -13,7 +13,7 @@ class TheaterMovieTableViewCell: UITableViewCell {
     @IBOutlet weak var movieImage: UIImageView!
     @IBOutlet weak var movieTitle: UILabel!
     @IBOutlet weak var releaseDate: UILabel!
-    ≥
+    
     
     func updateCellWith(theaterMovie: TheatreMovies.TheaterMovie) {
         
