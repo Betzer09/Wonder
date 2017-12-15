@@ -24,6 +24,8 @@ class MovieController {
         }
     }
     
+    var moviesThatAreSmilar: [Movie] = []
+    
     /// An array full of similar movies that were fetched from the MovieDB. This will be modified at the end and be displayed to the user in the end as the final result.
     var similarRecommendedMovies: [Movie] = []
     
@@ -492,7 +494,44 @@ class MovieController {
             }
         }
         
+        // Fetch Movie on the background thread for everything. 
+        self.moviesThatAreSmilar = moviesThatAreSimilar
+        fetchBackDropImageForMovies()
         return moviesThatAreSimilar
+    }
+    
+    func fetchBackDropImageForMovies() {
+        let group = DispatchGroup()
+        
+        var newArrayToReturn = moviesThatAreSmilar
+        for movie in moviesThatAreSmilar {
+            group.enter()
+            guard let path = movie.backdropPath else {group.leave(); return}
+            
+            self.fetchImageWith(endpoint: path, completion: { (image) in
+                guard let image = image else {
+                    group.leave()
+                    return
+                }
+                var newMovie = movie
+                newMovie.imageData = UIImagePNGRepresentation(image)
+                guard let index = newArrayToReturn.index(of: movie) else {
+                    group.leave()
+                    return
+                }
+                newArrayToReturn.remove(at: index)
+                newArrayToReturn.insert(newMovie, at: index)
+                
+                group.leave()
+            })
+        }
+        
+        
+        group.notify(queue: DispatchQueue.main) {
+            print("Finished Fetching movie images")
+            self.moviesThatAreSmilar = newArrayToReturn
+        }
+        
     }
     
     /// This checks for similar titles and returns an array of string titles

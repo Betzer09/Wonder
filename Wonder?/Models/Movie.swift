@@ -27,6 +27,7 @@ struct Movie: Decodable, Equatable {
     var isLiked: Bool? = nil
     var imageData: Data? = nil
     var isSimilarTo: String? = ""
+    var backdropPath: String? = ""
     
     enum CodingKeys: String, CodingKey {
         case title
@@ -38,26 +39,10 @@ struct Movie: Decodable, Equatable {
         case releaseDate = "release_date"
         case voteAverage = "vote_average"
         case posterPath = "poster_path"
+        case backdropPath = "backdrop_path"
 
     }
-    
-//    init(from decoder: Decoder) throws {
-//        let valueContainer = try decoder.container(keyedBy: CodingKeys.self)
-//
-//        self.title = try valueContainer.decode(String.self, forKey: .title)
-//        print(self.title)
-//        self.overview = try valueContainer.decode(String.self, forKey: .overview)
-//        self.video = try valueContainer.decode(Bool.self, forKey: .video)
-//        self.adult = try valueContainer.decode(Bool.self, forKey: .adult)
-//        self.id = try valueContainer.decode(Int.self, forKey: .id)
-//        self.releaseDate = try valueContainer.decode(String.self, forKey: .releaseDate)
-//        self.voteAverage = try valueContainer.decode(Double.self, forKey: .voteAverage)
-//        self.posterPath = try valueContainer.decodeIfPresent(String.self, forKey: .posterPath)
-//
-//        let IDS = try valueContainer.decode([Int].self, forKey: .genreIDS)
-//        self.genreIDS = IDS.flatMap({ $0 })
-//
-//    }
+
 }
 
 struct Movies: Decodable {

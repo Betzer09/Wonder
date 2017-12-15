@@ -35,24 +35,19 @@ class MovieTheaterResultsTableViewController: UITableViewController {
         return count
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "movieTheaterResultsCell", for: indexPath)
-        
-        guard let theaterMovies = MovieController.shared.recommendedTheaterMoviesToDisplayToTheUser else {return UITableViewCell()}
-        
-        let movie = theaterMovies[indexPath.row]
-        cell.textLabel?.text = movie.title
-        cell.detailTextLabel?.text = movie.releaseDate
-        
-        return cell
+   override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 215
     }
     
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        }
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "movieTheaterResultsCell", for: indexPath) as? TheaterMovieTableViewCell else {return UITableViewCell()}
+        
+        guard let theaterMovies = MovieController.shared.recommendedTheaterMoviesToDisplayToTheUser else {return UITableViewCell()}
+        cell.backgroundColor = UIColor.clear
+        let movie = theaterMovies[indexPath.row]
+        cell.updateCellWith(theaterMovie: movie)
+        
+        return cell
     }
     
     // MARK: - Navigation
