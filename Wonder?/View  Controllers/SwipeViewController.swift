@@ -426,7 +426,10 @@ class SwipeViewController: UIViewController {
                 let topCardSimilarMovie = self.similarMoviesToWhatWeWillRecommend[self.similerMoviesCounter]
                 
                 
-                guard let topImageData = topCardSimilarMovie.imageData else {NSLog("Error there is not image data for \(topCardSimilarMovie.title) in function \(#function)"); return}
+                guard let topImageData = topCardSimilarMovie.imageData else {NSLog("Error there is not image data for \(topCardSimilarMovie.title) in function \(#function)")
+                    return
+                
+                }
                 self.topCardImage.image = UIImage(data: topImageData)
                 
                 self.setCustomText(toLabel: self.customTopCardLabel, text: "Did you like watching \"\(topCardSimilarMovie.title)\"?")
@@ -438,7 +441,18 @@ class SwipeViewController: UIViewController {
                 } else {
                      bottomCardSimilarMovie = self.similarMoviesToWhatWeWillRecommend[self.similerMoviesCounter]
                 }
-                guard let bottomImageData = bottomCardSimilarMovie.imageData else {NSLog("Error there is not image data for \(bottomCardSimilarMovie.title) in function \(#function)"); return}
+                
+                var bottomImageData: Data
+                if bottomCardSimilarMovie.imageData == nil {
+                    bottomImageData = UIImageJPEGRepresentation(#imageLiteral(resourceName: "noImageView"), 1.0)!
+                } else {
+                    bottomImageData = bottomCardSimilarMovie.imageData!
+                }
+                
+//                guard let bottomImageData = bottomCardSimilarMovie.imageData else {
+//                    NSLog("Error there is not image data for \(bottomCardSimilarMovie.title) in function \(#function)")
+//                    return
+//                }
                 self.bottomCardImage.image = UIImage(data: bottomImageData)
                 self.setCustomText(toLabel: self.customBottomCardLabel, text: "Did you like watching \"\(bottomCardSimilarMovie.title)\"?")
                 self.resetPostitionOf(card: card)
@@ -453,8 +467,16 @@ class SwipeViewController: UIViewController {
         let topCardSimilarMovie = self.similarMoviesToWhatWeWillRecommend[self.similerMoviesCounter]
         
         
-        guard let topImageData = topCardSimilarMovie.imageData else {NSLog("Error there is not image data for \(topCardSimilarMovie.title) in function \(#function)"); return}
-        self.topCardImage.image = UIImage(data: topImageData)
+//        guard let topImageData = topCardSimilarMovie.imageData else {NSLog("Error there is not image data for \(topCardSimilarMovie.title) in function \(#function)"); return}
+        
+        var topCardData: Data
+        if topCardSimilarMovie.imageData == nil {
+            topCardData = UIImageJPEGRepresentation(#imageLiteral(resourceName: "noImageView"), 1.0)!
+        } else {
+            topCardData = topCardSimilarMovie.imageData!
+        }
+        
+        self.topCardImage.image = UIImage(data: topCardData)
         
         self.setCustomText(toLabel: self.customTopCardLabel, text: "Did you like watching \"\(topCardSimilarMovie.title)\"?")
         
@@ -465,7 +487,15 @@ class SwipeViewController: UIViewController {
         } else {
             bottomCardSimilarMovie = self.similarMoviesToWhatWeWillRecommend[self.similerMoviesCounter]
         }
-        guard let bottomImageData = bottomCardSimilarMovie.imageData else {NSLog("Error there is not image data for \(bottomCardSimilarMovie.title) in function \(#function)"); return}
+//        guard let bottomImageData = bottomCardSimilarMovie.imageData else {NSLog("Error there is not image data for \(bottomCardSimilarMovie.title) in function \(#function)"); return}
+        
+        var bottomImageData: Data
+        if bottomCardSimilarMovie.imageData == nil {
+            bottomImageData = UIImageJPEGRepresentation(#imageLiteral(resourceName: "noImageView"), 1.0)!
+        } else {
+            bottomImageData = bottomCardSimilarMovie.imageData!
+        }
+        
         self.bottomCardImage.image = UIImage(data: bottomImageData)
         self.setCustomText(toLabel: self.customBottomCardLabel, text: "Did you like watching \"\(bottomCardSimilarMovie.title)\"?")
         self.resetPostitionOf(card: card)

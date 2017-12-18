@@ -280,6 +280,7 @@
                                     <outlet property="movieImage" destination="v7o-4y-uEU" id="nSj-Lw-MBc"/>
                                     <outlet property="movieTitle" destination="TAz-E0-llJ" id="MgH-wV-gwm"/>
                                     <outlet property="releaseDate" destination="Of4-6g-I9E" id="HaZ-Jm-SoW"/>
+                                    <segue destination="YYx-tc-inX" kind="show" identifier="toMovieDetail" id="yOb-rR-aMr"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -296,6 +297,36 @@
                 <exit id="jmF-Gp-BSW" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="2220" y="-1055.2816901408451"/>
+        </scene>
+        <!--Movie Detail View Controller-->
+        <scene sceneID="DYc-RK-wMl">
+            <objects>
+                <viewController id="YYx-tc-inX" customClass="MovieDetailViewController" customModule="Wonder_" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="hMd-Ju-vw9">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iMr-dK-nIX">
+                                <rect key="frame" x="8" y="64" width="304" height="189.5"/>
+                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </webView>
+                        </subviews>
+                        <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <constraints>
+                            <constraint firstItem="iMr-dK-nIX" firstAttribute="height" secondItem="hMd-Ju-vw9" secondAttribute="height" multiplier="1/3" id="GG3-z4-NZD"/>
+                            <constraint firstItem="iMr-dK-nIX" firstAttribute="top" secondItem="YsW-h8-Euy" secondAttribute="top" id="K3v-Fx-E66"/>
+                            <constraint firstItem="iMr-dK-nIX" firstAttribute="centerX" secondItem="hMd-Ju-vw9" secondAttribute="centerX" id="gFY-Hs-PZp"/>
+                            <constraint firstItem="iMr-dK-nIX" firstAttribute="width" secondItem="hMd-Ju-vw9" secondAttribute="width" multiplier="0.95" id="zoK-oe-Gza"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="YsW-h8-Euy"/>
+                    </view>
+                    <connections>
+                        <outlet property="trailorWebView" destination="iMr-dK-nIX" id="eIu-3u-UYZ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4WF-zV-1Jm" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3120" y="-1055"/>
         </scene>
         <!--Never Pick Again-->
         <scene sceneID="02p-Az-75i">
@@ -343,7 +374,7 @@
                                 <rect key="frame" x="0.0" y="210" width="320" height="142"/>
                                 <color key="backgroundColor" red="0.074027113620000001" green="0.09018871933" blue="0.094423674050000003" alpha="0.70202464789999997" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="24"/>
-                                <state key="normal" title="Create Your Own Categorys">
+                                <state key="normal" title="Create Your Own Categories">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>

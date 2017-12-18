@@ -15,7 +15,7 @@ class QuestionController {
     var questions: [Question] = [
     Question(question: "Are you with someone special? 1"),
     Question(question: "Are you/everyone exhausted? 2"),
-    Question(question: "Ae you looking to get out of the house? 3"),
+    Question(question: "Are you looking to get out of the house? 3"),
     ]
     
     

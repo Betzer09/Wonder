@@ -126,20 +126,20 @@ class MovieController {
     func fetchImageWith(endpoint: String, completion: @escaping (UIImage?) -> Void) {
         let imageURL = URL(string: "https://image.tmdb.org/t/p/w342/")!
         let url = imageURL.appendingPathComponent(endpoint)
-        
+        let noImageViewImage = UIImage(named: "noImageView")
         URLSession.shared.dataTask(with: url) { (data, _, error) in
             
             // Check for an error
             if let error = error {
                 print(error.localizedDescription)
-                completion(nil)
+                completion(noImageViewImage)
                 return
             }
             
             // Check for data
             guard let data = data else {
                 print("There was bad data")
-                completion(nil)
+                completion(noImageViewImage)
                 return
             }
             
@@ -185,7 +185,7 @@ class MovieController {
                 }
                 
                 self.fetchImageWith(endpoint: path, completion: { (image) in
-                    guard let image = image, let data = UIImagePNGRepresentation(image) else {NSLog("Error convert \"\(movie.title)'s\" image data in function \(#function)"); return}
+                    guard let image = image, let data = UIImageJPEGRepresentation(image, 1.0) else {NSLog("Error convert \"\(movie.title)'s\" image data in function \(#function)"); return}
                     let updatedMovie = self.updateImageDataAndTitleFor(movie: movie, with: data, title: nil)
                     
                     if self.similarMoviesToDisplayToTheUser.contains(movie) {
@@ -359,7 +359,7 @@ class MovieController {
                             }
                             
                             self.fetchImageWith(endpoint: endpoint, completion: { (image) in
-                                guard let image = image, let data = UIImagePNGRepresentation(image), let title = movies.first?.title else {
+                                guard let image = image, let data = UIImageJPEGRepresentation(image, 1.0), let title = movies.first?.title else {
                                     NSLog("No image. Location: \(#function)")
                                     fetchSimilarMoviesGroup.leave()
                                     self.groupCount -= 1
@@ -514,7 +514,7 @@ class MovieController {
                     return
                 }
                 var newMovie = movie
-                newMovie.imageData = UIImagePNGRepresentation(image)
+                newMovie.imageData = UIImageJPEGRepresentation(image,1.0)
                 guard let index = newArrayToReturn.index(of: movie) else {
                     group.leave()
                     return

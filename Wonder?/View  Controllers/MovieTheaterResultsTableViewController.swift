@@ -11,7 +11,7 @@ import UIKit
 class MovieTheaterResultsTableViewController: UITableViewController {
 
     // MARK: - Properties
-    
+    var trailors: [MovieTrailers.MovieTrailor] = []
     
     // MARK: - View LifeCycles
     override func viewWillAppear(_ animated: Bool) {
@@ -22,6 +22,8 @@ class MovieTheaterResultsTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+//        configureUI()
     }
     
     // MARK: - Actions
@@ -50,8 +52,71 @@ class MovieTheaterResultsTableViewController: UITableViewController {
         return cell
     }
     
+    // MARK: - Functions
+    
+    func configureUI() {
+        guard let theaterMovies = MovieController.shared.recommendedTheaterMoviesToDisplayToTheUser else {return}
+        let group = DispatchGroup()
+        for movie in theaterMovies {
+            group.enter()
+            // fetch the movie with the id
+            
+            guard let index = MovieController.shared.moviesThatAreSmilar.index(where: { $0.title == movie.title } ) else {
+                group.leave()
+                return
+            }
+            
+            let movieDB = MovieController.shared.moviesThatAreSmilar[index]
+            MovieTrailorController.shared.fetchMovieTrailorWith(movie: movieDB.id, completion: { (trailors) in
+                if trailors.count == 0 {
+                    group.leave()
+                    return
+                }
+                
+                self.trailors += trailors
+            })
+            group.leave()
+        }
+        
+        group.notify(queue: DispatchQueue.main) {
+            print("Done fetching data")
+        }
+    }
+    
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-
+        
+        
+        if segue.identifier == "toMovieDetail" {
+            guard let destination = segue.destination as? MovieDetailViewController, let indexPath = tableView.indexPathForSelectedRow else {return}
+            
+            
+            guard let theaterMovies = MovieController.shared.recommendedTheaterMoviesToDisplayToTheUser else {return}
+            let theaterMovie = theaterMovies[indexPath.row]
+            
+            guard let index = MovieController.shared.moviesThatAreSmilar.index(where: { $0.title == theaterMovie.title }) else {return}
+            
+            let movie = MovieController.shared.moviesThatAreSmilar[index]
+            destination.theaterMovie = theaterMovie
+            destination.movie = movie
+            
+        }
+        
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -43,7 +43,7 @@ class TheatreController {
     }
     
     /// This should be used in the real app
-    func fetchTheaterMoviesFromAPI(completion: @escaping ([TheatreMovies]) -> Void) {
+    func fetchTheaterMoviesFromAPI(completion: @escaping ([TheatreMovies.TheaterMovie]) -> Void) {
         let baseURL = URL(string: "http://data.tmsapi.com/v1.1/movies/showings")
         //http://data.tmsapi.com/v1.1/movies/showings?startDate=2017-12-07&zip=84111&api_key=f63btc28rntf3tvv2j4tvvtp
         

@@ -95,7 +95,7 @@ class GenresController {
                         return
                     }
                     MovieController.shared.fetchImageWith(endpoint: path, completion: { (image) in
-                        guard let image = image, let dataOfImage = UIImagePNGRepresentation(image) else {print("Error saving the data of the image in file \(#file) and function \(#function)")
+                        guard let image = image, let dataOfImage = UIImageJPEGRepresentation(image, 1.0) else {print("Error saving the data of the image in file \(#file) and function \(#function)")
                             downloadGroup.leave()
                             return
                         }
