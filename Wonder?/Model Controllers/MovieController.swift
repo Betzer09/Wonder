@@ -37,8 +37,8 @@ class MovieController {
     }
     
     // MARK: - Fetch Functions
-    /// Movie DB recommeded Movies
-    func fetchRecommendedMovieWith(id: Int, completion: @escaping (Movie?) -> Void) {
+    /// Fetches recommended movies from the movieDB and fills the recommendedMovies array
+    func fetchRecommendedMoviesFromTheMovieDBWith(id: Int, completion: @escaping (Movie?) -> Void) {
         
         let recommendMoviesURL = URL(string: "https://api.themoviedb.org/3/movie/\(id)/recommendations")
         guard let unwrappedURL = recommendMoviesURL else {NSLog("Bad URL: \(#file)"); return }
@@ -73,7 +73,7 @@ class MovieController {
     }
     
     //https://api.themoviedb.org/3/discover/movie?api_key=c366b28fa7f90e98f633846b3704570c&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=28
-    /// MovieDB Discover
+    /// fetches movies based on genres with the MovieDB Discover call and fills the discoveredMoviesBasedOnGenresArray
     func fetchMoviesBasedOnGenresWith(ids: [Int], pageCount: Int, completion: @escaping ([Movie]?) -> Void) {
         
         let discoverMoviesBaseURL = URL(string: "https://api.themoviedb.org/3/discover/movie")
@@ -122,7 +122,7 @@ class MovieController {
         
     }
     
-    
+    // Fetches the images from the movie DB
     func fetchImageWith(endpoint: String, completion: @escaping (UIImage?) -> Void) {
         let imageURL = URL(string: "https://image.tmdb.org/t/p/w342/")!
         let url = imageURL.appendingPathComponent(endpoint)
@@ -152,6 +152,7 @@ class MovieController {
     }
     
     //https://api.themoviedb.org/3/movie/562/similar?api_key=c366b28fa7f90e98f633846b3704570c&language=en-US&page=1
+    ///Fetces movies that are similar to the given movie id and fills the similarMoviesToDisplayToTheUser Array
     private func fetchMoviesThatAreSimilarWith(movie id: Int, completion: @escaping ([Movie]) -> Void) {
         
         let customURL = "https://api.themoviedb.org/3/movie/\(id)/similar"
@@ -208,7 +209,7 @@ class MovieController {
     }
     
     //https://api.themoviedb.org/3/movie/now_playing?api_key=c366b28fa7f90e98f633846b3704570c&language=en-US&page=3
-    /// This returns movies that are currently playing according to the movieDB
+    /// This returns movies that are currently playing according to the movieDB and fills the nowPlayingMovies Array
     private func fetchMoviesThatAreNowPlaying(page: Int, completion: @escaping ([Movie]?) -> Void) {
         let baseURL = URL(string: "https://api.themoviedb.org/3/movie/now_playing")
         
@@ -259,8 +260,8 @@ class MovieController {
         
     }
     
-    
-    func fetchRecommendedMovies(completion: @escaping (_ isComplete: Bool) -> Void) {
+    /// Fetches recommended movies based on the users answers
+    func calulateWhatTheUserWantsToSee(completion: @escaping (_ isComplete: Bool) -> Void) {
         // If the answer is true they want to go the the movie theaters
         let answer = QuestionController.shared.doesTheUserWantToGoOut()
         print(answer)
@@ -324,7 +325,6 @@ class MovieController {
     }
     
     // MARK: - Functions
-    
     /// Fetches Movies that are similar using the movie ID and returns an array of Movies as well as assigns the similar movie to it's corrisponding recommended movie
     func fetchMoviesThatAreSimilarWith(moviesThatMatchTheirLikedGenres: [Movie], completion: @escaping (_ isComplete: Bool) -> Void) {
         
@@ -414,6 +414,7 @@ class MovieController {
         
     }
     
+    /// Updates the movie with imageData
     func updateImageDataAndTitleFor(movie: Movie, with data: Data, title: String?) -> Movie {
         var oldMovie = movie
         oldMovie.imageData = data
@@ -422,6 +423,7 @@ class MovieController {
         return oldMovie
     }
     
+    /// Toggles the isLiked property of  a movie
     func toggleSimilarMoviesStatisFor(movie: Movie, with isliked: Bool) -> Movie? {
         var oldMovie = movie
         oldMovie.isLiked = isliked
@@ -502,6 +504,7 @@ class MovieController {
         return moviesThatAreSimilar
     }
     
+    /// This fetches the backDropImage for a given movie
     func fetchBackDropImageForMovies() {
         let group = DispatchGroup()
         

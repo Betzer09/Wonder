@@ -203,16 +203,27 @@ class SwipeViewController: UIViewController {
                 self.hasLikeButtonAnimationCompleted = true
                 guard let likedGenresCount = self.likedGenresCount else {return}
                 let genreToModify = GenresController.shared.movieGenres[self.indexOfGenre]
+                
+                // This checks if it needs to switch to questions
                 if self.indexOfGenre + 1 != self.maxMovieGenreCount && self.switchToQuestions == false && likedGenresCount <=  3 {
                     self.completeAnimationForGenreUsing(card: card, likedGenresCount: likedGenresCount, genreToModify: genreToModify, isLiked: true)
                 } else {
-                    let question = QuestionController.shared.questions[self.questionCounter - 1]
-                    self.prepareForNextQuestion(question: question, isLiked: true, completion: { (isComplete) in
-                        if isComplete {
-                            // TODO: -  Fetch Movies
-                            self.setCustomText(toLabel: self.customBottomCardLabel, text: "Coming SOOOOOOON")
-                        }
-                    })
+                    // This checks if we need to switch to similar movies
+                    if self.questionCounter > 3 {
+                        let movie = MovieController.shared.similarMoviesToDisplayToTheUser[self.similerMoviesCounter]
+                        guard let updatedMovie = MovieController.shared.toggleSimilarMoviesStatisFor(movie: movie, with: true) else {return}
+                        MovieController.shared.filterOutSimilarMovieWith(movie: updatedMovie)
+                        self.similerMoviesCounter += 1
+                        self.resetTopCardWithSimilarMovies(self.topCardView)
+                        // Now we need to filter the array and check the count that way we can present the results
+                    } else {
+                        let question = QuestionController.shared.questions[self.questionCounter - 1]
+                        self.prepareForNextQuestion(question: question, isLiked: true, completion: { (isComplete) in
+                            if isComplete {
+                                
+                            }
+                        })
+                    }
                 }
             }
         }
@@ -235,20 +246,33 @@ class SwipeViewController: UIViewController {
                 if self.indexOfGenre + 1 != maxMovieGenreCount && self.switchToQuestions == false && likedGenresCount <=  3 {
                     self.completeAnimationForGenreUsing(card: card, likedGenresCount: likedGenresCount, genreToModify: genreToModify, isLiked: false)
                 } else {
-                    // If they haven't picked three genres that they like make them start over
-                    if self.indexOfGenre == maxMovieGenreCount - 1 && likedGenresCount != 3{
-                        self.haveGenresReset = true
-                        self.indexOfGenre = 0
+                    // This going to check if we need to start asking qustions or if we need to continue displaying genre types
+                    if self.indexOfGenre + 1 != maxMovieGenreCount && self.switchToQuestions == false && likedGenresCount <=  3 {
                         self.completeAnimationForGenreUsing(card: card, likedGenresCount: likedGenresCount, genreToModify: genreToModify, isLiked: false)
                     } else {
-                        // When this runs we are starting to ask general question before we start fetch movies
-                        let question = QuestionController.shared.questions[self.questionCounter - 1 ]
-                        self.prepareForNextQuestion(question: question, isLiked: false, completion: { (isComplete) in
-                            if isComplete {
-                                // TODO: -  Fetch Movies
-                                self.setCustomText(toLabel: self.customBottomCardLabel, text: "Coming SOOOOOOON")
+                        // If they haven't picked three genres that they like make them start over
+                        if self.indexOfGenre == maxMovieGenreCount - 1 && likedGenresCount != 3{
+                            self.haveGenresReset = true
+                            self.indexOfGenre = 0
+                            self.completeAnimationForGenreUsing(card: card, likedGenresCount: likedGenresCount, genreToModify: genreToModify, isLiked: false)
+                        } else {
+                            // This checks if we need to switch to similar movies
+                            if self.questionCounter > 3 {
+                                let movie = MovieController.shared.similarMoviesToDisplayToTheUser[self.similerMoviesCounter]
+                                guard let updatedMovie = MovieController.shared.toggleSimilarMoviesStatisFor(movie: movie, with: false) else {return}
+                                MovieController.shared.filterOutSimilarMovieWith(movie: updatedMovie)
+                                self.similerMoviesCounter += 1
+                                self.resetTopCardWithSimilarMovies(self.topCardView)
+                                print("Foo")
+                            } else {
+                                let question = QuestionController.shared.questions[self.questionCounter - 1 ]
+                                self.prepareForNextQuestion(question: question, isLiked: false, completion: { (isComplete) in
+                                    if isComplete {
+                                        
+                                    }
+                                })
                             }
-                        })
+                        }
                     }
                 }
                 self.disLikeButtonAnimationCompleted = true
@@ -410,7 +434,7 @@ class SwipeViewController: UIViewController {
     
     private func resetTopCardWithSimilarMoviesForTheFirstTime(_ card: UIView) {
         
-        MovieController.shared.fetchRecommendedMovies(completion: { (isComplete) in
+        MovieController.shared.calulateWhatTheUserWantsToSee(completion: { (isComplete) in
             if isComplete {
                 self.similarMoviesToWhatWeWillRecommend = MovieController.shared.similarMoviesToDisplayToTheUser
                 let topCardSimilarMovie = self.similarMoviesToWhatWeWillRecommend[self.similerMoviesCounter]
