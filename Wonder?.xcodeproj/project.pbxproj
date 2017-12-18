@@ -9,8 +9,11 @@
 /* Begin PBXBuildFile section */
 		23639C971FC5FD2900DFEFAF /* Question.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23639C961FC5FD2900DFEFAF /* Question.swift */; };
 		23639C991FC5FD8F00DFEFAF /* QuestionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23639C981FC5FD8F00DFEFAF /* QuestionController.swift */; };
+		237F0B7C1FE82FC10063AE69 /* UserLocation+Convience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237F0B7B1FE82FC10063AE69 /* UserLocation+Convience.swift */; };
+		237F0B7E1FE8303D0063AE69 /* UserLocationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237F0B7D1FE8303D0063AE69 /* UserLocationController.swift */; };
+		237F0B821FE860E50063AE69 /* GlobalFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237F0B811FE860E50063AE69 /* GlobalFunctions.swift */; };
 		239A14401FD5CF1000D414BB /* Genre.json in Resources */ = {isa = PBXBuildFile; fileRef = 239A143F1FD5CF1000D414BB /* Genre.json */; };
-		239A14421FD5DB7000D414BB /* WatchTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239A14411FD5DB7000D414BB /* WatchTabViewController.swift */; };
+		239A14421FD5DB7000D414BB /* CategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239A14411FD5DB7000D414BB /* CategoriesViewController.swift */; };
 		239A14441FD5DCD200D414BB /* tvShowGenres.json in Resources */ = {isa = PBXBuildFile; fileRef = 239A14431FD5DCD200D414BB /* tvShowGenres.json */; };
 		23B2FDD71FE345B90089508C /* TheaterMovieTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B2FDD61FE345B90089508C /* TheaterMovieTableViewCell.swift */; };
 		23B2FDD91FE384450089508C /* MovieDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B2FDD81FE384450089508C /* MovieDetailViewController.swift */; };
@@ -36,8 +39,11 @@
 /* Begin PBXFileReference section */
 		23639C961FC5FD2900DFEFAF /* Question.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Question.swift; sourceTree = "<group>"; };
 		23639C981FC5FD8F00DFEFAF /* QuestionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionController.swift; sourceTree = "<group>"; };
+		237F0B7B1FE82FC10063AE69 /* UserLocation+Convience.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserLocation+Convience.swift"; sourceTree = "<group>"; };
+		237F0B7D1FE8303D0063AE69 /* UserLocationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLocationController.swift; sourceTree = "<group>"; };
+		237F0B811FE860E50063AE69 /* GlobalFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalFunctions.swift; sourceTree = "<group>"; };
 		239A143F1FD5CF1000D414BB /* Genre.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Genre.json; sourceTree = "<group>"; };
-		239A14411FD5DB7000D414BB /* WatchTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchTabViewController.swift; sourceTree = "<group>"; };
+		239A14411FD5DB7000D414BB /* CategoriesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesViewController.swift; sourceTree = "<group>"; };
 		239A14431FD5DCD200D414BB /* tvShowGenres.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = tvShowGenres.json; sourceTree = "<group>"; };
 		23B2FDD61FE345B90089508C /* TheaterMovieTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TheaterMovieTableViewCell.swift; sourceTree = "<group>"; };
 		23B2FDD81FE384450089508C /* MovieDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailViewController.swift; sourceTree = "<group>"; };
@@ -132,6 +138,7 @@
 				23639C961FC5FD2900DFEFAF /* Question.swift */,
 				23CF62EA1FD99EA2002B6062 /* TheaterMovie.swift */,
 				23B2FDDE1FE38E950089508C /* MovieTrailor.swift */,
+				237F0B7B1FE82FC10063AE69 /* UserLocation+Convience.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -148,7 +155,7 @@
 			isa = PBXGroup;
 			children = (
 				23E2555A1FC4A95E00D5C23B /* SwipeViewController.swift */,
-				239A14411FD5DB7000D414BB /* WatchTabViewController.swift */,
+				239A14411FD5DB7000D414BB /* CategoriesViewController.swift */,
 				23DB019D1FDA334B006E71DC /* MovieTheaterResultsTableViewController.swift */,
 				23B2FDD81FE384450089508C /* MovieDetailViewController.swift */,
 			);
@@ -163,6 +170,7 @@
 				23639C981FC5FD8F00DFEFAF /* QuestionController.swift */,
 				23CF62EE1FD9BC94002B6062 /* TheatreController.swift */,
 				23B2FDE01FE3907F0089508C /* MovieTrailorController.swift */,
+				237F0B7D1FE8303D0063AE69 /* UserLocationController.swift */,
 			);
 			path = "Model Controllers";
 			sourceTree = "<group>";
@@ -171,6 +179,7 @@
 			isa = PBXGroup;
 			children = (
 				23E2554B1FC4812C00D5C23B /* CoreDataStack.swift */,
+				237F0B811FE860E50063AE69 /* GlobalFunctions.swift */,
 			);
 			path = "Other Controller";
 			sourceTree = "<group>";
@@ -262,6 +271,8 @@
 			files = (
 				23E2551A1FC36BB600D5C23B /* AppDelegate.swift in Sources */,
 				23E2555B1FC4A95E00D5C23B /* SwipeViewController.swift in Sources */,
+				237F0B821FE860E50063AE69 /* GlobalFunctions.swift in Sources */,
+				237F0B7C1FE82FC10063AE69 /* UserLocation+Convience.swift in Sources */,
 				23639C991FC5FD8F00DFEFAF /* QuestionController.swift in Sources */,
 				23639C971FC5FD2900DFEFAF /* Question.swift in Sources */,
 				23B2FDDF1FE38E950089508C /* MovieTrailor.swift in Sources */,
@@ -273,7 +284,8 @@
 				23E255591FC48BD100D5C23B /* MovieController.swift in Sources */,
 				23E255361FC37C4100D5C23B /* GenresController.swift in Sources */,
 				23B2FDD71FE345B90089508C /* TheaterMovieTableViewCell.swift in Sources */,
-				239A14421FD5DB7000D414BB /* WatchTabViewController.swift in Sources */,
+				239A14421FD5DB7000D414BB /* CategoriesViewController.swift in Sources */,
+				237F0B7E1FE8303D0063AE69 /* UserLocationController.swift in Sources */,
 				23B2FDD91FE384450089508C /* MovieDetailViewController.swift in Sources */,
 				23E255341FC3771F00D5C23B /* Movie.swift in Sources */,
 				23CF62EF1FD9BC94002B6062 /* TheatreController.swift in Sources */,

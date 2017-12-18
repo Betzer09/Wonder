@@ -90,7 +90,10 @@ class GenresController {
                         movie = movies[newMovieIndex]
                     }
                     
-                    guard let path = movie.posterPath else {print("There is no image for \"\(movie.title)\" and genre: \"\(genre.name)\" in file\(#file) and \(#function)")
+                    guard let path = movie.posterPath else {
+                        print("There is no image posterpath for the fetch: for \"\(movie.title)\" and genre: \"\(genre.name)\" in file\(#file) and \(#function)")
+                        guard let data = UIImageJPEGRepresentation(#imageLiteral(resourceName: "noImageView"), 1.0) else {return}
+                        self.updateGenreWithImage(data: data, for: genre)
                         downloadGroup.leave()
                         return
                     }
@@ -99,7 +102,7 @@ class GenresController {
                             downloadGroup.leave()
                             return
                         }
-                        self.updateGenreWithImage(data: dataOfImage, genre: genre)
+                        self.updateGenreWithImage(data: dataOfImage, for: genre)
                         downloadGroup.leave()
                     })
                     
@@ -114,7 +117,7 @@ class GenresController {
         
     }
     
-    func updateGenreWithImage(data: Data, genre: Genre) {
+    func updateGenreWithImage(data: Data, for genre: Genre) {
         var oldGenre = genre
         oldGenre.genreImageData = data
         
@@ -141,39 +144,6 @@ class GenresController {
         tvShowGenres = tvShowGenreList.genres
         
     }
-    
-    /// Fetches a genre image
-//    func fetchImageForGenre(with id: Int, completion: @escaping (UIImage?) -> Void) {
-//        MovieController.shared.fetchMoviesBasedOnGenresWith(ids: [id], pageCount: 1) { (movies) in
-//            var movieCounter = Int(arc4random_uniform(10))
-//
-//            // Get the first movie that comes back and grab the poster path
-//            guard let movies = movies else {print("There are no movies to return an image form in file \(#file) and function\(#function)"); return}
-//            var movie = movies[movieCounter]
-//
-//            // Check for duplicate movies
-//            if self.genreMoviesThatHaveAlreadyBeenDisplayed.contains(movie) {
-//                // Increment the number from the very start that way we can reassign movie
-//                movieCounter = Int(arc4random_uniform(10))
-//
-//                // We want to get a different movie
-//                movie = movies[movieCounter]
-//            } else {
-//                // We can use the movie we have
-//                self.genreMoviesThatHaveAlreadyBeenDisplayed.append(movie)
-//            }
-//
-//            guard let path = movie.posterPath else {print("Error fetching the posterPath of the movie in file: \(#file) and function: \(#function)");  return}
-//            // Once you have the poster path fetch the image and set it as the image
-//
-//            MovieController.shared.fetchImageWith(endpoint: path, completion: { (image) in
-//                guard let image = image else {print("Error fetching genre image in file: \(#file) and function: \(#function)"); completion(nil); return}
-//                completion(image)
-//            })
-//
-//        }
-//
-//    }
     
     // MARK: - Functions
     /// Toggle the status of a genre

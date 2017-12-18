@@ -23,12 +23,11 @@ class TheaterMovieTableViewCell: UITableViewCell {
             let data = MovieController.shared.moviesThatAreSmilar[index].imageData,
             let releaseDate = MovieController.shared.moviesThatAreSmilar[index].releaseDate else {return}
         
-
-        
             DispatchQueue.main.async {
                 self.movieImage.image = UIImage(data: data)
                 self.movieTitle.text = theaterMovie.title
-                self.releaseDate.text = releaseDate
+                guard let date = returnFormattedDateForMovieLabel(string: releaseDate), let returnDate = returnFormattedDateFrom2(date: date) else {return}
+                self.releaseDate.text = "\(returnDate)"
             }
         
         

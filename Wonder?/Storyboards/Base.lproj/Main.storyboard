@@ -331,7 +331,7 @@
         <!--Never Pick Again-->
         <scene sceneID="02p-Az-75i">
             <objects>
-                <viewController storyboardIdentifier="watchTabVC" id="Zqf-zt-0Kb" customClass="WatchTabViewController" customModule="Wonder_" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="watchTabVC" id="Zqf-zt-0Kb" customClass="CategoriesViewController" customModule="Wonder_" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="tEm-Tw-ZQA">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -378,7 +378,6 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
-                                    <action selector="FindTvShowButtonPressed:" destination="Zqf-zt-0Kb" eventType="touchUpInside" id="405-74-DaU"/>
                                     <segue destination="P6m-F0-snl" kind="show" id="XJS-33-mnq"/>
                                 </connections>
                             </button>
@@ -390,10 +389,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
-                                    <action selector="findMovieButtonPressed:" destination="Zqf-zt-0Kb" eventType="touchUpInside" id="GcU-WV-5Le"/>
-                                    <segue destination="h4d-h6-anm" kind="show" identifier="toMovieQuestionView" id="I5a-Uo-RnC">
-                                        <nil key="action"/>
-                                    </segue>
+                                    <segue destination="h4d-h6-anm" kind="show" identifier="toMovieQuestionView" id="geo-ro-uUR"/>
                                 </connections>
                             </button>
                         </subviews>

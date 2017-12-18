@@ -319,16 +319,6 @@ class SwipeViewController: UIViewController {
         
     }
     
-    @objc func refreshSimilarMovies() {
-//        self.similarMoviesToWhatWeWillRecommend = MovieController.shared.similarMoviesToDisplayToTheUser
-//
-//        if similarMoviesToWhatWeWillRecommend.count <= 3 {
-//            guard !hasSegued else { return }
-//            hasSegued = true
-//            self.presentTheaterMovieResultsViewController()
-//        }
-//        print("Similar Movies Have changes")
-    }
     
     @objc func refreshLikeGenres(card: UIView?) {
         likedGenresCount = GenresController.shared.likedMovieGenres.count

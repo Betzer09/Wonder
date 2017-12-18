@@ -204,7 +204,7 @@ class MovieController {
             }
             
             }.resume()
-    
+        
     }
     
     //https://api.themoviedb.org/3/movie/now_playing?api_key=c366b28fa7f90e98f633846b3704570c&language=en-US&page=3
@@ -266,46 +266,48 @@ class MovieController {
         print(answer)
         // Fetch movies in theaters
         if answer {
-            // Fetch theaterMovies that are in theaters if this fails just fetch movies that are in theaters using the movieDB
-            TheatreController.shared.fetchTheaterMovies(completion: { (theaterMovies) in
-                guard let theaterMovies = theaterMovies else {return}
-                if theaterMovies.isEmpty {
-                    // Fetch movies that are now playing useing the movieDB
-                    
-                    MovieController.shared.fetchMoviesThatAreNowPlaying(page: 1, completion: { (movies) in
-                        print("Fix Me")
-                        completion(true)
+            
+            DispatchQueue.main.async {
+                // Fetch theaterMovies that are in theaters if this fails just fetch movies that are in theaters using the movieDB
+                TheatreController.shared.fetchTheaterMoviesFromAPI(completion: { (theaterMovies) in
+                    if theaterMovies.isEmpty {
+                        // Fetch movies that are now playing useing the movieDB
                         
-                    })
-                    
-                    
-                } else {
-                    // This means we still have API calls and got movies from the TheaterShowtime API
-                    // Fetch movies that are currently in theaters using the movieDB
-                    MovieController.shared.fetchMoviesThatAreNowPlaying(page: 1, completion: { (movies) in
-                        guard let movies = movies else {print("There are no movies that are playing... in file \(#file) and function: \(#function)"); return}
-                        // Combine both of those arrays and get what's similar
-                        let theaterMovieNames = theaterMovies.map({ $0.title })
-                        let movieDBNames = movies.map({$0.title})
-                        
-                        let similarMovieTitles = self.checkForSimilarTitlesWith(theaterMovieNames: theaterMovieNames, moviesDBNames: movieDBNames)
-                        // Now go back and initalize the similar movies
-                        let initalziedMoviesThatAreSmilar = self.initalizeTheMoviesThatAreSimilarWith(similarMovieTitles, movies: movies)
-                        // Filter out all the movies that don't match their liked genres
-                        let moviesThatMatchTheirLikedGenres = self.filterOutMoviesThatDontMatchTheirLikedGenresWith(moviesThatAreSimilar: initalziedMoviesThatAreSmilar)
-                        
-                        // This just goes through and updates the current movies with their updated properties
-                        self.fetchMoviesThatAreSimilarWith(moviesThatMatchTheirLikedGenres: moviesThatMatchTheirLikedGenres, completion: { (isComplete) in
-                            if isComplete {
-                                completion(true)
-                            }
+                        MovieController.shared.fetchMoviesThatAreNowPlaying(page: 1, completion: { (movies) in
+                            print("Fix Me")
+                            completion(true)
+                            
                         })
                         
-                    })
+                        
+                    } else {
+                        // This means we still have API calls and got movies from the TheaterShowtime API
+                        // Fetch movies that are currently in theaters using the movieDB
+                        MovieController.shared.fetchMoviesThatAreNowPlaying(page: 1, completion: { (movies) in
+                            guard let movies = movies else {print("There are no movies that are playing... in file \(#file) and function: \(#function)"); return}
+                            // Combine both of those arrays and get what's similar
+                            let theaterMovieNames = theaterMovies.map({ $0.title })
+                            let movieDBNames = movies.map({$0.title})
+                            
+                            let similarMovieTitles = self.checkForSimilarTitlesWith(theaterMovieNames: theaterMovieNames, moviesDBNames: movieDBNames)
+                            // Now go back and initalize the similar movies
+                            let initalziedMoviesThatAreSmilar = self.initalizeTheMoviesThatAreSimilarWith(similarMovieTitles, movies: movies)
+                            // Filter out all the movies that don't match their liked genres
+                            let moviesThatMatchTheirLikedGenres = self.filterOutMoviesThatDontMatchTheirLikedGenresWith(moviesThatAreSimilar: initalziedMoviesThatAreSmilar)
+                            
+                            // This just goes through and updates the current movies with their updated properties
+                            self.fetchMoviesThatAreSimilarWith(moviesThatMatchTheirLikedGenres: moviesThatMatchTheirLikedGenres, completion: { (isComplete) in
+                                if isComplete {
+                                    completion(true)
+                                }
+                            })
+                            
+                        })
+                        
+                    }
                     
-                }
-                
-            })
+                })
+            }
         } else {
             // Fetch the top rated and popular Movies
             // Filter out all the movies that don't match their liked genres

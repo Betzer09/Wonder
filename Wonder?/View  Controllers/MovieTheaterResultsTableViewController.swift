@@ -22,8 +22,7 @@ class MovieTheaterResultsTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        configureUI()
+        configureUI()
     }
     
     // MARK: - Actions
@@ -33,8 +32,8 @@ class MovieTheaterResultsTableViewController: UITableViewController {
     
     // MARK: - Table view data source
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let count = MovieController.shared.recommendedTheaterMoviesToDisplayToTheUser?.count else {return 1}
-        return count
+//        guard let count = MovieController.shared.recommendedTheaterMoviesToDisplayToTheUser?.count else {return 1}
+        return 3
     }
     
    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -79,14 +78,12 @@ class MovieTheaterResultsTableViewController: UITableViewController {
         }
         
         group.notify(queue: DispatchQueue.main) {
-            print("Done fetching data")
+            print("Done fetching trailor data")
         }
     }
     
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        
         if segue.identifier == "toMovieDetail" {
             guard let destination = segue.destination as? MovieDetailViewController, let indexPath = tableView.indexPathForSelectedRow else {return}
             
@@ -104,19 +101,3 @@ class MovieTheaterResultsTableViewController: UITableViewController {
         
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
