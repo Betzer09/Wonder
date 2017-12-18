@@ -290,7 +290,7 @@
                         </connections>
                     </tableView>
                     <connections>
-                        <segue destination="jmF-Gp-BSW" kind="unwind" identifier="toMovieTBVC" unwindAction="unwindSegue:" id="3vY-bu-x9s"/>
+                        <segue destination="jmF-Gp-BSW" kind="unwind" identifier="toMovieTBVC" unwindAction="unwindSegueWithSegue:" id="7qw-tL-I8Y"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Cwf-qu-etq" userLabel="First Responder" sceneMemberID="firstResponder"/>

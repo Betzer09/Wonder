@@ -29,7 +29,8 @@ class CategoriesViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     // MARK: - Actions
-
+    /// Don't delete this is for the unwindsegue
+    @IBAction func unwindSegue(segue: UIStoryboardSegue) {}
     
     // MARK: - Functions
     private func setUpCLLocationManager() {

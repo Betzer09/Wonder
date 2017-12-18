@@ -80,13 +80,13 @@ class GenresController {
             Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { (_) in
                 MovieController.shared.fetchMoviesBasedOnGenresWith(ids: [genre.id], pageCount: 1, completion: { (movies) in
                     // Get the first movie that comes and check if we already have that movie
-                    guard let movies = movies else {return}
-                    let movieIndex = Int(arc4random_uniform(15))
+                    if movies.isEmpty {return}
+                    let movieIndex = Int(arc4random_uniform(UInt32(movies.count - 1)))
                     var movie = movies[movieIndex]
                     
                     // Make sure there are no duplicates
                     while self.genreMoviesThatHaveAlreadyBeenDisplayed.contains(movie) {
-                        let newMovieIndex = Int(arc4random_uniform(15))
+                        let newMovieIndex = Int(arc4random_uniform(UInt32(movies.count - 1)))
                         movie = movies[newMovieIndex]
                     }
                     

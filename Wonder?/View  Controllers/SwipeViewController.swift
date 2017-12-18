@@ -36,7 +36,10 @@ class SwipeViewController: UIViewController {
     var likedGenresCount: Int?
     
     // MARK: - Array Properties
-    var discoveredMovies: [Movie] = []
+    
+    /// There should be twenty movies to display to the user using this array
+    var discoveredMoviesThatMatchAllOfTheUsersGenres: [Movie] = []
+    
     /// This is an array full of similar movies that we will display to the user.
     var similarMoviesToWhatWeWillRecommend: [Movie] = []
 
@@ -306,7 +309,7 @@ class SwipeViewController: UIViewController {
         
         maxMovieGenreCount = GenresController.shared.movieGenres.count
         likedGenresCount = GenresController.shared.likedMovieGenres.count
-        discoveredMovies = MovieController.shared.discoveredMoviesBasedOnGenres
+        
         let genreImageIDForTopCard = GenresController.shared.movieGenres[indexOfGenre]
         let genreImageIDForBottomCard = GenresController.shared.movieGenres[indexOfGenre + 1]
         fetchTheTopCardImageWith(genre: genreImageIDForTopCard)

@@ -16,7 +16,10 @@ class MovieController {
     // MARK: - Properties
     static let shared = MovieController()
     var recommendedMovies: [Movie] = []
+    
+    /// This array should be used to display movies that they can watch at home to the user
     var discoveredMoviesBasedOnGenres: [Movie] = []
+    
     var nowPlayingMovies: [Movie] = []
     var recommendedTheaterMoviesToDisplayToTheUser: [TheatreMovies.TheaterMovie]? = [] {
         didSet {
@@ -74,7 +77,7 @@ class MovieController {
     
     //https://api.themoviedb.org/3/discover/movie?api_key=c366b28fa7f90e98f633846b3704570c&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=28
     /// fetches movies based on genres with the MovieDB Discover call and fills the discoveredMoviesBasedOnGenresArray
-    func fetchMoviesBasedOnGenresWith(ids: [Int], pageCount: Int, completion: @escaping ([Movie]?) -> Void) {
+    func fetchMoviesBasedOnGenresWith(ids: [Int], pageCount: Int, completion: @escaping ([Movie]) -> Void) {
         
         let discoverMoviesBaseURL = URL(string: "https://api.themoviedb.org/3/discover/movie")
         
@@ -84,7 +87,7 @@ class MovieController {
         var stringOfIDs = ""
         
         for id in ids {
-            stringOfIDs.append("\(id)")
+            stringOfIDs.append("\(id),")
         }
         
         let parameters = ["api_key": "c366b28fa7f90e98f633846b3704570c",
@@ -111,8 +114,6 @@ class MovieController {
             
             do{
                 let movies = try JSONDecoder().decode(Movies.self, from: data)
-                
-                self.discoveredMoviesBasedOnGenres = movies.results
                 completion(movies.results)
             } catch let error {
                 print("Error initalzing discovered movies in function \(#file) and function: \(#function) becuase of error: \(error.localizedDescription)")
@@ -270,7 +271,7 @@ class MovieController {
             
             DispatchQueue.main.async {
                 // Fetch theaterMovies that are in theaters if this fails just fetch movies that are in theaters using the movieDB
-                TheatreController.shared.fetchTheaterMoviesFromAPI(completion: { (theaterMovies) in
+                TheatreController.shared.fetchTheaterMovies(completion: { (theaterMovies) in
                     if theaterMovies.isEmpty {
                         // Fetch movies that are now playing useing the movieDB
                         
@@ -310,11 +311,25 @@ class MovieController {
                 })
             }
         } else {
-            // Fetch the top rated and popular Movies
-            // Filter out all the movies that don't match their liked genres
+            
+            // Fetch movies from discover with all of their genres that they picked
+            DispatchQueue.main.async {
+                // This way we get fourty movies back
+                let likedGenres = GenresController.shared.likedMovieGenres.map({ $0.id })
+                self.fetchMoviesBasedOnGenresWith(ids: likedGenres, pageCount: 1, completion: { (movies) in
+                    if movies.isEmpty {return}
+                    self.discoveredMoviesBasedOnGenres += movies
+                })
+            }
+            
             // Take the "liked Movies" and grab their ID
-            // Use the array of IDS and Start from the top and fetch reccomed movies based on those id
+            // Use the array of IDS and Start from the top and fetch recommeded movies based on those id
             // If they don't like a movie that's similar filter out the recommended movie
+            self.fetchMoviesThatAreSimilarWith(moviesThatMatchTheirLikedGenres: self.discoveredMoviesBasedOnGenres, completion: { (isComplete) in
+                if isComplete {
+                    completion(true)
+                }
+            })
         }
     }
     
