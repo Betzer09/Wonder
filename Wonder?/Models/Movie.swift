@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-struct Movie: Decodable, Equatable {
+class Movie: Decodable, Equatable {
     
     static func ==(lhs: Movie, rhs: Movie) -> Bool {
         return lhs.title == rhs.title && lhs.releaseDate == rhs.releaseDate && lhs.genreIDS == rhs.genreIDS && lhs.overview == rhs.overview && lhs.voteAverage == rhs.voteAverage
@@ -22,13 +22,38 @@ struct Movie: Decodable, Equatable {
     let overview: String
     let voteAverage: Double
     let adult: Bool
-    let releaseDate: String?
     let video: Bool
     let id: Int
     var isLiked: Bool? = nil
     var imageData: Data? = nil
-    var isSimilarTo: String? = ""
     var backdropPath: String? = ""
+    var similarMovie: Movie? = nil
+    
+    var releaseDate: String
+    
+    var formattedReleaseDate: String {
+        guard let convertedStringDate = returnFormattedDateForMovieLabel(string: self.releaseDate),
+            let finalDate = returnFormattedDateFrom2(date: convertedStringDate) else { return " "}
+        return finalDate
+    }
+    
+    init(title: String, posterPath: String, genresIDS: [Int], overview: String, voteAverage: Double, adult: Bool, releaseDate: String, video: Bool, id: Int, isLiked: Bool, imageData: Data, backdropPath: String, similarMovie: Movie? = nil ) {
+        
+        self.title = title
+        self.posterPath = posterPath
+        self.genreIDS = genresIDS
+        self.overview = overview
+        self.voteAverage = voteAverage
+        self.adult = adult
+        self.video = video
+        self.id = id
+        self.isLiked = isLiked
+        self.imageData = imageData
+        self.backdropPath = backdropPath
+        self.similarMovie = similarMovie
+        self.releaseDate = releaseDate
+    
+    }
     
     enum CodingKeys: String, CodingKey {
         case title
@@ -43,26 +68,11 @@ struct Movie: Decodable, Equatable {
         case backdropPath = "backdrop_path"
 
     }
+    
+
 
 }
 
 struct Movies: Decodable {
     var results: [Movie]
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

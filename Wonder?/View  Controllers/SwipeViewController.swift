@@ -65,7 +65,6 @@ class SwipeViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(refreshLikeGenres), name: GenresController.likedMovieGenresArrayWasUpdated, object: nil)
 //        NotificationCenter.default.addObserver(self, selector: #selector(refreshSimilarMovies), name: MovieController.similarMoviesToDisplayToTheUserWasUpdated, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(presentSimilarMovies), name: questionCounterObserver, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(displayFinalResults), name: MovieController.recommendedTheaterMoviesToDisplayToTheUserWasUpdated, object: nil)
         resetView()
     }
     
@@ -74,7 +73,6 @@ class SwipeViewController: UIViewController {
         
         NotificationCenter.default.removeObserver(self, name: GenresController.likedMovieGenresArrayWasUpdated, object: nil)
         NotificationCenter.default.removeObserver(self, name: questionCounterObserver, object: nil)
-        NotificationCenter.default.removeObserver(self, name: MovieController.recommendedTheaterMoviesToDisplayToTheUserWasUpdated, object: nil)
     }
     
     // MARK: - Actions
@@ -110,8 +108,8 @@ class SwipeViewController: UIViewController {
                         } else {
                             // This checks if we need to switch to similar movies
                             if self.questionCounter > 3 {
-                                let movie = MovieController.shared.similarMoviesToDisplayToTheUser[self.similerMoviesCounter]
-                                guard let updatedMovie = MovieController.shared.toggleSimilarMoviesStatisFor(movie: movie, with: false) else {return}
+                                let movie = MovieController.shared.discoveredMoviesBasedOnGenres[self.similerMoviesCounter]
+                                let updatedMovie = MovieController.shared.toggleSimilarMoviesStatisFor(movie: movie, with: false)
                                 MovieController.shared.filterOutSimilarMovieWith(movie: updatedMovie)
                                 self.similerMoviesCounter += 1
                                 self.resetTopCardWithSimilarMovies(self.topCardView)
@@ -139,8 +137,8 @@ class SwipeViewController: UIViewController {
                     } else {
                         // This checks if we need to switch to similar movies
                         if self.questionCounter > 3 {
-                            let movie = MovieController.shared.similarMoviesToDisplayToTheUser[self.similerMoviesCounter]
-                            guard let updatedMovie = MovieController.shared.toggleSimilarMoviesStatisFor(movie: movie, with: true) else {return}
+                            let movie = MovieController.shared.discoveredMoviesBasedOnGenres[self.similerMoviesCounter]
+                            let updatedMovie = MovieController.shared.toggleSimilarMoviesStatisFor(movie: movie, with: true)
                             MovieController.shared.filterOutSimilarMovieWith(movie: updatedMovie)
                             self.similerMoviesCounter += 1
                             self.resetTopCardWithSimilarMovies(self.topCardView)
@@ -213,8 +211,8 @@ class SwipeViewController: UIViewController {
                 } else {
                     // This checks if we need to switch to similar movies
                     if self.questionCounter > 3 {
-                        let movie = MovieController.shared.similarMoviesToDisplayToTheUser[self.similerMoviesCounter]
-                        guard let updatedMovie = MovieController.shared.toggleSimilarMoviesStatisFor(movie: movie, with: true) else {return}
+                        let movie = MovieController.shared.discoveredMoviesBasedOnGenres[self.similerMoviesCounter]
+                        let updatedMovie = MovieController.shared.toggleSimilarMoviesStatisFor(movie: movie, with: true)
                         MovieController.shared.filterOutSimilarMovieWith(movie: updatedMovie)
                         self.similerMoviesCounter += 1
                         self.resetTopCardWithSimilarMovies(self.topCardView)
@@ -261,8 +259,8 @@ class SwipeViewController: UIViewController {
                         } else {
                             // This checks if we need to switch to similar movies
                             if self.questionCounter > 3 {
-                                let movie = MovieController.shared.similarMoviesToDisplayToTheUser[self.similerMoviesCounter]
-                                guard let updatedMovie = MovieController.shared.toggleSimilarMoviesStatisFor(movie: movie, with: false) else {return}
+                                let movie = MovieController.shared.discoveredMoviesBasedOnGenres[self.similerMoviesCounter]
+                                let updatedMovie = MovieController.shared.toggleSimilarMoviesStatisFor(movie: movie, with: false)
                                 MovieController.shared.filterOutSimilarMovieWith(movie: updatedMovie)
                                 self.similerMoviesCounter += 1
                                 self.resetTopCardWithSimilarMovies(self.topCardView)
@@ -337,7 +335,7 @@ class SwipeViewController: UIViewController {
     }
     
     @objc func displayFinalResults() {
-        guard let count = MovieController.shared.recommendedTheaterMoviesToDisplayToTheUser?.count else {return}
+        let count = MovieController.shared.discoveredMoviesBasedOnGenres.count
         if count <= 3 || similerMoviesCounter >= count - 1{
             guard !hasSegued else {return}
             hasSegued = true
@@ -439,7 +437,7 @@ class SwipeViewController: UIViewController {
         
         MovieController.shared.calulateWhatTheUserWantsToSee(completion: { (isComplete) in
             if isComplete {
-                self.similarMoviesToWhatWeWillRecommend = MovieController.shared.similarMoviesToDisplayToTheUser
+                self.similarMoviesToWhatWeWillRecommend = MovieController.shared.discoveredMoviesBasedOnGenres
                 let topCardSimilarMovie = self.similarMoviesToWhatWeWillRecommend[self.similerMoviesCounter]
                 
                 

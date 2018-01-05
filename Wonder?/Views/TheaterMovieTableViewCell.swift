@@ -19,16 +19,16 @@ class TheaterMovieTableViewCell: UITableViewCell {
         
         // Find the theater movie in the recommended movies list so we can get the image
         
-        guard let index = MovieController.shared.moviesThatAreSmilar.index(where: { $0.title == theaterMovie.title }),
-            let data = MovieController.shared.moviesThatAreSmilar[index].imageData,
-            let releaseDate = MovieController.shared.moviesThatAreSmilar[index].releaseDate else {return}
-        
-            DispatchQueue.main.async {
-                self.movieImage.image = UIImage(data: data)
-                self.movieTitle.text = theaterMovie.title
-                guard let date = returnFormattedDateForMovieLabel(string: releaseDate), let returnDate = returnFormattedDateFrom2(date: date) else {return}
-                self.releaseDate.text = "\(returnDate)"
-            }
+//        guard let index = MovieController.shared.moviesThatAreSmilar.index(where: { $0.title == theaterMovie.title }),
+//            let data = MovieController.shared.moviesThatAreSmilar[index].imageData,
+//            let releaseDate = MovieController.shared.moviesThatAreSmilar[index].releaseDate else {return}
+//
+//            DispatchQueue.main.async {
+//                self.movieImage.image = UIImage(data: data)
+//                self.movieTitle.text = theaterMovie.title
+//                guard let date = returnFormattedDateForMovieLabel(string: releaseDate), let returnDate = returnFormattedDateFrom2(date: date) else {return}
+//                self.releaseDate.text = "\(returnDate)"
+//            }
         
         
         

@@ -43,10 +43,11 @@ class MovieTheaterResultsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "movieTheaterResultsCell", for: indexPath) as? TheaterMovieTableViewCell else {return UITableViewCell()}
         
-        guard let theaterMovies = MovieController.shared.recommendedTheaterMoviesToDisplayToTheUser else {return UITableViewCell()}
         cell.backgroundColor = UIColor.clear
-        let movie = theaterMovies[indexPath.row]
-        cell.updateCellWith(theaterMovie: movie)
+        let regularMovies = MovieController.shared.discoveredMoviesBasedOnGenres
+        let theaterMovies = MovieController.shared.turnMoviesIntoATheaterMoviesWith(movies: regularMovies)
+        let theaterMovie = theaterMovies[indexPath.row]
+        cell.updateCellWith(theaterMovie: theaterMovie)
         
         return cell
     }
@@ -54,18 +55,19 @@ class MovieTheaterResultsTableViewController: UITableViewController {
     // MARK: - Functions
     
     func configureUI() {
-        guard let theaterMovies = MovieController.shared.recommendedTheaterMoviesToDisplayToTheUser else {return}
+        let theaterMovies = MovieController.shared.discoveredMoviesBasedOnGenres
         let group = DispatchGroup()
+        
         for movie in theaterMovies {
             group.enter()
             // fetch the movie with the id
             
-            guard let index = MovieController.shared.moviesThatAreSmilar.index(where: { $0.title == movie.title } ) else {
+            guard let index = MovieController.shared.discoveredMoviesBasedOnGenres.index(where: { $0.title == movie.title } ) else {
                 group.leave()
                 return
             }
             
-            let movieDB = MovieController.shared.moviesThatAreSmilar[index]
+            let movieDB = MovieController.shared.discoveredMoviesBasedOnGenres[index]
             MovieTrailorController.shared.fetchMovieTrailorWith(movie: movieDB.id, completion: { (trailors) in
                 if trailors.count == 0 {
                     group.leave()
@@ -87,15 +89,11 @@ class MovieTheaterResultsTableViewController: UITableViewController {
         if segue.identifier == "toMovieDetail" {
             guard let destination = segue.destination as? MovieDetailViewController, let indexPath = tableView.indexPathForSelectedRow else {return}
             
+            let regularMovie = MovieController.shared.discoveredMoviesBasedOnGenres[indexPath.row]
+            let theaterMovies = MovieController.shared.turnMoviesIntoATheaterMoviesWith(movies: [regularMovie])
             
-            guard let theaterMovies = MovieController.shared.recommendedTheaterMoviesToDisplayToTheUser else {return}
-            let theaterMovie = theaterMovies[indexPath.row]
-            
-            guard let index = MovieController.shared.moviesThatAreSmilar.index(where: { $0.title == theaterMovie.title }) else {return}
-            
-            let movie = MovieController.shared.moviesThatAreSmilar[index]
-            destination.theaterMovie = theaterMovie
-            destination.movie = movie
+            destination.theaterMovie = theaterMovies.first
+            destination.movie = regularMovie
             
         }
         

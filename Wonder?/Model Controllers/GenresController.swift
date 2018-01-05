@@ -93,16 +93,11 @@ class GenresController {
                     guard let path = movie.posterPath else {
                         print("There is no image posterpath for the fetch: for \"\(movie.title)\" and genre: \"\(genre.name)\" in file\(#file) and \(#function)")
                         guard let data = UIImageJPEGRepresentation(#imageLiteral(resourceName: "noImageView"), 1.0) else {return}
-                        self.updateGenreWithImage(data: data, for: genre)
+                        genre.genreImageData = data
                         downloadGroup.leave()
                         return
                     }
-                    MovieController.shared.fetchImageWith(endpoint: path, completion: { (image) in
-                        guard let image = image, let dataOfImage = UIImageJPEGRepresentation(image, 1.0) else {print("Error saving the data of the image in file \(#file) and function \(#function)")
-                            downloadGroup.leave()
-                            return
-                        }
-                        self.updateGenreWithImage(data: dataOfImage, for: genre)
+                    GenresController.shared.fetchImageWith(endpoint: path, genre: genre, completion: { (isComplete) in
                         downloadGroup.leave()
                     })
                     
@@ -117,16 +112,35 @@ class GenresController {
         
     }
     
-    func updateGenreWithImage(data: Data, for genre: Genre) {
-        var oldGenre = genre
-        oldGenre.genreImageData = data
+    /// Fetches the images from the movie DB
+    func fetchImageWith(endpoint: String, genre: Genre, completion: @escaping (_ isComplete: Bool) -> Void = { _ in }) {
+        let imageURL = URL(string: "https://image.tmdb.org/t/p/w342/")!
+        let url = imageURL.appendingPathComponent(endpoint)
         
-        // Find the index
-        guard let index = movieGenres.index(of: genre) else {print("There is no genre that matches the old genre in function: \(#function)"); return}
-        movieGenres.remove(at: index)
-        
-        movieGenres.insert(oldGenre, at: index)
+        URLSession.shared.dataTask(with: url) { (data, _, error) in
+            
+            // Check for an error
+            if let error = error {
+                print(error.localizedDescription)
+                completion(false)
+                return
+            }
+            
+            // Check for data
+            guard let data = data else {
+                print("There was bad data")
+                completion(false)
+                return
+            }
+            
+            // If there is data turn it into an image
+            guard let image = UIImage(data: data), let imageData = UIImageJPEGRepresentation(image, 1.0) else {return}
+            genre.genreImageData = imageData
+            completion(true)
+            
+            }.resume()
     }
+    
     
     /// Fetches the Tv Show Genres from the device
     func fetchTvShowGenres(completion: @escaping (([Genre]?) -> Void) = {_ in}) {

@@ -62,7 +62,6 @@ class MovieDetailViewController: UIViewController {
             }
             
             if count >= 12 {
-                
                 if Double(count) / Double(answerCharactors.count) > 0.7 {
                     fetch(trailor: trailor)
                     return true
